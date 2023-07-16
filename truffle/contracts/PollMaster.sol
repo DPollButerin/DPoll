@@ -101,7 +101,6 @@ contract PollMaster is PollUser {
         initizalized = true;
         require(_msgSender() == firstOwner, "Ownable: caller is not the first owner");
 
-        voteName = _voteName;
         _initializeOwnership(_newOwner);
         _initializeSettings(_DAOaddress, _duration, _requiredResponseCount, _pollName, _pollDescription, _eligibilityCriteria);
         _initializeAmounts(msg.value);

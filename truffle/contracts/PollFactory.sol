@@ -7,12 +7,14 @@ import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 import "./IPollInitiator.sol"; 
 import "./PollMaster.sol";
 
+/*
+@todo : set the DAO address as owner of the factory. At the moment, the owner is the deployer of the factory, it should be the same as the deployer of the DAO
+*/
+
 /**
 @notice This is the factory used to create poll contract clones from poll master contract
 -In this structure : 1 poll == 1 clone contract with its storage context
 -Master Poll Address needs to be set before creating a poll
-
-@todo : DAO should become the owner of the factory / at the moment the same address should be used for DAO and factory
 */
 contract PollFactory is Ownable, IPollInitiator {
 
@@ -24,7 +26,6 @@ contract PollFactory is Ownable, IPollInitiator {
 
   /**
   @notice allows to set the master voting addres from which votes will be cloned
-  @todo onlyDAO to set the master poll address
   */
   function setPollMasterAddress(address _pollMasterAddress) external onlyOwner {
     pollMasterAddress = _pollMasterAddress;
