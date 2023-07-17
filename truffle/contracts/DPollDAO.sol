@@ -46,6 +46,8 @@ contract DPOllDAO is DPollVoting {
 
     constructor() {
         DAObalance = 0;
+        DPTtoken = new DPollToken(1_000_000);
+        grantRole(msg.sender, MemberRole.OWNER);
     }
 
     receive() external payable {

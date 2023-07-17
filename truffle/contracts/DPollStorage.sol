@@ -16,6 +16,7 @@ votingDuration, executionDelay and creationDelay
 -vote are not ponderated by voting power. Need later to implement a snapshot mechanism to allow voting power usage
 -a blacklist is not implemented yet to prevent malicious or suspicious behaviour from revoked members
 
+@todo : many optimization and refactoring
  */
 
 /**
