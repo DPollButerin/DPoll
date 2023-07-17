@@ -5,7 +5,7 @@ pragma solidity 0.8.19;
 /*
 for now, in this POC :
 -anyone can become a member by sending 0.1 ether to the DAO
--this amount is locked for 28 days (can be changed) to vaoid sybil attack
+-this amount is locked for 28 days (can be changed) to vaoid sybil attack (you will be member for 28 days minimum)
 -when leaving the DAO this amount is sent back to the member BUT not if the member is revoked by the DAO
 
 -the DPTtoken is the gouvrnance token of the DAO
