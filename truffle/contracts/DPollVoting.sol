@@ -2,84 +2,31 @@
 
 pragma solidity 0.8.19;
 
-//comment minimalist... se passe de discord discussion, first vote offchain with tasnapshot, end communcation on tally
-//consider proposal passed this steps
+/*
+At the moment about proposals :
+-these actions are avaible only for active members
+-proposals have a type (proposal, update, transfert, revocation). the first one is 'formal' and
+the 3 others are 'execution' to update setting (see DPollStorage), transfert DPTtoken or revoke membership
+-proposals have a state (created, open, closed, executed)
+-to create a proposal, you need to be a member and have at least 2 DPTtoken
+-to vote, you need to be a member and have at least 1 DPTtoken
+-to close a vote, you need to be a member and have at least 1 DPTtoken
+-to execute a proposal, you need to be a member and have at least 1 DPTtoken
+-There's a delay to vote since the creation of the proposal and to execute the proposal since the end of the vote
+-All these actions give 1 DPTtoken to the member who perform them
+*/
 
+/**
+@title DPollVoting
+@author  ibourn
+@notice This contract is used to manage the proposals and the voting
+ */
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./DPollStorage.sol";
 import "./DPollMember.sol";
 
 contract DPollVoting is DPollMember {
-    //eth balance of the DAO
-    uint public initialVotingDuration = 2 minutes;
-    uint public initialExecutionDelay = 2 minutes;
-    uint public constant initialCreationDelay = 2 minutes;
-
-    //token min to create : 2 * min to vote (1 DPT)
-    //token min par type : min vote DPT PROPOSAL / 2 min vote UPDATE / 2 D* min votePT TRANSFERT / 2 D* min votePT REVOCATION
-    uint public minTokenToVote = 1;
-    uint public minTokenToCreate = minTokenToVote * 2;
-    // uint public minTokenToVoteProposal = minTokenToVote;
-    // uint public minTokenToVoteUpdate = minTokenToVote * 2;
-    // uint public minTokenToVoteTransfert = minTokenToVote * 2;
-    // uint public minTokenToVoteRevocation = minTokenToVote * 2;
-
-    //NO PONDERATION AT THE MOMENT : if later : need mechanism snapshot => track balance at crtain time when creat vote
-    //ex : when distributing supply => track the amount with last & previous op
-
-    //arrondi au int superieur // valeur a redefinir
-    uint proposalPctQuorum = 66;
-    uint executionPctQuorum = 75;
-    uint minPctThreshold = 50;
-
-    struct Value {
-        uint256 value;
-        uint256 min;
-        uint256 max;
-    }
-
-    Value public votingDuration = Value(initialVotingDuration, 30 seconds, 4 weeks);
-    Value public executionDelay = Value(initialExecutionDelay, 30 seconds, 4 weeks);
-    Value public creationDelay = Value(initialCreationDelay, 30 seconds, 4 weeks);
-
-    enum PollStatus {CREATED, OPEN, CLOSED, EXECUTED}
-    enum ProposalType { PROPOSAL, UPDATE_EXECUTION, TRANSFERT_EXECUTION, REVOCATION_EXECUTION }
-    
-    string[] internal updatableVariables = ["VotingDuration", "ExecutionDelay"];
-
-    uint256 public distributedTokenCount; //iutil now
-
-    struct ProposalState {
-        uint256 votesFor;
-        uint256 votesAgainst;
-        uint256 votesTotal;
-        PollStatus status;
-        uint256 createdAt;
-        uint256 closedAt;
-        uint256 executedAt;
-    }
-
-    struct ProposalPayload {
-        address[] payloadAddresses;
-        uint256[] payloadUint256;
-        string[] payloadString;
-    }
-
-    struct Proposal {
-        uint256 id;
-        string title;
-        string description;
-        ProposalType purpose;
-        ProposalState state;
-        address creator;
-        ProposalPayload payload;
-        mapping(address => bool) voted;
-    }
-
-    uint256 public proposalCount;
-    mapping(uint256 => Proposal) public proposals;
-     
-
+   
     modifier onlyMember() {
         require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
         _;
@@ -92,6 +39,7 @@ contract DPollVoting is DPollMember {
         _;
     }
 
+    //ADD getPEndingsProposal() to get all the proposals not executed
 
     //DAO has all the initial supply
     //vote give 1 DPTtoken to voter //create give 1 DPTtoken to creator
@@ -117,10 +65,7 @@ contract DPollVoting is DPollMember {
         proposal.payload.payloadUint256 = _payloadUint256;
         proposal.payload.payloadString = _payloadString;
 
-
-
-        //give 1 DPTtoken to creator
-        DPTtoken.transfer(msg.sender, 1);
+        rewardAction();
        
     }
 
@@ -141,8 +86,7 @@ contract DPollVoting is DPollMember {
         } else {
             proposal.state.votesAgainst++;
         }
-        //give 1 DPTtoken to voter
-        DPTtoken.transfer(msg.sender, 1);
+        rewardAction();
     }
 
     function closeVote(uint256 _proposalId) public onlyMember {
@@ -200,6 +144,8 @@ contract DPollVoting is DPollMember {
             }
         }
 
+
+
     
 
     }
@@ -236,6 +182,10 @@ contract DPollVoting is DPollMember {
            revokeMembership(payload.payloadAddresses[i]);
         }
 
+    }
+
+    function rewardAction() public onlyMember {
+        DPTtoken.transfer(msg.sender, 1);
     }
 
 }
