@@ -91,14 +91,15 @@ contract DPOllDAO is DPollVoting {
 
     function voteForPoll(uint _pollSubmissionId, bool _vote) public {
         require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
-        require(pollSubmissions[_pollSubmissionId].status == SubmissionStatus.SUBMITTED, "The poll is not submitted");
-        require(pollSubmissions[_pollSubmissionId].submissionDate + pollSubmissionDuration < block.timestamp, "The poll submission is closed");
-        require(pollSubmissions[_pollSubmissionId].validators.length < requiredValidators, "The poll submission is closed");
+        PollSubmission storage pollSubmission = pollSubmissions[_pollSubmissionId];
+        require(pollSubmission.status == SubmissionStatus.SUBMITTED, "The poll is not submitted");
+        require(pollSubmission.submissionDate + pollSubmissionDuration < block.timestamp, "The poll submission is closed");
+        require(pollSubmission.validators.length < requiredValidators, "The poll submission is closed");
         
-        pollSubmissions[_pollSubmissionId].validators.push(msg.sender);
+        pollSubmission.validators.push(msg.sender);
 
         if (_vote) {
-            pollSubmissions[_pollSubmissionId].voteCount++;
+            pollSubmission.voteCount++;
         }
 
         rewardAction();
@@ -106,31 +107,33 @@ contract DPOllDAO is DPollVoting {
 
     function closeSubmission(uint _pollSubmissionId) public {
         require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
-        require(pollSubmissions[_pollSubmissionId].status == SubmissionStatus.SUBMITTED, "The poll is not submitted");
-        require(pollSubmissions[_pollSubmissionId].submissionDate + pollSubmissionDuration <= block.timestamp, "The poll submission is closed");
-        require(pollSubmissions[_pollSubmissionId].validators.length >= requiredValidators, "The poll submission is not validated");
+        PollSubmission storage pollSubmission = pollSubmissions[_pollSubmissionId];
+        require(pollSubmission.status == SubmissionStatus.SUBMITTED, "The poll is not submitted");
+        require(pollSubmission.submissionDate + pollSubmissionDuration <= block.timestamp, "The poll submission is closed");
+        require(pollSubmission.validators.length >= requiredValidators, "The poll submission is not validated");
         
-        pollSubmissions[_pollSubmissionId].status = SubmissionStatus.CLOSED;
+        pollSubmission.status = SubmissionStatus.CLOSED;
         rewardAction();
     }
 
     function setValidation(uint _pollSubmissionId) public {
         require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
-        require(pollSubmissions[_pollSubmissionId].status == SubmissionStatus.CLOSED, "The poll is not closed");
-        require(pollSubmissions[_pollSubmissionId].validators.length >= requiredValidators, "The poll submission is not validated");
+        PollSubmission storage pollSubmission = pollSubmissions[_pollSubmissionId];
+        require(pollSubmission.status == SubmissionStatus.CLOSED, "The poll is not closed");
+        require(pollSubmission.validators.length >= requiredValidators, "The poll submission is not validated");
         
         bool isValid;
         uint amount;
-        rewardValidators(pollSubmissions[_pollSubmissionId].amountToValidators, pollSubmissions[_pollSubmissionId].validators);
+        rewardValidators(pollSubmission.amountToValidators, pollSubmission.validators);
 
-        if(pollSubmissions[_pollSubmissionId].voteCount >= requiredValidations) {
+        if(pollSubmission.voteCount >= requiredValidations) {
             isValid = true;
         } else {
             isValid = false;
-            amount = pollSubmissions[_pollSubmissionId].amountToDAO;
+            amount = pollSubmission.amountToDAO;
         }
 
-        IPollValidator(pollSubmissions[_pollSubmissionId].pollAddress).setPollValidation{value: amount}(pollSubmissions[_pollSubmissionId].pollAddress, isValid);
+        IPollValidator(pollSubmission.pollAddress).setPollValidation{value: amount}(pollSubmission.pollAddress, isValid);
 
         rewardAction();
     }

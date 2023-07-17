@@ -101,17 +101,18 @@ contract DPollVoting is DPollMember {
     }
 
     function executeVote(uint256 _proposalId) public onlyMember {
-        require(proposals[_proposalId].state.status == PollStatus.CLOSED, "Poll is not closed");
-        require(proposals[_proposalId].state.executedAt != 0, "Poll is already executed");
-        require(proposals[_proposalId].state.closedAt + executionDelay.value < block.timestamp, "Execution delay is not over");
-        require(proposals[_proposalId].purpose != ProposalType.PROPOSAL, "Proposal is not an execution");
-        proposals[_proposalId].state.status = PollStatus.EXECUTED;
-        proposals[_proposalId].state.executedAt = block.timestamp;
-        if (proposals[_proposalId].purpose == ProposalType.UPDATE_EXECUTION) {
+        Proposal storage proposal = proposals[_proposalId];
+        require(proposal.state.status == PollStatus.CLOSED, "Poll is not closed");
+        require(proposal.state.executedAt != 0, "Poll is already executed");
+        require(proposal.state.closedAt + executionDelay.value < block.timestamp, "Execution delay is not over");
+        require(proposal.purpose != ProposalType.PROPOSAL, "Proposal is not an execution");
+        proposal.state.status = PollStatus.EXECUTED;
+        proposal.state.executedAt = block.timestamp;
+        if (proposal.purpose == ProposalType.UPDATE_EXECUTION) {
             executeUpdate(_proposalId);
-        } else if (proposals[_proposalId].purpose == ProposalType.TRANSFERT_EXECUTION) {
+        } else if (proposal.purpose == ProposalType.TRANSFERT_EXECUTION) {
             executeTransfert(_proposalId);
-        } else if (proposals[_proposalId].purpose == ProposalType.REVOCATION_EXECUTION) {
+        } else if (proposal.purpose == ProposalType.REVOCATION_EXECUTION) {
             executeRevocation(_proposalId);
         }
 
@@ -126,21 +127,23 @@ contract DPollVoting is DPollMember {
         Value memory currentVotingDuration = votingDuration;
         Value memory currentExecutionDelay = executionDelay;
         Value memory currentCreationDelay = creationDelay;
-        require(payload.payloadString.length == payload.payloadUint256.length, "Payload length mismatch");
-        require(payload.payloadString.length != 0, "Payload is empty");
+        uint payloadStringLength = payload.payloadString.length;
+        require(payloadStringLength == payload.payloadUint256.length, "Payload length mismatch");
+        require(payloadStringLength != 0, "Payload is empty");
         require(checkUpdatableVariables(payload.payloadString), "Payload contains non updatable variables");
 
-        for (uint256 i = 0; i < payload.payloadString.length; i++) {
+        for (uint256 i = 0; i < payloadStringLength; i++) {
             bytes32 variable = keccak256(abi.encodePacked(payload.payloadString[i]));
+            uint value = payload.payloadUint256[i];
             if (variable == keccak256(abi.encodePacked("VotingDuration"))) {
-                require(payload.payloadUint256[i] >= currentVotingDuration.min && payload.payloadUint256[i] <= currentVotingDuration.max, "Voting duration out of range");
-                votingDuration.value = payload.payloadUint256[i];
+                require(value >= currentVotingDuration.min && value <= currentVotingDuration.max, "Voting duration out of range");
+                votingDuration.value = value;
             } else if (variable == keccak256(abi.encodePacked("ExecutionDelay"))) {
-                require(payload.payloadUint256[i] >= currentExecutionDelay.min && payload.payloadUint256[i] <= currentExecutionDelay.max, "Execution delay out of range");
-                executionDelay.value = payload.payloadUint256[i];
+                require(value >= currentExecutionDelay.min && value <= currentExecutionDelay.max, "Execution delay out of range");
+                executionDelay.value = value;
             } else if (variable == keccak256(abi.encodePacked("CreationDelay"))) {
-                require(payload.payloadUint256[i] >= currentCreationDelay.min && payload.payloadUint256[i] <= currentCreationDelay.max, "Creation delay out of range");
-                creationDelay.value = payload.payloadUint256[i];
+                require(value >= currentCreationDelay.min && value <= currentCreationDelay.max, "Creation delay out of range");
+                creationDelay.value = value;
             }
         }
 

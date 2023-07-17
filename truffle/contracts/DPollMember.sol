@@ -47,9 +47,11 @@ contract DPollMember is DPollStorage {
     }
 
     function removeMember(address _memberAddress) public onlyOwner {
-        require(members[_memberAddress].role == MemberRole.MEMBER, "You are not a member");
-        require(members[_memberAddress].memberSince + 28 days < block.timestamp, "You need to wait 28 days before leaving the DAO");
-        uint amount = members[_memberAddress].balance;
+        Member memory member = members[_memberAddress];
+        require(member.role == MemberRole.MEMBER, "You are not a member");
+        require(member.memberSince + 28 days < block.timestamp, "You need to wait 28 days before leaving the DAO");
+        uint amount = member.balance;
+        members[_memberAddress].balance = 0;
         (bool success, ) = payable(_memberAddress).call{value: amount}("");
         require(success, "Transfer failed.");
         delete members[_memberAddress];
@@ -57,8 +59,10 @@ contract DPollMember is DPollStorage {
     }
 
     function revokeMembership(address _memberAddress) public onlyOwner {
-        require(members[_memberAddress].role == MemberRole.MEMBER, "You are not a member");
-        DAObalance += members[_memberAddress].balance;
+        Member storage member = members[_memberAddress];
+        require(member.role == MemberRole.MEMBER, "You are not a member");
+        DAObalance += member.balance;
+        member.balance = 0;
 
         delete members[_memberAddress];
         //update balance => DPT to DAO // eth send back to member

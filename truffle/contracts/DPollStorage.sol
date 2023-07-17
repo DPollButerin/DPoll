@@ -28,6 +28,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./DPollToken.sol";
 
 contract DPollStorage is Ownable {
+    //remove unused values
     enum MemberRole {GUEST, DAO, TEAM, OWNER, MEMBER}
 
     enum PollStatus {CREATED, OPEN, CLOSED, EXECUTED}
