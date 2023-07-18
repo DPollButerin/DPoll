@@ -9,5 +9,5 @@ pragma solidity 0.8.19;
 */
 
 interface IDAOPollSubmission {
-    function submitPoll(address pollContractToValid) external;
+    function submitPoll(address _pollAddress, uint _toValidators, uint _toDAO) external payable;
 }

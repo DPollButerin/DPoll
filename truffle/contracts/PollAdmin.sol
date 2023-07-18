@@ -126,9 +126,11 @@ contract PollAdmin is PollView, PollHelpers, IPollAdmin, IPollValidator {
     function submitPoll() external onlyOwner {
         require(pollStatus == PollStatus.PollInitialized, 'Poll already submitted');
     
+        uint amount = amountToValidators + amountToDAO;
 
-        IDAOPollSubmission(DAOaddress).submitPoll(address(this));
+        IDAOPollSubmission(DAOaddress).submitPoll{value: amount  }(address(this), amountToValidators, amountToDAO);
         // _initAmounts(msg.value);
+        // _payDAO(amountToValidators, amountToDAO);
 
         pollStatus = PollStatus.PollSubmitted;  
     }
@@ -142,24 +144,24 @@ contract PollAdmin is PollView, PollHelpers, IPollAdmin, IPollValidator {
     @param pollAddress is the address of the poll to validate (this contract)
     @param isValid is a boolean to validate or reject the poll
      */
-    function setPollValidation(address pollAddress, bool isValid) external onlyDao {
+    function setPollValidation(address pollAddress, bool isValid) external payable onlyDao {
         require(pollStatus == PollStatus.PollValidated, 'Poll already validated');
         require(topics.length > 0, 'No topic');
         require(pollAddress == address(this), 'Wrong poll address');
+        require(isValid || msg.value >= amountToDAO, 'No funds to refund');
   
-        uint toValidators = amountToValidators;
-        uint toDAO = 0;
-
+        // uint toValidators = amountToValidators;
+        // uint toDAO = 0;
         if (isValid) {
             timestampLimit = block.timestamp + duration;
             pollStatus = PollStatus.PollingStarted;
 
-            toDAO = amountToDAO; 
+            // toDAO = amountToDAO; 
         } else {
             isCanceled = true;
             pollStatus = PollStatus.PollingEnded;
         }
-        _payDAO(toValidators, toDAO);
+        // _payDAO(toValidators, toDAO);
     }
 
     /**
@@ -182,6 +184,7 @@ contract PollAdmin is PollView, PollHelpers, IPollAdmin, IPollValidator {
         _refund();
     }
 
+//A EFFACER
     /**
     @notice allows to send funds to the DAO and the validators
     @dev the amount is split in two : one part for the DAO and one part for the validators

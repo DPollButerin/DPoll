@@ -9,5 +9,5 @@ pragma solidity 0.8.19;
  */
 
 interface IPollValidator {
-    function setPollValidation(address pollAddress, bool isValid) external;
+    function setPollValidation(address pollAddress, bool isValid) external payable;
 }
