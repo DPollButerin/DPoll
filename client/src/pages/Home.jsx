@@ -16,16 +16,16 @@ const Home = () => {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/Room/Respondent">Respondent</Link>
+            <Link to="/Respondent">Respondent</Link>
           </li>
           <li>
-            <Link to="/Room/Creator">Creator</Link>
+            <Link to="/Creator">Creator</Link>
           </li>
           <li>
-            <Link to="/Room/DAO">DAO</Link>
+            <Link to="/DAO">DAO</Link>
           </li>
           <li>
-            <Link to="/Room/About">About</Link>
+            <Link to="/About">About</Link>
           </li>
         </ul>
       </nav>

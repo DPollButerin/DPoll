@@ -6,16 +6,19 @@
 import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Home from "./pages/Home";
-import Respondent from "./pages/Respondent";
-import Creator from "./pages/Creator";
-import DAO from "./pages/DAO";
+import Respondent from "./pages/RespondentPages/Respondent";
+import Creator from "./pages/CreatorPages/Creator";
+import DAO from "./pages/DAOPages/DAO";
 import About from "./pages/About";
 import Room from "./pages/Room";
-import RoomLayout from "./pages/RoomLayout";
+import MainLayout from "./pages/MainLayout";
 import { Redirect } from "react-router-dom";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import RespondentLayout from "./pages/RespondentPages/RespondentLayout";
+import CreatorLayout from "./pages/CreatorPages/CreatorLayout";
+import DAOLayout from "./pages/DAOPages/DAOLayout";
 
 function App() {
   const p = useParams();
@@ -37,6 +40,10 @@ function App() {
   useEffect(() => {
     console.log("App.jsx useEffect");
     console.log(p, n);
+    // if (p.id === undefined) {
+    //   console.log("p.id === undefined");
+    //   n("/Home");
+    // }npm run start
   }, [p, n]);
 
   return (
@@ -75,11 +82,11 @@ function App() {
           path="/Home" //"\/|/Home\"
           element={<Home style={{ backgroundColor: "yellow" }} />}
         /> */}
-
-        <Route path="/Room/" element={<RoomLayout />}>
-          <Route path="Respondent" element={<Respondent />} />
-          <Route path="Creator" element={<Creator />} />
-          <Route path="DAO" element={<DAO />} />
+        {/* <Route path="/Home" element={<Home />} /> */}
+        <Route element={<MainLayout />}>
+          <Route path="/Respondent/*" element={<RespondentLayout />} />
+          <Route path="/Creator/*" element={<CreatorLayout />} />
+          <Route path="/DAO/*" element={<DAOLayout />} />
         </Route>
         <Route path="/About" element={<About />} />
         <Route path="*" element={<div>Not FOund</div>} />
@@ -90,3 +97,13 @@ function App() {
 }
 
 export default App;
+
+// <Route path="/Room/" element={<RoomLayout />}>
+//     <Route path="Respondent" element={<Respondent />} />
+//     <Route path="Creator" element={<Creator />} />
+//     <Route path="DAO" element={<DAO />} />
+//   </Route>
+//   <Route path="/About" element={<About />} />
+//   <Route path="*" element={<div>Not FOund</div>} />
+//   {/* <Redirect to="/Home" /> */}
+// </Routes>
