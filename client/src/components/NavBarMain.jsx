@@ -1,0 +1,41 @@
+import React from "react";
+import { Outlet, Link } from "react-router-dom";
+import { Button, VStack } from "@chakra-ui/react";
+
+const NavBarMain = () => {
+  return (
+    <VStack h="100%" p="10em" style={{ backgroundColor: "yellow" }}>
+      <div>Home</div>
+
+      <header style={{ backgroundColor: "gray" }}>
+        <h1>HOME Header</h1>
+      </header>
+      {/* <Flex p="10em" style={{ backgroundColor: "yellow" }}> */}
+      <h1>HOME</h1>
+
+      <Button as={Link} to="/">
+        Home
+      </Button>
+
+      <Button as={Link} to="/Respondent">
+        Respondent
+      </Button>
+
+      <Button as={Link} to="/Creator">
+        Creator
+      </Button>
+
+      <Button as={Link} to="/DAO">
+        DAO
+      </Button>
+
+      <Button as={Link} to="/About">
+        About
+      </Button>
+      {/* </Flex> */}
+      <Outlet context={{ hello: "From Outlet" }} />
+    </VStack>
+  );
+};
+
+export default NavBarMain;

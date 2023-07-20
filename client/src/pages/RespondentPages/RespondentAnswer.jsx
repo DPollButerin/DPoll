@@ -1,7 +1,9 @@
 import React from "react";
+import { useOutletContext } from "react-router-dom";
 
 const RespondentAnswer = () => {
-  return <div>RespondentAnswer</div>;
+  const objOutlet = useOutletContext(); //virer
+  return <div>RespondentAnswer {objOutlet.second} </div>;
 };
 
 export default RespondentAnswer;

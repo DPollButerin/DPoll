@@ -16,7 +16,7 @@ const RespondentLayout = () => {
         <Route path="/Answer" element={<RespondentAnswer />} />
         <Route path="/Claim" element={<RespondentClaim />} />
       </Routes>
-      <Outlet context={{ hello: "From Respondent navbar" }} />
+      {/* <Outlet context={{ second: "From Respondent navbar" }} /> */}
     </div>
   );
 };

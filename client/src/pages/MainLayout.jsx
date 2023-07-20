@@ -3,7 +3,12 @@ import { Link, Outlet, Routes, Route } from "react-router-dom";
 // import RespondentNavBar from "./RespondentPages/RespondentNavBar";
 
 import { matchRoutes, useLocation } from "react-router-dom";
-import NavBar from "../components/NavBar";
+import NavBarOption from "../components/NavBarOption";
+import { Box, Button, Flex, Spacer, VStack } from "@chakra-ui/react";
+import NavButton from "../components/NavButton";
+import { group, single } from "../utils/navLinks";
+// import InlineSVG from "svg-inline-react";
+import MetamaskIcon from "../assets/metamask.svg";
 
 const useCurrentPath = () => {
   const routes = [{ path: "/" }];
@@ -15,134 +20,62 @@ const useCurrentPath = () => {
   return location.pathname;
 };
 
+/*
+todo: semantic navigation => nav!
+*/
 const MainLayout = () => {
   const currentPath = useCurrentPath(); // `/members/5566` -> `/members/:id`
 
-  const details = {
-    respondent: [
-      {
-        route: "/Respondent/Historic",
-        msg: "HISTORIQUE/LIST....",
-        color: "pink",
-      },
-      {
-        route: "/Respondent/Answer",
-        msg: "PICK A POLL AND ANSWER",
-        color: "pink",
-      },
-      {
-        route: "/Respondent/Claim",
-        msg: "CLAIM reward from a poll",
-        color: "orange",
-      },
-    ],
-    creator: [
-      { route: "/Creator/PollCreation", msg: "CRATION POLL", color: "pink" },
-      {
-        route: "/Creator/PollsState",
-        msg: "STATE OF OWNER POLLS",
-        color: "orange",
-      },
-    ],
-    dao: [
-      { route: "/DAO/PollValidation", msg: "POLL VALIDATION", color: "pink" },
-      {
-        route: "/DAO/Proposals",
-        msg: "DAO proposals",
-        color: "pink",
-      },
-      { route: "/DAO/Signin", msg: "SIGNIN", color: "orange" },
-    ],
-  };
-
   return (
-    <>
-      <header style={{ backgroundColor: "green" }}>
-        <h1>RoomLayout Header Pat pour action : {currentPath}</h1>
-      </header>
-      <nav style={{ backgroundColor: "red" }}>
-        <h1>RoomLayout</h1>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/Respondent">Répondant</Link>
-          </li>
-          <li>
-            <Link to="/Creator">Créateur</Link>
-          </li>
-          <li>
-            <Link to="/DAO">Gouvernance</Link>
-          </li>
-          <li>
-            <Link to="/About">Aide</Link>
-          </li>
-        </ul>
-      </nav>
+    <Box h="98vh" my="0" p="0" style={{ backgroundColor: "green" }}>
+      <Flex my="0" p="0" style={{ backgroundColor: "marron" }}>
+        <header style={{ backgroundColor: "green", fontSize: "1.1rem" }}>
+          <h1>RoomLayout Header Pat pour action : {currentPath}</h1>
+        </header>
+        <Spacer />
+        <MetamaskIcon style={{ height: "30px", width: "30px" }} />
+        {/* <img style={{ backgroundImage: `url("/custom-fox-6564396.svg")` }}> */}
+        {/* // src={metamaskLogo} alt="metamsk logo"> Logo */}
+        {/* </img> */}
+        <Button>Connect Wallet</Button>
+      </Flex>
+      <Flex my="0" pt="0" style={{ backgroundColor: "yellow", height: "100%" }}>
+        <Box m="0" p="0" style={{ border: "0px solid black", width: "30vw" }}>
+          <VStack h="100%" style={{ backgroundColor: "red" }}>
+            <NavButton detail={single.home} />
+            <NavButton detail={single.respondent} />
+            <NavButton detail={single.creator} />
+            <NavButton detail={single.dao} />
+            {/* </VStack> */}
+            <Spacer />
+            <Routes style={{ backgroundColor: "blue" }}>
+              <Route
+                path="/Respondent/*"
+                element={<NavBarOption details={group.respondent} />}
+              />
+              <Route
+                path="/Creator/*"
+                element={<NavBarOption details={group.creator} />}
+              />
+              <Route
+                path="/DAO/*"
+                element={<NavBarOption details={group.dao} />}
+              />
+            </Routes>
+            <Spacer />
+            <NavButton detail={single.about} />
+          </VStack>
+        </Box>
 
-      <div>
-        Sidebar
-        <Routes style={{ backgroundColor: "blue" }}>
-          {/* <Route path="/Respondent/*" element={<RespondentNavBar />} />*/}
-
-          <Route
-            path="/Respondent/*"
-            element={
-              <NavBar
-                msg={"REPONDENT MSG BAR"}
-                color={"pink"}
-                pagesRoutes={details.respondent}
-              />
-            }
-          />
-          <Route
-            path="/Creator/*"
-            element={
-              <NavBar
-                msg={"CREATOR MSG BAR"}
-                color={"pink"}
-                pagesRoutes={details.creator}
-              />
-            }
-          />
-          <Route
-            path="/DAO/*"
-            element={
-              <NavBar
-                msg={"DAO MSG BAR"}
-                color={"pink"}
-                pagesRoutes={details.dao}
-              />
-            }
-          />
-          {/* <Route path="/Creator" element={<h1>Creator NAVBAR</h1>} />
-          <Route path="/DAO" element={<h1>DAO NAVBAR</h1>} /> */}
-        </Routes>
-      </div>
-      <div></div>
-      <div style={{ backgroundColor: "lime" }}>
-        <Outlet context={{ hello: "From Outlet" }} />
-      </div>
-    </>
+        <Box my="0" p="0" style={{ backgroundColor: "lime", width: "75vw" }}>
+          <header style={{ backgroundColor: "cyan" }}>
+            <h1>MAINLAYOUT pager</h1>
+          </header>
+          <Outlet context={{ hello: "From OutletMAinLayout" }} />
+        </Box>
+      </Flex>
+    </Box>
   );
 };
 
 export default MainLayout;
-//  <ul>
-//    <li>
-//      <Link to="/">Home</Link>
-//    </li>
-//    <li>
-//      <Link to="/Room/Respondent">Respondent</Link>
-//    </li>
-//    <li>
-//      <Link to="/Room/Creator">Creator</Link>
-//    </li>
-//    <li>
-//      <Link to="/Room/DAO">DAO</Link>
-//    </li>
-//    <li>
-//      <Link to="/Room/About">About</Link>
-//    </li>
-//  </ul>;
