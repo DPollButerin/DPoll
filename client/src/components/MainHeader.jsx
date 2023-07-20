@@ -10,6 +10,7 @@ import {
   Text,
   Wrap,
 } from "@chakra-ui/react";
+import ConnectButton from "./ConnectButton";
 
 const MainHeader = () => {
   return (
@@ -23,10 +24,10 @@ const MainHeader = () => {
         <ButtonGroup>
           <Button>Comment ça marche ?</Button>
           <Button>Lite Paper</Button>
-          <Button>Connect Metamask</Button>
+          <ConnectButton />
         </ButtonGroup>
         <HStack>
-          <image>Logo</image>
+          LOGO
           <Wrap>
             <Text>Confidentialité, sécurité, efficacité.</Text>
             <Text>Le monde du sondage entre dans une nouvelle ère</Text>

@@ -11,9 +11,7 @@ const Home = () => {
       <MainHeader />
       <Flex>
         <NavBarMain />
-        <Container>
-          <image>Logo</image>
-        </Container>
+        <Container>LOGO HOME</Container>
       </Flex>
     </Box>
   );

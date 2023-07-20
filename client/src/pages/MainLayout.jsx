@@ -8,7 +8,7 @@ import { Box, Button, Flex, Spacer, VStack } from "@chakra-ui/react";
 import NavButton from "../components/NavButton";
 import { group, single } from "../utils/navLinks";
 // import InlineSVG from "svg-inline-react";
-import MetamaskIcon from "../assets/metamask.svg";
+import ConnectButton from "../components/ConnectButton";
 
 const useCurrentPath = () => {
   const routes = [{ path: "/" }];
@@ -33,11 +33,8 @@ const MainLayout = () => {
           <h1>RoomLayout Header Pat pour action : {currentPath}</h1>
         </header>
         <Spacer />
-        <MetamaskIcon style={{ height: "30px", width: "30px" }} />
-        {/* <img style={{ backgroundImage: `url("/custom-fox-6564396.svg")` }}> */}
-        {/* // src={metamaskLogo} alt="metamsk logo"> Logo */}
-        {/* </img> */}
-        <Button>Connect Wallet</Button>
+
+        <ConnectButton />
       </Flex>
       <Flex my="0" pt="0" style={{ backgroundColor: "yellow", height: "100%" }}>
         <Box m="0" p="0" style={{ border: "0px solid black", width: "30vw" }}>

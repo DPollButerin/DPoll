@@ -17,6 +17,7 @@ import { useLocation } from "react-router-dom";
 import RespondentLayout from "./pages/RespondentPages/RespondentLayout";
 import CreatorLayout from "./pages/CreatorPages/CreatorLayout";
 import DAOLayout from "./pages/DAOPages/DAOLayout";
+import { ConnectionProvider } from "./contexts/ConnectionContext";
 
 function App() {
   const p = useParams();
@@ -47,20 +48,22 @@ function App() {
   return (
     <>
       <ChakraProvider>
-        <Routes>
-          <Route
-            path="/" //"\/|/Home\"
-            element={<Home style={{ backgroundColor: "yellow" }} />}
-          />
-          <Route element={<MainLayout />}>
-            <Route path="/Respondent/*" element={<RespondentLayout />} />
-            <Route path="/Creator/*" element={<CreatorLayout />} />
-            <Route path="/DAO/*" element={<DAOLayout />} />
-          </Route>
-          <Route path="/About" element={<About />} />
-          <Route path="*" element={<div>Not FOund</div>} />
-          {/* <Redirect to="/Home" /> */}
-        </Routes>
+        <ConnectionProvider>
+          <Routes>
+            <Route
+              path="/" //"\/|/Home\"
+              element={<Home style={{ backgroundColor: "yellow" }} />}
+            />
+            <Route element={<MainLayout />}>
+              <Route path="/Respondent/*" element={<RespondentLayout />} />
+              <Route path="/Creator/*" element={<CreatorLayout />} />
+              <Route path="/DAO/*" element={<DAOLayout />} />
+            </Route>
+            <Route path="/About" element={<About />} />
+            <Route path="*" element={<div>Not FOund</div>} />
+            {/* <Redirect to="/Home" /> */}
+          </Routes>
+        </ConnectionProvider>
       </ChakraProvider>
     </>
   );
