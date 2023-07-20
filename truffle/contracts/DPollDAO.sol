@@ -1,35 +1,39 @@
 // SPDX-License-Identifier: MIT
 
 /*
-This is the main contract of the DAO, later there will be a master for proposals implementing
-new logic with the use of plugins (facets like) to allow upgradability and flexibility
-
-At the moment, it contains :
--the logic for the DAO inheriting from other contracts
--and here the DAO treasury management (replaced later by a vault contract)
--and the logic for Polls submission and validation
-(see DPollMember.sol, DPollVoting.sol, DPollStorage.sol, DPollToken.sol, IPollValidator.sol, IDAOPollSubmission.sol for each part of the DAO)
-
-This step of the treasury is simple : 
--the DAO (in member contract) receive, lock and unlock ETH 
--the DAO accepte ETH donation and an emergencyWithdraw function is implemented to allow the DAO to withdraw all the ETH (this is a POC only)
-
-About the Polls submission and validation :
--a poll owner can submit a poll to the DAO by sending its address and some ETH to the DAO (50% will be given to validators, 50% to the treasury if the poll is validated)
--the DAO members can vote for the poll
--a certain amount of vote is required to close the poll (3 as example for now) in a certain delay 
--then the DAO members can validate or invalidate the poll calling the setValidation function of the PollValidator contract
-
-@todo :
--for next versions :
-+a process to disable the emergencyWithdraw function will be implemented, as well as pausable modifier and process to renonce to ownership and disable the team acces...
-+a multisig wallet will be implemented to allow the team to manage the DAO treasury the time to time test the dapp and the DAO, this multisig will be disabled later
-+a better management and naming of role and access 
-+more settings available to be updated or added by the DAO as well as plugins (google like contracts for example...)
-+more complex incentives system to reward members and validators and a stacking mechanism with the use of the treasury
-+a separation of the funds locked to pay services, communications, dev... and those used to inject in defi protocols to generate interests (... tokenomics not yet finished)
-
-*/
+ * This is the main contract of the DAO, later there will be a master for proposals implementing
+ * new logic with the use of plugins (facets like) to allow upgradability and flexibility
+ * 
+ * At the moment, it contains :
+ * -the logic for the DAO inheriting from other contracts
+ * -and here the DAO treasury management (replaced later by a vault contract)
+ * -and the logic for Polls submission and validation
+ * (see DPollMember.sol, DPollVoting.sol, DPollStorage.sol, DPollToken.sol, IPollValidator.sol, IDAOPollSubmission.sol for each part of the DAO)
+ * 
+ * This step of the treasury is simple : 
+ * -the DAO (in member contract) receive, lock and unlock ETH 
+ * -the DAO accepte ETH donation and an emergencyWithdraw function is implemented to allow the DAO to withdraw all the ETH (this is a POC only) 
+ *
+ * About the Polls submission and validation :
+ * -a poll owner can submit a poll to the DAO by sending its address and some ETH to the DAO (50% will be given to validators, 50% to the treasury if the poll is validated)
+ * -the DAO members can vote for the poll
+ * -a certain amount of vote is required to close the poll (3 as example for now) (later : in a certain delay)
+ * -then the DAO members can validate or invalidate the poll calling the setValidation function of the PollValidator contract
+ *
+ * ATTENTION : in the purpose of this exam, the functionalities are limited to the minimum (to respect delay),
+ * -all time constraints (delay, duration) concerning the polls validation are removed (to facilitate tests and live demo)
+ * 
+ * 
+ * @todo :
+ * -for next versions :
+ * +a process to disable the emergencyWithdraw function will be implemented, as well as pausable modifier and process to renonce to ownership and disable the team acces...
+ * +a multisig wallet will be implemented to allow the team to manage the DAO treasury the time to time test the dapp and the DAO, this multisig will be disabled later
+ * +a better management and naming of role and access 
+ * +more settings available to be updated or added by the DAO as well as plugins (google like contracts for example...)
+ * +more complex incentives system to reward members and validators and a stacking mechanism with the use of the treasury
+ * +a separation of the funds locked to pay services, communications, dev... and those used to inject in defi protocols to generate interests (... tokenomics not yet finished)
+ *
+ */
 
 
 pragma solidity 0.8.19;
@@ -43,6 +47,8 @@ import "./IPollValidator.sol";
 
 contract DPOllDAO is DPollVoting {
     //eth balance of the DAO
+    event PollStatusChange(address pollAddress, SubmissionStatus newStatus, string message);
+    event DAOBalanceTansfer(address to, uint amount, string action);
 
     constructor() {
         DAObalance = 0;
@@ -79,21 +85,22 @@ contract DPOllDAO is DPollVoting {
 
     function submitPoll(address _pollAddress, uint _toValidators, uint _toDAO) external payable {
         require(msg.sender == _pollAddress, "The Poll should submit itself");
-        require(msg.value > 0.1 ether, "You need to send some Ether");
+        require(msg.value >= 0.01 ether, "You need to send some Ether"); //min poll is 0.05 and 10% to validators 10% to DAO
         PollSubmission memory newPollSubmission;
         newPollSubmission.pollAddress = _pollAddress;
-        newPollSubmission.submissionDate = block.timestamp;
+        // newPollSubmission.submissionDate = block.timestamp;
         newPollSubmission.status = SubmissionStatus.SUBMITTED;
         newPollSubmission.amountToDAO = _toDAO;
         newPollSubmission.amountToValidators = _toValidators;
         DAObalance += msg.value;
+        emit PollStatusChange(_pollAddress, SubmissionStatus.SUBMITTED, "Poll submitted");
     }
 
     function voteForPoll(uint _pollSubmissionId, bool _vote) public {
         require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
         PollSubmission storage pollSubmission = pollSubmissions[_pollSubmissionId];
         require(pollSubmission.status == SubmissionStatus.SUBMITTED, "The poll is not submitted");
-        require(pollSubmission.submissionDate + pollSubmissionDuration < block.timestamp, "The poll submission is closed");
+        // require(pollSubmission.submissionDate + pollSubmissionDuration < block.timestamp, "The poll submission is closed");
         require(pollSubmission.validators.length < requiredValidators, "The poll submission is closed");
         
         pollSubmission.validators.push(msg.sender);
@@ -105,22 +112,23 @@ contract DPOllDAO is DPollVoting {
         rewardAction();
     }
 
+    //due to restriction and later time constraints, no modifier to allow automatisation of the workflow
     function closeSubmission(uint _pollSubmissionId) public {
         require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
         PollSubmission storage pollSubmission = pollSubmissions[_pollSubmissionId];
         require(pollSubmission.status == SubmissionStatus.SUBMITTED, "The poll is not submitted");
-        require(pollSubmission.submissionDate + pollSubmissionDuration <= block.timestamp, "The poll submission is closed");
-        require(pollSubmission.validators.length >= requiredValidators, "The poll submission is not validated");
+        // require(pollSubmission.submissionDate + pollSubmissionDuration <= block.timestamp, "The poll submission is closed");
+        require(pollSubmission.validators.length >= requiredValidators, "The poll submission is not finished");
         
         pollSubmission.status = SubmissionStatus.CLOSED;
         rewardAction();
+        emit PollStatusChange(pollSubmission.pollAddress, SubmissionStatus.CLOSED, "Poll closed");
     }
 
     function setValidation(uint _pollSubmissionId) public {
         require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
         PollSubmission storage pollSubmission = pollSubmissions[_pollSubmissionId];
         require(pollSubmission.status == SubmissionStatus.CLOSED, "The poll is not closed");
-        require(pollSubmission.validators.length >= requiredValidators, "The poll submission is not validated");
         
         bool isValid;
         uint amount;
@@ -136,6 +144,8 @@ contract DPOllDAO is DPollVoting {
         IPollValidator(pollSubmission.pollAddress).setPollValidation{value: amount}(pollSubmission.pollAddress, isValid);
 
         rewardAction();
+
+        emit PollStatusChange(pollSubmission.pollAddress, SubmissionStatus.VALIDATED, "Poll validated");
     }
 
     //^pay validator no matter the result, the result of the division is gievn to the DAO
@@ -155,6 +165,8 @@ contract DPOllDAO is DPollVoting {
         members[msg.sender].rewardsBlance = 0;
         (bool success, ) = payable(msg.sender).call{value: amount}("");
         require(success, "Transfer failed.");
+
+        emit DAOBalanceTansfer(msg.sender, amount, "Reward claimed");
     }
 
     

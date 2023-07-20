@@ -8,10 +8,16 @@ import "./IPollInitiator.sol";
 import "./PollMaster.sol";
 
 /*
-@todo : set the DAO address as owner of the factory. At the moment, the owner is the deployer of the factory, it should be the same as the deployer of the DAO
-*/
+ * In the purpose of this exam factory is minimalist : pollMasterAddress is set by the owner of the factory once only (no upgrade of the master poll contract)
+ *
+ * @todo : 
+ * -set the DAO address as owner of the factory. At the moment, the owner is the deployer of the factory, it should be the same as the deployer of the DAO
+ * -manage poll versions by adding new master poll contracts and keeping track of the clones addresses versions
+ */
 
 /**
+@title PollFactory
+@author ibourn
 @notice This is the factory used to create poll contract clones from poll master contract
 -In this structure : 1 poll == 1 clone contract with its storage context
 -Master Poll Address needs to be set before creating a poll
@@ -22,16 +28,18 @@ contract PollFactory is Ownable, IPollInitiator {
   address public pollMasterAddress;
   address[] pollCloneAddresses;
 
-  event PollCreated(address newPollContract);
+  event PollCreated(address newPollContract, address pollMasterAddress, address creator);
 
   /**
   @notice allows to set the master voting addres from which votes will be cloned
   */
   function setPollMasterAddress(address _pollMasterAddress) external onlyOwner {
+    require(pollMasterAddress == address(0), 'Poll master address already set');
     pollMasterAddress = _pollMasterAddress;
   }
 
   function setDAOAddress(address _DAOaddress) external onlyOwner {
+    require(DAOaddress == address(0), 'DAO address already set');
     DAOaddress = _DAOaddress;
   }
 
@@ -42,7 +50,7 @@ contract PollFactory is Ownable, IPollInitiator {
   @return the clone address, it allows with Interfaces to participate to the poll as admin, respondent or DAO
   */
   function createPollContract(
-        uint _duration,
+        // uint _duration,
         uint _requiredResponseCount,
         string calldata _pollName,
         string calldata _pollDescription,
@@ -57,7 +65,7 @@ contract PollFactory is Ownable, IPollInitiator {
     PollMaster(pollClone).initialize{value: msg.value}(
         msg.sender, 
         DAOaddress,
-        _duration,
+        // _duration,
         _requiredResponseCount,
         _pollName,
         _pollDescription,
@@ -66,7 +74,7 @@ contract PollFactory is Ownable, IPollInitiator {
 
     pollCloneAddresses.push(pollClone);
 
-    emit PollCreated(pollClone);
+    emit PollCreated(pollClone, pollMasterAddress, msg.sender);
     return pollClone;
   }
 

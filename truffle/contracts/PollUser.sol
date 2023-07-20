@@ -21,6 +21,7 @@ contract PollUser is PollAdmin, IPollUser {
     /**
     @notice This function allow to answer to the poll
     @dev it update the balance of the respondent to allow him to claim the reward
+    @dev index of choices start from 0 and should be ordered as the choices in the topics in order to revert earlier in case of invalid answer (function in helpers will revert later if not)
     @param _chosenChoices is an array of uint representing the index of the choices chosen by the respondent (in the order of the all choices and starting from 0)
      */
     function addAnswer(uint[] calldata _chosenChoices) external {

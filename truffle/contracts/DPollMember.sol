@@ -37,7 +37,7 @@ contract DPollMember is DPollStorage {
     }
 
     function addMember( address _memberAddress) public payable {
-        require(msg.value >= DAO_MEMBERSHIP_FEE, "You need to send at least 0.1 ether");
+        require(msg.value >= DAO_MEMBERSHIP_FEE, "You need to send at least 0.02 ether");
         require(members[_memberAddress].role == MemberRole.GUEST, "You are already a member");
         Member memory newMember;
         newMember.memberAddress = _memberAddress;
@@ -46,7 +46,8 @@ contract DPollMember is DPollStorage {
         DAObalance += msg.value;
     }
 
-    function removeMember(address _memberAddress) public onlyOwner {
+    function removeMember(address _memberAddress) public  {
+        require(_memberAddress == msg.sender, "Only member can decide to leave the DAO");
         Member memory member = members[_memberAddress];
         require(member.role == MemberRole.MEMBER, "You are not a member");
         require(member.memberSince + 28 days < block.timestamp, "You need to wait 28 days before leaving the DAO");
@@ -60,7 +61,7 @@ contract DPollMember is DPollStorage {
 
     function revokeMembership(address _memberAddress) public onlyOwner {
         Member storage member = members[_memberAddress];
-        require(member.role == MemberRole.MEMBER, "You are not a member");
+        require(member.role == MemberRole.MEMBER, "Address is not a member");
         DAObalance += member.balance;
         member.balance = 0;
 

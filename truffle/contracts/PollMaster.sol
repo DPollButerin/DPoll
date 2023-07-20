@@ -6,17 +6,21 @@ pragma solidity 0.8.19;
  * In the purpose of this exam, the functionalities are limited to the minimum (to respect delay)
  *
  * this contract :
- * -init a poll 
+ * -init a poll (someone wishing to create a poll must become a DAO member before... it avoid spamming)
  *
  * -it should be sumbitted to the DAO for validation (sending the funds to pay validators and DAO)
  *
- * -after validation, the poll can be started
+ * -after validation, the poll can be started (if poll is not validated the DAO resend the funds to the owner less the validators fees, owner should claim it back later)
  *
  * -the poll can be answered by any eligible respondents
  *
- * -in the context of this MVP eligbility is simulated by a fake certifier contract (see Certifier.sol)
+ * -in the context of this MVP eligbility is simulated by a fake certifier contract (see Certifier.sol) so all respondent are eligible
  *
  * -the number of respondents is limited to a maximum for the first version
+ *
+ * -TO FACILITATE TEST AND LIVE DEMO during the exam : all time limits are removed (duration, delay, timestampLimit) and so not implemented
+ *
+ * -Amount here are in wei and set to facilitate tests and live demo and the testnet if needed (0.05 ether + 0.001 ether * number of respondents)
  *
  *--------------------------------------------------------------------------------------------------------
  * Deviation from the scope of application :
@@ -26,8 +30,6 @@ pragma solidity 0.8.19;
  * to have a competitive advantage as only the validators will be paid)
  *
  * - a minimum amount is set to avoid a poll with a very low amount with : 0.2 ether + 0.001 ether * number of respondents
- *
- * - function to end the poll... have no modifier to let access later to bots to perform actions (incentives could be added to run poll automatically)
  *
  *--------------------------------------------------------------------------------------------------------
  * @todo :
@@ -43,13 +45,18 @@ pragma solidity 0.8.19;
  * -make the amount states, percentage to pay ... customizable (to let the DAO update these params with proposals)
  *
  * -add an incentive to respond in time (use root square to decrease the reward with time ?)
+ *
+ * -function to end the poll... without modifier to let access later to bots to perform actions (incentives could be added to run poll automatically)
+ * need reenabling reuire with delay and number of answers 
+ *
+ * -automisation of the workflow will be enabled with pollValidated process, the above modification and associated events
  */
 
 
 /**
 @title PollMaster
 @author ibourn
-@notice This contract allow to initialize a poll, and after validation, to respond to it
+@notice This contract allows to initialize a poll, and after validation, to respond to it. It also allows to manage ownership of clones 
 @notice results are not not cumulative but separate, as the owner could want to do a cross-data analysis
 @notice addresses are not linked directly to answers
 @dev The contract inherits from PollUser (and so from PollAdmin, PollView, PollStorage, Ownable)
@@ -88,7 +95,7 @@ contract PollMaster is PollUser {
     function initialize(
         address _newOwner, 
         address _DAOaddress,
-        uint _duration,
+        // uint _duration,
         uint _requiredResponseCount,
         string calldata _pollName,
         string calldata _pollDescription,
@@ -100,9 +107,10 @@ contract PollMaster is PollUser {
         require(!initizalized, "Ownable: ownership is already initialized");
         initizalized = true;
         require(_msgSender() == firstOwner, "Ownable: caller is not the first owner");
+        require(_requiredResponseCount <= MAX_RESPONDENTS_LENGTH, 'Too many respondents');
 
         _initializeOwnership(_newOwner);
-        _initializeSettings(_DAOaddress, _duration, _requiredResponseCount, _pollName, _pollDescription, _eligibilityCriteria);
+        _initializeSettings(_DAOaddress, _requiredResponseCount, _pollName, _pollDescription, _eligibilityCriteria);
         _initializeAmounts(msg.value);
     }
 
@@ -121,19 +129,19 @@ contract PollMaster is PollUser {
      */
     function _initializeSettings(
         address _DAOaddress,
-        uint _duration,
+        // uint _duration,
         uint _requiredResponseCount,
         string calldata _pollName,
         string calldata _pollDescription,
         string calldata _eligibilityCriteria
         ) private onlyOwner {
         // require(pollStatus == PollStatus.PollInitialized, 'Poll already initialized');
-        require(_duration > 0, 'Duration must be greater than 0');
+        // require(_duration > 0, 'Duration must be greater than 0');
         require(_requiredResponseCount > 0, 'Respondents threshold must be greater than 0');
         require(bytes(_pollName).length > 0, 'Poll name must not be empty');
         require(bytes(_pollDescription).length > 0, 'Poll description must not be empty');
         require(bytes(_eligibilityCriteria).length > 0, 'Eligibility criteria must not be empty');
-        duration = _duration;
+        // duration = _duration;
         requiredResponseCount = _requiredResponseCount;
         // pollStatus = PollStatus.PollInitialized;
         pollName = _pollName;
@@ -148,7 +156,7 @@ contract PollMaster is PollUser {
      */
     function _initializeAmounts(uint _amountSent) private onlyOwner {
         // require(pollStatus == PollStatus.PollInitialized, 'Poll already distributed');
-        require(_amountSent >= (MIN_POLL_AMOUNT + (MIN_RESPONDENT_AMOUNT * requiredResponseCount)), 'Not enough funds');
+        require(_amountSent >= (MIN_POLL_AMOUNT + (MIN_RESPONDENT_AMOUNT * requiredResponseCount)), 'Funds inferior to poll minimum cost');
 
         balance = _amountSent;    
         amountToDAO = _amountSent * PERCENTAGE_TO_DAO / 100;

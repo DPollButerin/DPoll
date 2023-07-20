@@ -69,3 +69,15 @@ module.exports = {
   userId3,
   strangerId,
 };
+
+/*
+test gas cost
+  // Allow user1 to withdraw his funds
+            const initialBalance = await ethers.provider.getBalance(user1)
+            let response = await marketplace.connect(user1).withdrawFunds()
+            let receipt = await response.wait()
+            let usedGas = receipt.gasUsed
+            let gasPriceInWei = response.gasPrice
+            const newBalance = await ethers.provider.getBalance(user1)
+           expect(newBalance).to.equal(initialBalance+ethers.parseEther(paidAmount.toString())-usedGas*gasPriceInWei)
+*/

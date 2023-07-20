@@ -27,7 +27,7 @@ contract Certifier {
         // uint256 timestamp;
     }
 
-    function checkEligibility(string calldata _criteria, address _who) public returns (Certification memory cerrtification) {
+    function checkEligibility(string calldata _criteria, address _who) public returns (Certification memory certification) {
         Certification memory certification;
         certification.certifier = address(this);
         certification.subject = keccak256(abi.encodePacked(_who, _criteria));

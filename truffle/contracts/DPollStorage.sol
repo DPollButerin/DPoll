@@ -91,7 +91,7 @@ contract DPollStorage is Ownable {
     //:::::::::::::::::::::::::::: MEMBERSHIP ::::::::::::::::::::::::
     DPollToken public DPTtoken;
     uint public DAObalance;
-    uint256 public constant DAO_MEMBERSHIP_FEE = 0.1 ether;
+    uint256 public constant DAO_MEMBERSHIP_FEE = 0.02 ether;
 
 
 

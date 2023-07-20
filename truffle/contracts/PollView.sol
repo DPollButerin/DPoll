@@ -17,9 +17,9 @@ import "./PollStorage.sol";
 contract PollView is PollStorage {
 
     // :::::::::::::::::::::::::: GETTERS :::::::::::::::::::::::::::::: //
-    function getTimestampLimit() external view returns (uint) {
-        return timestampLimit;
-    }
+    // function getTimestampLimit() external view returns (uint) {
+    //     return timestampLimit;
+    // }
 
     function getRequiredResponseCount() external view returns (uint) {
         return requiredResponseCount;
@@ -47,6 +47,10 @@ contract PollView is PollStorage {
 
     function getAmountToValidators() external view returns (uint) {
         return amountToValidators;
+    }
+
+    function getRespondentReward() external view returns (uint) {
+        return balances[msg.sender];
     }
 
     function getPollStatus() external view returns (PollStatus) {
