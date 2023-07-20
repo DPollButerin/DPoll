@@ -18,6 +18,7 @@ import RespondentLayout from "./pages/RespondentPages/RespondentLayout";
 import CreatorLayout from "./pages/CreatorPages/CreatorLayout";
 import DAOLayout from "./pages/DAOPages/DAOLayout";
 import { ConnectionProvider } from "./contexts/ConnectionContext";
+import { useConnection } from "./contexts/ConnectionContext";
 
 function App() {
   const p = useParams();
@@ -26,15 +27,16 @@ function App() {
   console.log(n);
   // const h = useHistory();
   // console.log(h);
-  const location = useLocation();
-  const navigate = useNavigate();
+  // const location = useLocation();
+  // const navigate = useNavigate();
+  // const { wallet, handleConnect, handleDisconnect } = useConnection();
 
-  useEffect(() => {
-    navigate(location.pathname, {});
-    // reload and pass empty object to clear state
-    // we can also use replace option: ..., {replace: true}
-    // const location = useLocation();
-  }, [location.pathname, navigate]);
+  // useEffect(() => {
+  //   navigate(location.pathname, {});
+  //   // reload and pass empty object to clear state
+  //   // we can also use replace option: ..., {replace: true}
+  //   // const location = useLocation();
+  // }, [location.pathname, navigate]);
 
   useEffect(() => {
     console.log("App.jsx useEffect");
@@ -44,6 +46,8 @@ function App() {
     //   n("/Home");
     // }npm run start
   }, [p, n]);
+
+  //si wallet != null afficher Route Mainlayout
 
   return (
     <>
@@ -61,7 +65,6 @@ function App() {
             </Route>
             <Route path="/About" element={<About />} />
             <Route path="*" element={<div>Not FOund</div>} />
-            {/* <Redirect to="/Home" /> */}
           </Routes>
         </ConnectionProvider>
       </ChakraProvider>

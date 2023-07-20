@@ -1,3 +1,9 @@
+/**
+ * @name getUUID
+ * @description generate a UUID v4
+ * @see https://stackoverflow.com/a/2117523/1168342
+ * @returns  {string} UUID v4
+ */
 const getUUID = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,

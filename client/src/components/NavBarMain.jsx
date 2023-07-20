@@ -2,6 +2,13 @@ import React from "react";
 import { Outlet, Link } from "react-router-dom";
 import { Button, VStack } from "@chakra-ui/react";
 
+/**
+ * @name NavBarMain
+ * @description NavBarMain component is a vertical stack of buttons to navigate in the dapp main pages
+ * @dev the buttons are always displayed as it's the presentation pages of each subpage
+ * @param {Object}
+ * @returns  {JSX.Element}
+ */
 const NavBarMain = () => {
   return (
     <VStack h="100%" p="10em" style={{ backgroundColor: "yellow" }}>
