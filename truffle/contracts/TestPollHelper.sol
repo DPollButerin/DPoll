@@ -22,9 +22,9 @@ contract TestPollHelper is PollUser {
 
 
     // ::::::::::::::::::::::: MOCKED SETTERS TO TEST EXTERNAL GETTERS in PollView :::::::::::::::::::::::::::::::::: //
-    function setTimestampLimit(uint _timestampLimit) external {
-        timestampLimit = _timestampLimit;
-    }
+    // function setTimestampLimit(uint _timestampLimit) external {
+    //     timestampLimit = _timestampLimit;
+    // }
 
     function setRequiredResponseCount(uint _requiredResponseCount) external {
         requiredResponseCount = _requiredResponseCount;

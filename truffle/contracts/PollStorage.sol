@@ -86,6 +86,7 @@ contract PollStorage is Ownable {
     @todo NEED TEMP DAO TO REPSOND TO THE CONTRACT
     */
     address public DAOaddress;
+    address public certifierAddress;
 
     // :::::::::::::::::::::::::: params defined by the owner :::::::::::: //
     /*time limitation and delay are remove for the exam to facilitate tests and live demo*/

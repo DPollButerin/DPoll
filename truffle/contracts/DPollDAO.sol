@@ -44,18 +44,35 @@ import "./DPollMember.sol";
 import "./DPollVoting.sol";
 import "./DPollToken.sol";
 import "./IPollValidator.sol";
+// import "./IDPollPluginValidator.sol";
 
-contract DPOllDAO is DPollVoting {
+contract DPollDAO is DPollVoting {
     //eth balance of the DAO
-    event PollStatusChange(address pollAddress, SubmissionStatus newStatus, string message);
+    // event PollStatusChange(address pollAddress, SubmissionStatus newStatus, string message);
     event DAOBalanceTansfer(address to, uint amount, string action);
 
     constructor() {
         DAObalance = 0;
         DPTtoken = new DPollToken(1_000_000);
+        
         grantRole(msg.sender, MemberRole.OWNER);
     }
 
+    function getDTPtokenAddress() public view returns (address) {
+        return address(DPTtoken);
+    }
+    // IDPollPluginValidator public DAOPollValidator;
+    address public DAOPollValidatorAddress;
+    function setValidatorPluginAddress(address _pluginAddress) public onlyOwner {
+        DAOPollValidatorAddress = _pluginAddress;
+        // DAOPollValidator = DPollPluginValidator(DAOPollValidatorAddress);
+    }
+
+    address public DAOProposalsAddress;
+    function setProposalsPluginAddress(address _pluginAddress) public onlyOwner {
+        DAOProposalsAddress = _pluginAddress;
+        // DAOPollValidator = DPollPluginValidator(DAOPollValidatorAddress);
+    }
     receive() external payable {
         //donation to the DAO
         deposit();
@@ -82,84 +99,36 @@ contract DPOllDAO is DPollVoting {
     //DAo receive the money and store the amount to split between validators and DAO
     //whan the validation is set the validators reward balance is updated
     //if the poll is unvalidated, the DAO amount is given back to the poll owner
-
-    function submitPoll(address _pollAddress, uint _toValidators, uint _toDAO) external payable {
-        require(msg.sender == _pollAddress, "The Poll should submit itself");
-        require(msg.value >= 0.01 ether, "You need to send some Ether"); //min poll is 0.05 and 10% to validators 10% to DAO
-        PollSubmission memory newPollSubmission;
-        newPollSubmission.pollAddress = _pollAddress;
-        // newPollSubmission.submissionDate = block.timestamp;
-        newPollSubmission.status = SubmissionStatus.SUBMITTED;
-        newPollSubmission.amountToDAO = _toDAO;
-        newPollSubmission.amountToValidators = _toValidators;
-        DAObalance += msg.value;
-        emit PollStatusChange(_pollAddress, SubmissionStatus.SUBMITTED, "Poll submitted");
+    //en token
+    function rewardValidator(address _to) external {
+        require(msg.sender == DAOPollValidatorAddress, "Only the validator contract can reward validators");
+        rewardAction(_to);
     }
 
-    function voteForPoll(uint _pollSubmissionId, bool _vote) public {
-        require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
-        PollSubmission storage pollSubmission = pollSubmissions[_pollSubmissionId];
-        require(pollSubmission.status == SubmissionStatus.SUBMITTED, "The poll is not submitted");
-        // require(pollSubmission.submissionDate + pollSubmissionDuration < block.timestamp, "The poll submission is closed");
-        require(pollSubmission.validators.length < requiredValidators, "The poll submission is closed");
+    function rewardVoter(address _to) external {
+        require(msg.sender == DAOProposalsAddress, "Only the proposals contract can reward voters");
+        rewardAction(_to);
+    }
+
+    function isMember(address _memberAddress) public view returns (bool) {
+        return members[_memberAddress].role == MemberRole.MEMBER;
+    }
+
+    function payValidation(uint _amountToDAO, uint _amountToValidators, address[] memory _validators) external payable {
+        require(msg.sender == DAOPollValidatorAddress, "Only the validator contract can reward validators");
+        require(_amountToDAO + _amountToValidators <= msg.value, "The amount to split dont match the amount sent");
+        DAObalance += _amountToDAO;
+        uint amount = _amountToValidators / _validators.length;
+        uint rest = _amountToValidators % _validators.length;
         
-        pollSubmission.validators.push(msg.sender);
-
-        if (_vote) {
-            pollSubmission.voteCount++;
-        }
-
-        rewardAction();
-    }
-
-    //due to restriction and later time constraints, no modifier to allow automatisation of the workflow
-    function closeSubmission(uint _pollSubmissionId) public {
-        require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
-        PollSubmission storage pollSubmission = pollSubmissions[_pollSubmissionId];
-        require(pollSubmission.status == SubmissionStatus.SUBMITTED, "The poll is not submitted");
-        // require(pollSubmission.submissionDate + pollSubmissionDuration <= block.timestamp, "The poll submission is closed");
-        require(pollSubmission.validators.length >= requiredValidators, "The poll submission is not finished");
-        
-        pollSubmission.status = SubmissionStatus.CLOSED;
-        rewardAction();
-        emit PollStatusChange(pollSubmission.pollAddress, SubmissionStatus.CLOSED, "Poll closed");
-    }
-
-    function setValidation(uint _pollSubmissionId) public {
-        require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
-        PollSubmission storage pollSubmission = pollSubmissions[_pollSubmissionId];
-        require(pollSubmission.status == SubmissionStatus.CLOSED, "The poll is not closed");
-        
-        bool isValid;
-        uint amount;
-        rewardValidators(pollSubmission.amountToValidators, pollSubmission.validators);
-
-        if(pollSubmission.voteCount >= requiredValidations) {
-            isValid = true;
-        } else {
-            isValid = false;
-            amount = pollSubmission.amountToDAO;
-        }
-
-        IPollValidator(pollSubmission.pollAddress).setPollValidation{value: amount}(pollSubmission.pollAddress, isValid);
-
-        rewardAction();
-
-        emit PollStatusChange(pollSubmission.pollAddress, SubmissionStatus.VALIDATED, "Poll validated");
-    }
-
-    //^pay validator no matter the result, the result of the division is gievn to the DAO
-    function rewardValidators(uint _amount, address[] memory _validators) internal {
-        uint amount = _amount / _validators.length;
-        uint rest = _amount % _validators.length;
         for (uint i = 0; i < _validators.length; i++) {
             members[_validators[i]].rewardsBlance += amount;
-            DAObalance -= amount;
+            // DAObalance -= amount;
         }
         DAObalance += rest;
     }
 
-    function withdrawReward() public {
+        function withdrawReward() public {
         require(members[msg.sender].rewardsBlance > 0, "You don't have any reward");
         uint amount = members[msg.sender].rewardsBlance;
         members[msg.sender].rewardsBlance = 0;
@@ -168,7 +137,4 @@ contract DPOllDAO is DPollVoting {
 
         emit DAOBalanceTansfer(msg.sender, amount, "Reward claimed");
     }
-
-    
-
 }

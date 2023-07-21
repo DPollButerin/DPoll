@@ -27,14 +27,18 @@ contract Certifier {
         // uint256 timestamp;
     }
 
-    function checkEligibility(string calldata _criteria, address _who) public returns (Certification memory certification) {
+    function getEligibilityProof(string calldata _criteria, address _who) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked("I claim this address is certified" ));
+    }
+    function checkEligibility(string calldata _criteria, address _who) external returns (Certification memory) {
         Certification memory certification;
         certification.certifier = address(this);
         certification.subject = keccak256(abi.encodePacked(_who, _criteria));
-        certification.proof = keccak256(abi.encodePacked("I claim this address is certified" ));
+        certification.proof = getEligibilityProof( _criteria,  _who);
         certification.method = keccak256(abi.encodePacked("fake method"));
         // certification.timestamp = block.timestamp;
         emit CertificationEvent(certification.certifier, certification.subject, certification.proof, certification.method);
         return certification;
     }
+
 }

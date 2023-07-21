@@ -95,6 +95,7 @@ contract PollMaster is PollUser {
     function initialize(
         address _newOwner, 
         address _DAOaddress,
+        address _certifierAddress,
         // uint _duration,
         uint _requiredResponseCount,
         string calldata _pollName,
@@ -110,7 +111,7 @@ contract PollMaster is PollUser {
         require(_requiredResponseCount <= MAX_RESPONDENTS_LENGTH, 'Too many respondents');
 
         _initializeOwnership(_newOwner);
-        _initializeSettings(_DAOaddress, _requiredResponseCount, _pollName, _pollDescription, _eligibilityCriteria);
+        _initializeSettings(_DAOaddress, _certifierAddress, _requiredResponseCount, _pollName, _pollDescription, _eligibilityCriteria);
         _initializeAmounts(msg.value);
     }
 
@@ -129,6 +130,7 @@ contract PollMaster is PollUser {
      */
     function _initializeSettings(
         address _DAOaddress,
+        address _certifierAddress,
         // uint _duration,
         uint _requiredResponseCount,
         string calldata _pollName,
@@ -149,6 +151,7 @@ contract PollMaster is PollUser {
         eligibilityCriteria = _eligibilityCriteria;
 
         DAOaddress = _DAOaddress;
+        certifierAddress = _certifierAddress;
     }  
 
     /**

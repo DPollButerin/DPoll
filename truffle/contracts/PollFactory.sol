@@ -25,11 +25,20 @@ import "./PollMaster.sol";
 contract PollFactory is Ownable, IPollInitiator {
 
   address public DAOaddress;
+  address public certifierAddress;
   address public pollMasterAddress;
   address[] pollCloneAddresses;
 
   event PollCreated(address newPollContract, address pollMasterAddress, address creator);
 
+
+//utilise constructor pour set le DAO address c plus cohérent
+  constructor(address _DAOaddress, address _certifierAddress) {
+    require(_DAOaddress != address(0), 'DAO address is required');
+    require(_certifierAddress != address(0), 'Certifier address is required');
+    DAOaddress = _DAOaddress;
+    certifierAddress = _certifierAddress;
+  }
   /**
   @notice allows to set the master voting addres from which votes will be cloned
   */
@@ -38,10 +47,10 @@ contract PollFactory is Ownable, IPollInitiator {
     pollMasterAddress = _pollMasterAddress;
   }
 
-  function setDAOAddress(address _DAOaddress) external onlyOwner {
-    require(DAOaddress == address(0), 'DAO address already set');
-    DAOaddress = _DAOaddress;
-  }
+  // function setDAOAddress(address _DAOaddress) external onlyOwner {
+  //   require(DAOaddress == address(0), 'DAO address already set');
+  //   DAOaddress = _DAOaddress;
+  // }
 
 
   /**
@@ -65,6 +74,7 @@ contract PollFactory is Ownable, IPollInitiator {
     PollMaster(pollClone).initialize{value: msg.value}(
         msg.sender, 
         DAOaddress,
+        certifierAddress,
         // _duration,
         _requiredResponseCount,
         _pollName,

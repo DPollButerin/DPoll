@@ -30,11 +30,10 @@ import "./DPollToken.sol";
 contract DPollStorage is Ownable {
     //remove unused values
     enum MemberRole {GUEST, DAO, TEAM, OWNER, MEMBER}
-
+//change to ProposalStatus
     enum PollStatus {CREATED, OPEN, CLOSED, EXECUTED}
     enum ProposalType { PROPOSAL, UPDATE_EXECUTION, TRANSFERT_EXECUTION, REVOCATION_EXECUTION }
 
-    enum SubmissionStatus {SUBMITTED, CLOSED, VALIDATED }
 
     struct Member {
         address memberAddress;
@@ -78,15 +77,7 @@ contract DPollStorage is Ownable {
         mapping(address => bool) voted;
     }
 
-    struct PollSubmission {
-        address pollAddress;
-        uint256 submissionDate;
-        uint256 voteCount;
-        uint256 amountToDAO;
-        uint256 amountToValidators;
-        SubmissionStatus status;
-        address[] validators;
-    }
+
     
     //:::::::::::::::::::::::::::: MEMBERSHIP ::::::::::::::::::::::::
     DPollToken public DPTtoken;
@@ -114,11 +105,7 @@ contract DPollStorage is Ownable {
 
     uint256 public proposalCount;
 
-    //:::::::::::::::::::::::::::: POLL SUBMISSION ::::::::::::::::::::::::
 
-    uint256 public requiredValidators = 3;
-    uint256 public requiredValidations = 2;
-    uint256 public pollSubmissionDuration = 1 weeks;
 
     //:::::::::::::::::::::::::::: MEMBERSHIP ::::::::::::::::::::::::
 
@@ -131,9 +118,7 @@ contract DPollStorage is Ownable {
 
     mapping(uint256 => Proposal) public proposals; //max index is proposalCount
     uint256[] public pendingProposalsId;
-    //:::::::::::::::::::::::::::: POLL SUBMISSION ::::::::::::::::::::::::
-    PollSubmission[] public pollSubmissions;
-
+    
      
 
 }

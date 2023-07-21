@@ -14,9 +14,19 @@ pragma solidity 0.8.19;
  */
 import "./PollAdmin.sol";
 import "./IPollUser.sol";
+import "./Certifier.sol";
 
 //IPollUser
 contract PollUser is PollAdmin, IPollUser {
+
+
+    // :::::::::::::::::::::::::: GETTERS :::::::::::::::::::::::::::::: //
+//internal
+    function getEligibility() public view returns (bool) {
+        return Certifier(certifierAddress).getEligibilityProof(eligibilityCriteria, msg.sender) == PSEUDO_PROOF;
+    }
+
+    // :::::::::::::::::::::::::: SETTERS :::::::::::::::::::::::::::::: //
 
     /**
     @notice This function allow to answer to the poll
@@ -24,10 +34,11 @@ contract PollUser is PollAdmin, IPollUser {
     @dev index of choices start from 0 and should be ordered as the choices in the topics in order to revert earlier in case of invalid answer (function in helpers will revert later if not)
     @param _chosenChoices is an array of uint representing the index of the choices chosen by the respondent (in the order of the all choices and starting from 0)
      */
-    function addAnswer(uint[] calldata _chosenChoices) external {
+    function addAnswer(uint[] calldata _chosenChoices, bytes32 _eligibilityProof) external {
         require(pollStatus == PollStatus.PollingStarted, 'Polling not started');
         require(balances[msg.sender] == 0, 'Already answered');
         require(_chosenChoices.length <= totalChoicesCount, 'Wrong number of answers');
+        require(getEligibility(), 'Not eligible');
         //check last num (index of choice) <= totalChoicesCount
         require(_chosenChoices[_chosenChoices.length - 1] < totalChoicesCount, 'Answer out of range');
 
