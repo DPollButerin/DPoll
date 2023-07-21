@@ -38,10 +38,7 @@ import "./DPollMember.sol";
 import "./DPollDAO.sol";    
 import "./DPollToken.sol";
 
-contract DPollPluginProposals {
-    event ProposalChange(address indexed creator, uint256 indexed proposalId, ProposalStatus status);
-    event ProposalExecution(uint256 indexed proposalId, ProposalType indexed proposalType);
-
+contract DPollPluginProposals is Ownable {
     /**
     @notice This enum is used to define the status of a proposal
      */
@@ -114,6 +111,9 @@ contract DPollPluginProposals {
     //max index is proposalCount
     mapping(uint256 => Proposal) public proposals; 
     // uint256[] public pendingProposalsId;
+
+    event ProposalChange(address indexed creator, uint256 indexed proposalId, ProposalStatus status);
+    event ProposalExecution(uint256 indexed proposalId, ProposalType indexed proposalType);
 
 
     modifier onlyMember() {

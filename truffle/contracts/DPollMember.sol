@@ -27,18 +27,36 @@ import "./DPollStorage.sol";
 
 
 contract DPollMember is DPollStorage {
+    modifier onlyMember() {
+        require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
+        _;
+    }
 
-    function grantRole(address _memberAddress, MemberRole _role) public onlyOwner {
+    function isMember(address _memberAddress) public view returns (bool) {
+        return members[_memberAddress].role == MemberRole.MEMBER;
+    }
+
+    function getMember(address _memberAddress) public view returns (Member memory) {
+        return members[_memberAddress];
+    }
+
+    function getMembersCount() public view returns (uint) {
+        return membersList.length;
+    }
+
+    //later only DAO will be able to grant or revoke role with Execution proposals
+    function grantRole(address _memberAddress, MemberRole _role) internal onlyOwner {
         members[_memberAddress].role = _role;
     }
 
-    function revokeRole(address _memberAddress) public onlyOwner {
-        members[_memberAddress].role = MemberRole.GUEST;
-    }
+    // function revokeRole(address _memberAddress) public onlyDAO {
+    //     members[_memberAddress].role = MemberRole.GUEST;
+    // }
 
-    function addMember( address _memberAddress) public payable {
+    function addMember(address _memberAddress) public payable {
         require(msg.value >= DAO_MEMBERSHIP_FEE, "You need to send at least 0.02 ether");
         require(members[_memberAddress].role == MemberRole.GUEST, "You are already a member");
+        require(members[_memberAddress].memberSince == 0, "Already in the DAO");
         Member memory newMember;
         newMember.memberAddress = _memberAddress;
         newMember.memberSince = block.timestamp;
@@ -49,10 +67,9 @@ contract DPollMember is DPollStorage {
         DAObalance += msg.value;
     }
 
-    function removeMember(address _memberAddress) public  {
+    function removeMember(address _memberAddress) public onlyMember() {
         require(_memberAddress == msg.sender, "Only member can decide to leave the DAO");
         Member memory member = members[_memberAddress];
-        require(member.role == MemberRole.MEMBER, "You are not a member");
         require(member.memberSince + 28 days < block.timestamp, "You need to wait 28 days before leaving the DAO");
         uint amount = member.balance;
         members[_memberAddress].balance = 0;
@@ -62,17 +79,15 @@ contract DPollMember is DPollStorage {
         //update balance => DPT to DAO // eth send back to member
     }
 
-    function revokeMembership(address _memberAddress) public onlyOwner {
-        Member storage member = members[_memberAddress];
-        require(member.role == MemberRole.MEMBER, "Address is not a member");
-        DAObalance += member.balance;
-        member.balance = 0;
+    // function revokeMembership(address _memberAddress) public onlyDAO {
+    //     Member storage member = members[_memberAddress];
+    //     require(member.role == MemberRole.MEMBER, "Address is not a member");
+    //     DAObalance += member.balance;
+    //     member.balance = 0;
 
-        delete members[_memberAddress];
-        //update balance => DPT to DAO // eth send back to member
-    }
+    //     delete members[_memberAddress];
+    //     //update balance => DPT to DAO // eth send back to member
+    // }
 
-    function getDAOBalance() public view returns (uint256) {
-        return DAObalance;
-    }
+
 }

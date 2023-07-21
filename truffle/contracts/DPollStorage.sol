@@ -28,13 +28,16 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./DPollToken.sol";
 
 contract DPollStorage is Ownable {
-    //remove unused values
-    enum MemberRole {GUEST, DAO, TEAM, OWNER, MEMBER}
+    // enum MemberRole {GUEST, DAO, TEAM, OWNER, MEMBER}
+    enum MemberRole {GUEST, MEMBER}
+
 //change to ProposalStatus
-    enum PollStatus {CREATED, OPEN, CLOSED, EXECUTED}
-    enum ProposalType { PROPOSAL, UPDATE_EXECUTION, TRANSFERT_EXECUTION, REVOCATION_EXECUTION }
+    // enum PollStatus {CREATED, OPEN, CLOSED, EXECUTED}
+    // enum ProposalType { PROPOSAL, UPDATE_EXECUTION, TRANSFERT_EXECUTION, REVOCATION_EXECUTION }
 
-
+    //balance is the entry fees claimable later
+    //rewardsBalance is all eth rewerd (at the moment only validator)
+    //DPT token are transfert directly to member 
     struct Member {
         address memberAddress;
         uint256 memberSince;
@@ -44,41 +47,8 @@ contract DPollStorage is Ownable {
         MemberRole role;
     }
 
-    struct Value {
-        uint256 value;
-        uint256 min;
-        uint256 max;
-    }
-
-    struct ProposalState {
-        uint256 votesFor;
-        uint256 votesAgainst;
-        uint256 votesTotal;
-        PollStatus status;
-        uint256 createdAt;
-        uint256 closedAt;
-        uint256 executedAt;
-    }
-
-    struct ProposalPayload {
-        address[] payloadAddresses;
-        uint256[] payloadUint256;
-        string[] payloadString;
-    }
-
-    struct Proposal {
-        uint256 id;
-        string title;
-        string description;
-        ProposalType purpose;
-        ProposalState state;
-        address creator;
-        ProposalPayload payload;
-        mapping(address => bool) voted;
-    }
-
-
-    
+    address public DAOPollValidatorAddress;
+    address public DAOProposalsAddress;
     //:::::::::::::::::::::::::::: MEMBERSHIP ::::::::::::::::::::::::
     DPollToken public DPTtoken;
     uint public DAObalance;
@@ -86,39 +56,10 @@ contract DPollStorage is Ownable {
 
 
 
-    //:::::::::::::::::::::::::::: PROPOSALS VOTE ::::::::::::::::::::::::
-    uint public minTokenToVote = 1;
-    uint public minTokenToCreate = minTokenToVote * 2;
-
-    uint proposalPctQuorum = 66; // 66% of members need to validate a proposal to close it
-    // uint executionPctQuorum = 75;
-    uint minPctThreshold = 50; //simple majority to win
-
-    uint public initialVotingDuration = 2 minutes;
-    uint public initialExecutionDelay = 2 minutes;
-    uint public constant initialCreationDelay = 2 minutes;
-    Value public votingDuration = Value(initialVotingDuration, 30 seconds, 4 weeks);
-    Value public executionDelay = Value(initialExecutionDelay, 30 seconds, 4 weeks);
-    Value public creationDelay = Value(initialCreationDelay, 30 seconds, 4 weeks);
-
-    uint256 public distributedTokenCount; //iutil now
-
-    uint256 public proposalCount;
-
-
-
-    //:::::::::::::::::::::::::::: MEMBERSHIP ::::::::::::::::::::::::
+    // //:::::::::::::::::::::::::::: MEMBERSHIP ::::::::::::::::::::::::
 
     mapping(address => Member) public members;
     Member[] public membersList;
 
-
-    //:::::::::::::::::::::::::::: PROPOSALS VOTE ::::::::::::::::::::::::
-    string[] internal updatableVariables = ["VotingDuration", "ExecutionDelay"];
-
-    mapping(uint256 => Proposal) public proposals; //max index is proposalCount
-    uint256[] public pendingProposalsId;
-    
-     
 
 }

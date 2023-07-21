@@ -28,10 +28,7 @@ import "./DPollDAO.sol";
 @dev This contract is a plugin for the DAO, it is used to validate or invalidate a poll. It's splitted as a plugin to allow upgradability and flexibility and to reduce the size of the DAO contract
  */
 
-contract DPollPluginValidator  {
-    event PollStatusChange(address pollAddress, SubmissionStatus newStatus, string message);
-    event DAOBalanceTansfer(address to, uint amount, string action);
-
+contract DPollPluginValidator is Ownable {
     enum SubmissionStatus {SUBMITTED, CLOSED, VALIDATED }
 
     struct PollSubmission {
@@ -54,6 +51,10 @@ contract DPollPluginValidator  {
     PollSubmission[] public pollSubmissions;
     mapping(address => uint256) public pollSubmissionIds;
     mapping (address => mapping (uint256 => bool)) public validatorsVotes;
+
+    event PollStatusChange(address pollAddress, SubmissionStatus newStatus, string message);
+    event DAOBalanceTansfer(address to, uint amount, string action);
+
 
     modifier onlyDAOmember() {
         require(dpollDAO.isMember(msg.sender), "You are not a member");
