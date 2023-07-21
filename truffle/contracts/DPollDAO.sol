@@ -73,15 +73,15 @@ contract DPollDAO is DPollVoting {
         DAOProposalsAddress = _pluginAddress;
         // DAOPollValidator = DPollPluginValidator(DAOPollValidatorAddress);
     }
-    receive() external payable {
-        //donation to the DAO
-        deposit();
-    }
+    // receive() external payable {
+    //     //donation to the DAO
+    //     deposit();
+    // }
 
-    fallback() external payable {
-        //donation to the DAO
-        deposit();
-    }
+    // fallback() external payable {
+    //     //donation to the DAO
+    //     deposit();
+    // }
 
     function deposit() public payable {
         require(msg.value > 0, "You need to send some Ether");
@@ -104,11 +104,12 @@ contract DPollDAO is DPollVoting {
     //whan the validation is set the validators reward balance is updated
     //if the poll is unvalidated, the DAO amount is given back to the poll owner
     //en token
+    //called by pluginValidator
     function rewardValidator(address _to) external {
         require(msg.sender == DAOPollValidatorAddress, "Only the validator contract can reward validators");
         rewardAction(_to);
     }
-
+//called by pluginProposals
     function rewardVoter(address _to) external {
         require(msg.sender == DAOProposalsAddress, "Only the proposals contract can reward voters");
         rewardAction(_to);

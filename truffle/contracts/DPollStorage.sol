@@ -90,9 +90,9 @@ contract DPollStorage is Ownable {
     uint public minTokenToVote = 1;
     uint public minTokenToCreate = minTokenToVote * 2;
 
-    uint proposalPctQuorum = 66;
-    uint executionPctQuorum = 75;
-    uint minPctThreshold = 50;
+    uint proposalPctQuorum = 66; // 66% of members need to validate a proposal to close it
+    // uint executionPctQuorum = 75;
+    uint minPctThreshold = 50; //simple majority to win
 
     uint public initialVotingDuration = 2 minutes;
     uint public initialExecutionDelay = 2 minutes;

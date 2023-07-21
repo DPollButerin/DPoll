@@ -43,6 +43,9 @@ contract DPollMember is DPollStorage {
         newMember.memberAddress = _memberAddress;
         newMember.memberSince = block.timestamp;
         newMember.role = MemberRole.MEMBER;
+        membersList.push(newMember);
+        members[_memberAddress] = newMember;
+
         DAObalance += msg.value;
     }
 
@@ -67,5 +70,9 @@ contract DPollMember is DPollStorage {
 
         delete members[_memberAddress];
         //update balance => DPT to DAO // eth send back to member
+    }
+
+    function getDAOBalance() public view returns (uint256) {
+        return DAObalance;
     }
 }
