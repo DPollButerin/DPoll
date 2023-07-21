@@ -94,6 +94,10 @@ contract DPollDAO is DPollVoting {
         DAObalance = 0;
     }
 
+    function getMembersCount() public view returns (uint) {
+        return membersList.length;
+    }
+
     //:::::::::::::::::::::::::::: POLL SUBMISSION ::::::::::::::::::::::::
 
     //DAo receive the money and store the amount to split between validators and DAO

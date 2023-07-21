@@ -84,6 +84,7 @@ contract DPollPluginProposals {
         uint256 createdAt;
         uint256 closedAt;
         uint256 executedAt;
+        bool accepted;
     }
 
     struct ProposalPayload {
@@ -188,10 +189,34 @@ contract DPollPluginProposals {
     function closeVote(uint256 _proposalId) public onlyMember {
         Proposal storage proposal = proposals[_proposalId];
         require(proposal.state.status == PollStatus.OPEN, "Poll is not open");
-        require(proposal.state.closedAt == 0, "Poll is already closed");
+        require(proposal.state.closedAt != 0, "Poll is already closed");
         require(proposal.state.createdAt + votingDuration.value < block.timestamp, "Voting period is not over");
         proposal.state.status = PollStatus.CLOSED;
         proposal.state.closedAt = block.timestamp;
+
+        //check if proposal is validated or rejected
+        //1. is there enough vote ? (> proposalPctQuorum : > 66% de membersList)
+        //2. is there enough vote for ? (> minPctThreshold : for > against)
+
+         
+        uint256 totalVotes = proposal.state.votesTotal;
+        uint256 votesFor = proposal.state.votesFor;
+        uint256 votesAgainst = proposal.state.votesAgainst;
+        uint256 votesForPct = votesFor * 100 / totalVotes;
+        uint256 votesAgainstPct = votesAgainst * 100 / totalVotes;
+
+        proposal.state.status = PollStatus.CLOSED;
+        if (totalVotes * 100 / dpollDAO.getMembersCount() >= proposalPctQuorum) {
+            if (votesForPct > minPctThreshold) {
+                proposal.state.status = PollStatus.CLOSED;
+                proposal.state.executedAt = block.timestamp;
+                proposal.state.accepted = true;
+            } 
+        }
+
+         
+
+
 
         rewardAction(msg.sender);
                 dpollDAO.rewardVoter(msg.sender);
@@ -201,6 +226,7 @@ contract DPollPluginProposals {
     function executeVote(uint256 _proposalId) public onlyMember {
         Proposal storage proposal = proposals[_proposalId];
         require(proposal.state.status == PollStatus.CLOSED, "Poll is not closed");
+        require(proposal.state.accepted == true, "Poll is not accepted");
         require(proposal.state.executedAt != 0, "Poll is already executed");
         require(proposal.state.closedAt + executionDelay.value < block.timestamp, "Execution delay is not over");
         require(proposal.purpose != ProposalType.PROPOSAL, "Proposal is not an execution");
