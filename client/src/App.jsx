@@ -1,4 +1,6 @@
+import "@fontsource/poppins/500.css";
 import { ChakraProvider } from "@chakra-ui/react";
+import theme from "./theme";
 import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Home from "./pages/Home";
@@ -26,27 +28,29 @@ function App() {
   }, [p, n]);
 
   return (
-    <>
-      <ChakraProvider>
-        <ConnectionProvider>
-          <ContractsProvider>
-            <Routes>
-              <Route
-                path="/"
-                element={<Home style={{ backgroundColor: "yellow" }} />}
-              />
-              <Route element={<MainLayout />}>
-                <Route path="/Respondent/*" element={<RespondentLayout />} />
-                <Route path="/Creator/*" element={<CreatorLayout />} />
-                <Route path="/DAO/*" element={<DAOLayout />} />
-              </Route>
-              <Route path="/About" element={<About />} />
-              <Route path="*" element={<div>Not FOund</div>} />
-            </Routes>
-          </ContractsProvider>
-        </ConnectionProvider>
-      </ChakraProvider>
-    </>
+    // <>
+    <ChakraProvider theme={theme}>
+      {" "}
+      {/* theme={theme}> */}
+      <ConnectionProvider>
+        <ContractsProvider>
+          <Routes>
+            <Route
+              path="/"
+              element={<Home style={{ backgroundColor: "yellow" }} />}
+            />
+            <Route element={<MainLayout />}>
+              <Route path="/Respondent/*" element={<RespondentLayout />} />
+              <Route path="/Creator/*" element={<CreatorLayout />} />
+              <Route path="/DAO/*" element={<DAOLayout />} />
+            </Route>
+            <Route path="/About" element={<About />} />
+            <Route path="*" element={<div>Not FOund</div>} />
+          </Routes>
+        </ContractsProvider>
+      </ConnectionProvider>
+    </ChakraProvider>
+    // {/* </> */}
   );
 }
 
