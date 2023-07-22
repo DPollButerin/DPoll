@@ -19,6 +19,7 @@ contract PollStorage is Ownable {
     @dev Workflow status of the poll 
     @dev RegisteringWhitelist is optional, not implemented yet (for 'private' polls)
     @dev PollSubmitted partially implemented (it will allow later to reformulate in case of invalidation)
+    @dev ATTENTION : RegisteringWhiteListe and PollValidated are skipped in this early version
      */
     enum PollStatus {
         PollInitialized,
@@ -46,13 +47,13 @@ contract PollStorage is Ownable {
 
     // :::::::::::::::::::::::::: CONSTANTS :::::::::::::::::::::::::::::: //
     /**
-    @dev minimum amount to create a poll : 0.2 ether
+    @dev minimum amount to create a poll : 0.05 ether
      */
-    uint public constant MIN_POLL_AMOUNT = 200000000000000000;
+    uint public constant MIN_POLL_AMOUNT = 50000000000000000; // = 0.05 ether
     /**
-    @dev minimum amount to create a poll : 0.001 ether
-     */
-    uint public constant MIN_RESPONDENT_AMOUNT = 1000000000000000;
+    // @dev minimum amount per respondent to be paid to create a poll : 0.0001 ether
+    //  */
+    uint public constant MIN_RESPONDENT_AMOUNT = 100000000000000; // = 0.0001 ether
     /**
     @dev LIMITATION : AT THE MOMENT : limited poll < 50 questions and < 10 choices for 100 respondents
      */
@@ -85,16 +86,18 @@ contract PollStorage is Ownable {
     @todo NEED TEMP DAO TO REPSOND TO THE CONTRACT
     */
     address public DAOaddress;
+    address public certifierAddress;
 
     // :::::::::::::::::::::::::: params defined by the owner :::::::::::: //
-    /**
-    @dev duration of the poll in seconds
-     */
-    uint internal duration;
-    /**
-    @dev timestamp of the end of the poll (time of the validation + duration)
-     */
-    uint internal timestampLimit;
+    /*time limitation and delay are remove for the exam to facilitate tests and live demo*/
+    // /**
+    // @dev duration of the poll in seconds
+    //  */
+    // uint internal duration;
+    // /**
+    // @dev timestamp of the end of the poll (time of the validation + duration)
+    //  */
+    // uint internal timestampLimit;
     /**
     @dev number of answers the owner of the poll wants to get to close the poll
      */
@@ -128,6 +131,7 @@ contract PollStorage is Ownable {
 
 
     // :::::::::::::::::::::::::: params of the contract ::::::::::::::::: //
+    /*@todo: pack in a struct to optimize storage*/
     /**
     @dev balance of the contract
      */

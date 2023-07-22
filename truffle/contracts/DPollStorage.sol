@@ -28,112 +28,38 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./DPollToken.sol";
 
 contract DPollStorage is Ownable {
-    //remove unused values
-    enum MemberRole {GUEST, DAO, TEAM, OWNER, MEMBER}
+    // enum MemberRole {GUEST, DAO, TEAM, OWNER, MEMBER}
+    enum MemberRole {GUEST, MEMBER}
 
-    enum PollStatus {CREATED, OPEN, CLOSED, EXECUTED}
-    enum ProposalType { PROPOSAL, UPDATE_EXECUTION, TRANSFERT_EXECUTION, REVOCATION_EXECUTION }
+//change to ProposalStatus
+    // enum PollStatus {CREATED, OPEN, CLOSED, EXECUTED}
+    // enum ProposalType { PROPOSAL, UPDATE_EXECUTION, TRANSFERT_EXECUTION, REVOCATION_EXECUTION }
 
-    enum SubmissionStatus {SUBMITTED, CLOSED, VALIDATED }
-
+    //balance is the entry fees claimable later
+    //rewardsBalance is all eth rewerd (at the moment only validator)
+    //DPT token are transfert directly to member 
     struct Member {
         address memberAddress;
         uint256 memberSince;
         uint256 lastProposalCreation;
         uint256 balance;
-        uint256 rewardsBlance;
+        uint256 rewardsBalance;
         MemberRole role;
     }
 
-    struct Value {
-        uint256 value;
-        uint256 min;
-        uint256 max;
-    }
-
-    struct ProposalState {
-        uint256 votesFor;
-        uint256 votesAgainst;
-        uint256 votesTotal;
-        PollStatus status;
-        uint256 createdAt;
-        uint256 closedAt;
-        uint256 executedAt;
-    }
-
-    struct ProposalPayload {
-        address[] payloadAddresses;
-        uint256[] payloadUint256;
-        string[] payloadString;
-    }
-
-    struct Proposal {
-        uint256 id;
-        string title;
-        string description;
-        ProposalType purpose;
-        ProposalState state;
-        address creator;
-        ProposalPayload payload;
-        mapping(address => bool) voted;
-    }
-
-    struct PollSubmission {
-        address pollAddress;
-        uint256 submissionDate;
-        uint256 voteCount;
-        uint256 amountToDAO;
-        uint256 amountToValidators;
-        SubmissionStatus status;
-        address[] validators;
-    }
-    
+    address public DAOPollValidatorAddress;
+    address public DAOProposalsAddress;
     //:::::::::::::::::::::::::::: MEMBERSHIP ::::::::::::::::::::::::
     DPollToken public DPTtoken;
     uint public DAObalance;
-    uint256 public constant DAO_MEMBERSHIP_FEE = 0.1 ether;
+    uint256 public constant DAO_MEMBERSHIP_FEE = 0.02 ether;
 
 
 
-    //:::::::::::::::::::::::::::: PROPOSALS VOTE ::::::::::::::::::::::::
-    uint public minTokenToVote = 1;
-    uint public minTokenToCreate = minTokenToVote * 2;
-
-    uint proposalPctQuorum = 66;
-    uint executionPctQuorum = 75;
-    uint minPctThreshold = 50;
-
-    uint public initialVotingDuration = 2 minutes;
-    uint public initialExecutionDelay = 2 minutes;
-    uint public constant initialCreationDelay = 2 minutes;
-    Value public votingDuration = Value(initialVotingDuration, 30 seconds, 4 weeks);
-    Value public executionDelay = Value(initialExecutionDelay, 30 seconds, 4 weeks);
-    Value public creationDelay = Value(initialCreationDelay, 30 seconds, 4 weeks);
-
-    uint256 public distributedTokenCount; //iutil now
-
-    uint256 public proposalCount;
-
-    //:::::::::::::::::::::::::::: POLL SUBMISSION ::::::::::::::::::::::::
-
-    uint256 public requiredValidators = 3;
-    uint256 public requiredValidations = 2;
-    uint256 public pollSubmissionDuration = 1 weeks;
-
-    //:::::::::::::::::::::::::::: MEMBERSHIP ::::::::::::::::::::::::
+    // //:::::::::::::::::::::::::::: MEMBERSHIP ::::::::::::::::::::::::
 
     mapping(address => Member) public members;
     Member[] public membersList;
 
-
-    //:::::::::::::::::::::::::::: PROPOSALS VOTE ::::::::::::::::::::::::
-    string[] internal updatableVariables = ["VotingDuration", "ExecutionDelay"];
-
-    mapping(uint256 => Proposal) public proposals; //max index is proposalCount
-    uint256[] public pendingProposalsId;
-    //:::::::::::::::::::::::::::: POLL SUBMISSION ::::::::::::::::::::::::
-    PollSubmission[] public pollSubmissions;
-
-     
 
 }

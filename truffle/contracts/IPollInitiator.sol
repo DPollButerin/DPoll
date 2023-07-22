@@ -9,7 +9,7 @@ pragma solidity 0.8.19;
  */
 interface IPollInitiator {
     function createPollContract(
-        uint _duration,
+        // uint _duration,
         uint _requiredResponseCount,
         string calldata _pollName,
         string calldata _pollDescription,

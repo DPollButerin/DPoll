@@ -1,10 +1,4 @@
-// import { EthProvider } from "./contexts/EthContext";
-// import Intro from "./components/Intro/";
-// import Setup from "./components/Setup";
-// import Demo from "./components/Demo";
-// import Footer from "./components/Footer";
 import { ChakraProvider } from "@chakra-ui/react";
-
 import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Home from "./pages/Home";
@@ -24,25 +18,10 @@ function App() {
   console.log(p);
   const n = useNavigate();
   console.log(n);
-  // const h = useHistory();
-  // console.log(h);
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    navigate(location.pathname, {});
-    // reload and pass empty object to clear state
-    // we can also use replace option: ..., {replace: true}
-    // const location = useLocation();
-  }, [location.pathname, navigate]);
 
   useEffect(() => {
     console.log("App.jsx useEffect");
     console.log(p, n);
-    // if (p.id === undefined) {
-    //   console.log("p.id === undefined");
-    //   n("/Home");
-    // }npm run start
   }, [p, n]);
 
   return (
@@ -51,7 +30,7 @@ function App() {
         <ConnectionProvider>
           <Routes>
             <Route
-              path="/" //"\/|/Home\"
+              path="/"
               element={<Home style={{ backgroundColor: "yellow" }} />}
             />
             <Route element={<MainLayout />}>
@@ -61,7 +40,6 @@ function App() {
             </Route>
             <Route path="/About" element={<About />} />
             <Route path="*" element={<div>Not FOund</div>} />
-            {/* <Redirect to="/Home" /> */}
           </Routes>
         </ConnectionProvider>
       </ChakraProvider>

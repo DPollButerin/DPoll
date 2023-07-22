@@ -17,6 +17,14 @@ import {
   FaPenToSquare,
 } from "react-icons/fa6";
 
+/**
+ * @name group
+ * @description sub navigation links grouped by section containing icon, path and text for each link button
+ * @property {Array} respondent - links for respondent pages
+ * @property {Array} creator - links for creator pages
+ * @property {Array} dao - links for dao pages
+ * @returns {Object} navigation links grouped by section
+ */
 const group = {
   respondent: [
     {
@@ -53,6 +61,17 @@ const group = {
     { icon: <FaRegAddressCard />, to: "/DAO/Signin", text: "Devenir membre" },
   ],
 };
+
+/**
+ * @name single
+ * @description main navigation links  containing icon, path and text for each link button
+ * @property {Object} home - link for home
+ * @property {Object} about - link for about
+ * @property {Object} respondent - link for respondent
+ * @property {Object} creator - link for creator
+ * @property {Object} dao - link for dao
+ * @returns {Object} navigation links
+ */
 const single = {
   home: {
     icon: <FaHouseChimney />,

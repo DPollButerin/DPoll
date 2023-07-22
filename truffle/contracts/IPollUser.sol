@@ -9,6 +9,6 @@ pragma solidity 0.8.19;
  */
 
 interface IPollUser {
-    function addAnswer(uint[] calldata _chosenChoices) external;
+    function addAnswer(uint[] calldata _chosenChoices, bytes32 _eligibilityProof) external;
     function claimReward() external;
 }

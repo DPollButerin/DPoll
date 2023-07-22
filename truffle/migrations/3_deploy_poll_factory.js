@@ -1,6 +1,7 @@
 const PollMaster = artifacts.require("PollMaster");
 const PollFactory = artifacts.require("PollFactory");
 const Certifier = artifacts.require("Certifier");
+const DPollDAO = artifacts.require("DPollDAO");
 
 module.exports = async function (deployer, network, accounts) {
   const [ADMIN, USER1, USER2, USER3] = accounts;
@@ -17,8 +18,36 @@ module.exports = async function (deployer, network, accounts) {
   const headerMsg = "--->";
 
   if (network === "development") {
+    console.log(
+      beforeMsg + "%s" + afterMsg,
+      "CHECK PREVIOUS ADDRESSES DEPLOYMENT"
+    );
+    const DPollDAOInstance = await DPollDAO.deployed();
+    const DPollDAOAddress = DPollDAOInstance.address;
+    console.log(
+      headerMsg + "%s" + "%s",
+      "DPollDAO address : ",
+      DPollDAOAddress
+    );
+    console.log(headerMsg + "%s" + "%s", "DPollDAO owner address : ", ADMIN);
+
+    console.log(
+      beforeMsg + "%s" + afterMsg,
+      "CHECK PREVIOUS ADDRESSES DEPLOYMENT"
+    );
+    const certifierInstance = await Certifier.deployed();
+    const certifierAddress = certifierInstance.address;
+    console.log(
+      headerMsg + "%s" + "%s",
+      "Certifier address : ",
+      certifierAddress
+    );
+    console.log(headerMsg + "%s" + "%s", "Certifier owner address : ", ADMIN);
+
     console.log(beforeMsg + deployHeaderMsg + "%s" + afterMsg, "POLL FACTORY");
-    await deployer.deploy(PollFactory, { from: ADMIN });
+    await deployer.deploy(PollFactory, DPollDAOAddress, certifierAddress, {
+      from: ADMIN,
+    });
 
     pollFactoryInstance = await PollFactory.deployed();
     pollFactoryAddress = pollFactoryInstance.address;
