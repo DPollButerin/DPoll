@@ -72,6 +72,15 @@ module.exports = {
   usrId2,
   userId3,
   strangerId,
+  mockAddMember: async (DPollDAOInstance, users, entryFees) => {
+    for (let i = 0; i < users.length; i++) {
+      await DPollDAOInstance.addMember(users[i], {
+        from: users[i],
+        value: entryFees,
+      });
+    }
+    return DPollDAOInstance;
+  },
   mockDAO: async (owner) => {
     const DPollDAOInstance = await DPollDAO.new({ from: owner });
     const DPollDAOaddress = await DPollDAOInstance.address;

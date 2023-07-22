@@ -55,7 +55,7 @@ import "./IPollValidator.sol";
 contract DPollDAO is DPollMember {
     //eth balance of the DAO
     // event PollStatusChange(address pollAddress, SubmissionStatus newStatus, string message);
-    event DAOBalanceTansfer(address to, uint amount, string action);
+    event DAOBalanceTansfer(address to, address from, uint amount, string action);
     event DAOTokenTransfer(address to, uint amount, string action);
 
     constructor() {
@@ -103,6 +103,7 @@ contract DPollDAO is DPollMember {
     function deposit() public payable {
         require(msg.value > 0, "You need to send some Ether");
         DAObalance += msg.value;
+        emit DAOBalanceTansfer(address(this), msg.sender, msg.value, "Deposit");
     } 
 
     //:::::::::::::::::::::::::::: POLL SUBMISSION ::::::::::::::::::::::::
@@ -114,29 +115,29 @@ contract DPollDAO is DPollMember {
         uint rest = _amountToValidators % _validators.length;
         
         for (uint i = 0; i < _validators.length; i++) {
-            members[_validators[i]].rewardsBlance += amount;
+            members[_validators[i]].rewardsBalance += amount;
             // DAObalance -= amount;
         }
         DAObalance += rest;
     }
 
     function withdrawReward() public {
-        require(members[msg.sender].rewardsBlance > 0, "You don't have any reward");
-        uint amount = members[msg.sender].rewardsBlance;
-        members[msg.sender].rewardsBlance = 0;
+        require(members[msg.sender].rewardsBalance > 0, "You don't have any reward");
+        uint amount = members[msg.sender].rewardsBalance;
+        members[msg.sender].rewardsBalance = 0;
         (bool success, ) = payable(msg.sender).call{value: amount}("");
         require(success, "Transfer failed.");
 
-        emit DAOBalanceTansfer(msg.sender, amount, "Reward claimed");
+        emit DAOBalanceTansfer(msg.sender, address(this), amount, "Reward claimed");
     }
 
 
 
-    function emergencyWithdraw() public onlyOwner {
-        (bool success, ) = payable(msg.sender).call{value: DAObalance}("");
-        require(success, "Transfer failed.");
-        DAObalance = 0;
-    }
+    // function emergencyWithdraw() public onlyOwner {
+    //     (bool success, ) = payable(msg.sender).call{value: DAObalance}("");
+    //     require(success, "Transfer failed.");
+    //     DAObalance = 0;
+    // }
 
    //DAo receive the money and store the amount to split between validators and DAO
     //whan the validation is set the validators reward balance is updated
@@ -157,10 +158,11 @@ contract DPollDAO is DPollMember {
     function rewardAction(address _to) internal {
         require(_to != address(0), "Invalid address");
         require(members[_to].role == MemberRole.MEMBER, "Not member");
-        DPTtoken.transfer(_to, 1);
+        //1token (18 decimals) for now
+        DPTtoken.transfer(_to, 1 * 10 ** 18);
 
 
-        emit DAOTokenTransfer(_to, 1, "Reward");
+        emit DAOTokenTransfer(_to, 1 * 10 ** 18 , "Reward");
     }
 
 

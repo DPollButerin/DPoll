@@ -25,7 +25,7 @@ in order to allow an automatization of tasks with an incentive to do it well
  */
 import "./DPollStorage.sol";
 
-
+//@todo add events to membership actions
 contract DPollMember is DPollStorage {
     modifier onlyMember() {
         require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
@@ -61,10 +61,11 @@ contract DPollMember is DPollStorage {
         newMember.memberAddress = _memberAddress;
         newMember.memberSince = block.timestamp;
         newMember.role = MemberRole.MEMBER;
+        newMember.balance = msg.value;
         membersList.push(newMember);
         members[_memberAddress] = newMember;
 
-        DAObalance += msg.value;
+        // DAObalance += msg.value;
     }
 
     function removeMember(address _memberAddress) public onlyMember() {

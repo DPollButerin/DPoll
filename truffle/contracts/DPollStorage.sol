@@ -43,7 +43,7 @@ contract DPollStorage is Ownable {
         uint256 memberSince;
         uint256 lastProposalCreation;
         uint256 balance;
-        uint256 rewardsBlance;
+        uint256 rewardsBalance;
         MemberRole role;
     }
 
