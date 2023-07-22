@@ -1,8 +1,14 @@
 import React, { useState, useLayoutEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import Alert from "react-bootstrap/Alert";
-
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  CloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
 /**
  * Manages events binded to a transaction
  *
@@ -21,6 +27,8 @@ export default function EventManager(props) {
   });
   const [duration, setDuration] = useState(null);
 
+  const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: true });
+
   /**
    * handles result of the event
    *
@@ -34,7 +42,7 @@ export default function EventManager(props) {
 
       if (show.type === "") {
         if (error) {
-          type = "danger";
+          type = "error";
           data = error;
         } else {
           type = "success";
@@ -72,35 +80,41 @@ export default function EventManager(props) {
     async function () {
       setData(props.data);
 
-      switch (props.data.name) {
-        case "VoterRegistered":
-          props.data.instance.events.VoterRegistered(handleEventResult);
-          console.log(
-            "EVENTMANAGER/ VoterRegistered",
-            props.data.instance.events.VoterRegistered
-          );
-          break;
-        case "WorkflowStatusChange":
-          props.data.instance.events.WorkflowStatusChange(handleEventResult);
-          console.log(
-            "EVENTMANAGER/ WorkflowStatusChange",
-            props.data.instance.events.WorkflowStatusChange
-          );
-          break;
-        case "ProposalRegistered":
-          props.data.instance.events.ProposalRegistered(handleEventResult);
-          console.log(
-            "EVENTMANAGER/ ProposalRegistered",
-            props.data.instance.events.ProposalRegistered
-          );
-          break;
-        case "Voted":
-          props.data.instance.events.Voted(handleEventResult);
-          console.log("EVENTMANAGER/ Voted", props.data.instance.events.Voted);
-          break;
-        default:
-          break;
-      }
+      props.data.instance.events[props.data.name](handleEventResult);
+      console.log(
+        `EVENTMANAGER/ ${props.data.name}`,
+        props.data.instance.events[props.data.name]
+      );
+
+      // switch (props.data.name) {
+      //   case "VoterRegistered":
+      //     props.data.instance.events.VoterRegistered(handleEventResult);
+      //     console.log(
+      //       "EVENTMANAGER/ VoterRegistered",
+      //       props.data.instance.events.VoterRegistered
+      //     );
+      //     break;
+      //   case "WorkflowStatusChange":
+      //     props.data.instance.events.WorkflowStatusChange(handleEventResult);
+      //     console.log(
+      //       "EVENTMANAGER/ WorkflowStatusChange",
+      //       props.data.instance.events.WorkflowStatusChange
+      //     );
+      //     break;
+      //   case "ProposalRegistered":
+      //     props.data.instance.events.ProposalRegistered(handleEventResult);
+      //     console.log(
+      //       "EVENTMANAGER/ ProposalRegistered",
+      //       props.data.instance.events.ProposalRegistered
+      //     );
+      //     break;
+      //   case "Voted":
+      //     props.data.instance.events.Voted(handleEventResult);
+      //     console.log("EVENTMANAGER/ Voted", props.data.instance.events.Voted);
+      //     break;
+      //   default:
+      //     break;
+      // }
 
       setShow({
         status: true,
@@ -121,22 +135,33 @@ export default function EventManager(props) {
 
     if (show.type === "success") {
       let details;
-      switch (props.data.name) {
-        case "VoterRegistered":
-          details = `Address : ${show.data.voterAddress}`;
-          break;
-        case "WorkflowStatusChange":
-          details = `Previous status : ${show.data.previousStatus} - New status : ${show.data.newStatus}`;
-          break;
-        case "ProposalRegistered":
-          details = `ID of registered proposal : ${show.data.proposalId}`;
-          break;
-        case "Voted":
-          details = `Voter : ${show.data.voter} - vote for ID : ${show.data.proposalId}`;
-          break;
-        default:
-          break;
-      }
+      // switch (props.data.name) {
+      //   case "VoterRegistered":
+      //     details = `Address : ${show.data.voterAddress}`;
+      //     break;
+      //   case "WorkflowStatusChange":
+      //     details = `Previous status : ${show.data.previousStatus} - New status : ${show.data.newStatus}`;
+      //     break;
+      //   case "ProposalRegistered":
+      //     details = `ID of registered proposal : ${show.data.proposalId}`;
+      //     break;
+      //   case "Voted":
+      //     details = `Voter : ${show.data.voter} - vote for ID : ${show.data.proposalId}`;
+      //     break;
+      //   default:
+      //     break;
+      // }
+      let temp = () => {
+        show.data.map((item, index) => {
+          return (
+            <p>
+              {" "}
+              -arg{index} : <b> {item} </b>
+            </p>
+          );
+          //`-arg${index} : ${item}\n`;
+        });
+      };
       content = (
         <>
           <p>
@@ -144,13 +169,10 @@ export default function EventManager(props) {
           </p>
           <hr />
 
-          <p>
-            {" "}
-            <b> {details} </b>
-          </p>
+          {temp}
         </>
       );
-    } else if (show.type === "danger") {
+    } else if (show.type === "error") {
       content = (
         <>
           <p>
@@ -186,13 +208,27 @@ export default function EventManager(props) {
   return (
     <>
       {show.status && show.type === "success" ? (
-        <Alert
-          variant={show.type}
-          onClose={handleOnClose}
-          dismissible
-          style={{ fontSize: "0.8em" }}
-        >
-          {getContent()}
+        // <Alert
+        //   variant={show.type}
+        //   onClose={handleOnClose}
+        //   dismissible
+        //   style={{ fontSize: "0.8em" }}
+        // >
+        //   {getContent()}
+        // </Alert>
+
+        <Alert status="success" style={{ fontSize: "0.8em" }}>
+          <AlertIcon />
+
+          <AlertDescription>{getContent()}</AlertDescription>
+
+          <CloseButton
+            alignSelf="flex-start"
+            position="relative"
+            right={-1}
+            top={-1}
+            onClick={onClose}
+          />
         </Alert>
       ) : null}
     </>

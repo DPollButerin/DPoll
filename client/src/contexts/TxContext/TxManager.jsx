@@ -5,14 +5,19 @@ import React, {
   useEffect,
 } from "react";
 import { useConnection } from "../../contexts/ConnectionContext";
-import { useVote } from "../../contexts/VoteContext";
+import { useContracts } from "../../contexts/ContractsContext";
 
 import PropTypes from "prop-types";
 
-import Alert from "react-bootstrap/Alert";
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  CloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
 // @todo : choose between alert and toast
-import Toast from "react-bootstrap/Toast";
-import ToastContainer from "react-bootstrap/ToastContainer";
 
 /**
  * @dev  Manages one transaction
@@ -37,7 +42,13 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
     msg: "",
   });
   const [duration, setDuration] = useState(null);
-  const { updateContractInfos } = useVote();
+  const { updateContractInfos } = useContracts();
+
+  const {
+    isOpen, //isVisible,
+    onClose,
+    onOpen,
+  } = useDisclosure({ defaultIsOpen: true });
 
   const isNeedingUpdate = (funcName) => {
     let needUpdate = false;
@@ -71,90 +82,101 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
    */
   const initTransaction = useCallback(
     async function () {
-      const { contractInstance, functionName, params, fromAccount } = data;
+      // const { contractInstance, functionName, params, fromAccount } = data;
+      const { contractInstance, functionName, params, fromAccount, value } =
+        data;
+
       const show = true;
       const type = "secondary";
-      let msg;
+      // let msg;
 
-      switch (functionName) {
-        case "addVoter":
-          msg = "Transaction initialized : adding voter";
-          contractInstance.methods
-            .addVoter(params)
-            .send({ from: fromAccount }, handleTx)
-            .on("error", function (e) {
-              console.log("initTransaction/ error", e);
-              setAlertInvalidTx("Invalid Tx: adding voter rejected");
-            });
-          break;
-        case "startProposalsRegistering":
-          msg = "Transaction initialized : starting proposal registering";
-          contractInstance.methods
-            .startProposalsRegistering()
-            .send({ from: fromAccount }, handleTx)
-            .on("error", function (e) {
-              console.log("initTransaction/ error", e);
-              setAlertInvalidTx(
-                "Invalid Tx: starting proposal registering rejected"
-              );
-            });
-          break;
-        case "endProposalsRegistering":
-          msg = "Transaction initialized : ending proposal registering";
-          contractInstance.methods
-            .endProposalsRegistering()
-            .send({ from: fromAccount }, handleTx)
-            .on("error", function (e) {
-              console.log("initTransaction/ error", e);
-              setAlertInvalidTx(
-                "Invalid Tx: ending proposal registering rejected"
-              );
-            });
-          break;
-        case "startVotingSession":
-          msg = "Transaction initialized : starting voting session";
-          contractInstance.methods
-            .startVotingSession()
-            .send({ from: fromAccount }, handleTx)
-            .on("error", function (e) {
-              console.log("initTransaction/ error", e);
-              setAlertInvalidTx("Invalid Tx: starting voting session rejected");
-            });
-          break;
-        case "endVotingSession":
-          msg = "Transaction initialized : ending voting session";
-          contractInstance.methods
-            .endVotingSession()
-            .send({ from: fromAccount }, handleTx)
-            .on("error", function (e) {
-              console.log("initTransaction/ error", e);
-              setAlertInvalidTx("Invalid Tx: ending voting session rejected");
-            });
-          break;
-        case "addProposal":
-          msg = "Transaction initialized : adding proposal";
-          contractInstance.methods
-            .addProposal(params)
-            .send({ from: fromAccount }, handleTx)
-            .on("error", function (e) {
-              console.log("initTransaction/ error", e);
-              setAlertInvalidTx("Invalid Tx: adding proposal rejected");
-            });
-          break;
-        case "setVote":
-          msg = "Transaction initialized : voting";
-          contractInstance.methods
-            .setVote(params)
-            .send({ from: fromAccount }, handleTx)
-            .on("error", function (e) {
-              console.log("initTransaction/ error", e);
-              setAlertInvalidTx("Invalid Tx: voting rejected");
-            });
-          break;
+      let msg = `Transaction initialized : ${functionName}\nparams: ${params}`;
+      contractInstance.methods[functionName](params)
+        .send({ from: fromAccount, value: value }, handleTx)
+        .on("error", function (e) {
+          console.log("initTransaction/ error", e);
+          setAlertInvalidTx(`Invalid Tx: ${functionName} rejected`);
+        });
 
-        default:
-          break;
-      }
+      // switch (functionName) {
+      //   case "addVoter":
+      //     msg = "Transaction initialized : adding voter";
+      //     contractInstance.methods
+      //       .addVoter(params)
+      //       .send({ from: fromAccount, value: value }, handleTx)
+      //       .on("error", function (e) {
+      //         console.log("initTransaction/ error", e);
+      //         setAlertInvalidTx("Invalid Tx: adding voter rejected");
+      //       });
+      //     break;
+      //   case "startProposalsRegistering":
+      //     msg = "Transaction initialized : starting proposal registering";
+      //     contractInstance.methods
+      //       .startProposalsRegistering()
+      //       .send({ from: fromAccount }, handleTx)
+      //       .on("error", function (e) {
+      //         console.log("initTransaction/ error", e);
+      //         setAlertInvalidTx(
+      //           "Invalid Tx: starting proposal registering rejected"
+      //         );
+      //       });
+      //     break;
+      //   case "endProposalsRegistering":
+      //     msg = "Transaction initialized : ending proposal registering";
+      //     contractInstance.methods
+      //       .endProposalsRegistering()
+      //       .send({ from: fromAccount }, handleTx)
+      //       .on("error", function (e) {
+      //         console.log("initTransaction/ error", e);
+      //         setAlertInvalidTx(
+      //           "Invalid Tx: ending proposal registering rejected"
+      //         );
+      //       });
+      //     break;
+      //   case "startVotingSession":
+      //     msg = "Transaction initialized : starting voting session";
+      //     contractInstance.methods
+      //       .startVotingSession()
+      //       .send({ from: fromAccount }, handleTx)
+      //       .on("error", function (e) {
+      //         console.log("initTransaction/ error", e);
+      //         setAlertInvalidTx("Invalid Tx: starting voting session rejected");
+      //       });
+      //     break;
+      //   case "endVotingSession":
+      //     msg = "Transaction initialized : ending voting session";
+      //     contractInstance.methods
+      //       .endVotingSession()
+      //       .send({ from: fromAccount }, handleTx)
+      //       .on("error", function (e) {
+      //         console.log("initTransaction/ error", e);
+      //         setAlertInvalidTx("Invalid Tx: ending voting session rejected");
+      //       });
+      //     break;
+      //   case "addProposal":
+      //     msg = "Transaction initialized : adding proposal";
+      //     contractInstance.methods
+      //       .addProposal(params)
+      //       .send({ from: fromAccount }, handleTx)
+      //       .on("error", function (e) {
+      //         console.log("initTransaction/ error", e);
+      //         setAlertInvalidTx("Invalid Tx: adding proposal rejected");
+      //       });
+      //     break;
+      //   case "setVote":
+      //     msg = "Transaction initialized : voting";
+      //     contractInstance.methods
+      //       .setVote(params)
+      //       .send({ from: fromAccount }, handleTx)
+      //       .on("error", function (e) {
+      //         console.log("initTransaction/ error", e);
+      //         setAlertInvalidTx("Invalid Tx: voting rejected");
+      //       });
+      //     break;
+
+      //   default:
+      //     break;
+      // }
       setDuration(3000);
       setStatus({
         sent: true,
@@ -201,7 +223,7 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
         default:
           break;
       }
-      type = "danger";
+      type = "error"; //or "warning" no chakra :"danger";
       msg = "Transaction failed : " + cause;
     } else {
       if (callbackObject) {
@@ -231,18 +253,18 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
   /**
    * @dev handles the closure of the alert
    */
-  const handleOnClose = useCallback(() => {
-    const currentMsg = status.msg;
-    setStatus({
-      sent: true,
-      show: false,
-      type: "",
-      msg: null,
-    });
-    if (!currentMsg.includes("initialized")) {
-      closeTx(data.id);
-    }
-  }, [closeTx, data.id, status.msg]);
+  // const handleOnClose = useCallback(() => {
+  //   const currentMsg = status.msg;
+  //   setStatus({
+  //     sent: true,
+  //     show: false,
+  //     type: "",
+  //     msg: null,
+  //   });
+  //   if (!currentMsg.includes("initialized")) {
+  //     closeTx(data.id);
+  //   }
+  // }, [closeTx, data.id, status.msg]);
 
   /**
    * @todo : change the way the tx is initialized (rendering issue when strict mode)
@@ -257,30 +279,53 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
     let timer;
     if (status.show) {
       timer = setTimeout(() => {
-        handleOnClose();
+        onClose(); //handleOnClose();
       }, duration);
       // setTimer(timer);
     }
     return () => {
       clearTimeout(timer);
     };
-  }, [status.show, handleOnClose]);
+  }, [status.show, onClose()]); // handleOnClose]);
 
   return (
     <>
       {status.show ? (
         <Alert
-          variant={status.type}
-          onClose={handleOnClose}
-          dismissible
+          status={status.type}
+          // variant={status.type}
+          // onClose={handleOnClose}
+          // dismissible
           style={{ fontSize: "0.8em", lineHeight: "2em", overflow: "auto" }}
         >
-          {status.msg}
+          <AlertIcon />
+          <AlertDescription>{status.msg}</AlertDescription>
+          <CloseButton
+            alignSelf="flex-start"
+            position="relative"
+            right={-1}
+            top={-1}
+            onClick={onClose}
+          />
         </Alert>
       ) : null}
     </>
   );
 }
+
+// <>
+//   {status.show ? (
+//     <Alert
+//       status={status.type}
+//       variant={status.type}
+//       onClose={handleOnClose}
+//       dismissible
+//       style={{ fontSize: "0.8em", lineHeight: "2em", overflow: "auto" }}
+//     >
+//       {status.msg}
+//     </Alert>
+//   ) : null}
+// </>;
 
 TxManager.propTypes = {
   data: PropTypes.object,
