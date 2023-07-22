@@ -24,9 +24,10 @@ in order to allow an automatization of tasks with an incentive to do it well
 @notice This contract is used to manage the members of the DAO and the DPToken holders (gouvernance token)
  */
 import "./DPollStorage.sol";
+import "./IDAOmembership.sol";
 
 //@todo add events to membership actions
-contract DPollMember is DPollStorage {
+contract DPollMember is DPollStorage, IDAOmembership {
     modifier onlyMember() {
         require(members[msg.sender].role == MemberRole.MEMBER, "You are not a member");
         _;
@@ -34,6 +35,10 @@ contract DPollMember is DPollStorage {
 
     function isMember(address _memberAddress) public view returns (bool) {
         return members[_memberAddress].role == MemberRole.MEMBER;
+    }
+    //!!DONT FORGET TEST NEW FUNCTION
+    function isMemberExtCall(address _memberAddress) external view returns (bool) {
+        return isMember(_memberAddress);
     }
 
     function getMember(address _memberAddress) public view returns (Member memory) {

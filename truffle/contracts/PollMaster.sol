@@ -124,7 +124,10 @@ contract PollMaster is PollUser {
         _transferOwnership(newOwner);
     }
 
-
+   /*
+    function _initialize private onlyOwner {
+        not necessary as it's done at initialization and funciton is private
+        */
     /**
     @dev set general settings with the params passed by the factory to the initialize function
      */
@@ -136,7 +139,7 @@ contract PollMaster is PollUser {
         string calldata _pollName,
         string calldata _pollDescription,
         string calldata _eligibilityCriteria
-        ) private onlyOwner {
+        ) private {
         // require(pollStatus == PollStatus.PollInitialized, 'Poll already initialized');
         // require(_duration > 0, 'Duration must be greater than 0');
         require(_requiredResponseCount > 0, 'Respondents threshold must be greater than 0');
@@ -154,10 +157,14 @@ contract PollMaster is PollUser {
         certifierAddress = _certifierAddress;
     }  
 
+    /*
+    function _initializeAmounts(uint _amountSent) private onlyOwner {
+        not necessary as it's done at initialization and funciton is private
+        */
     /**
     @dev set amounts settings with the params passed by the factory to initialize function
      */
-    function _initializeAmounts(uint _amountSent) private onlyOwner {
+    function _initializeAmounts(uint _amountSent) private  {
         // require(pollStatus == PollStatus.PollInitialized, 'Poll already distributed');
         require(_amountSent >= (MIN_POLL_AMOUNT + (MIN_RESPONDENT_AMOUNT * requiredResponseCount)), 'Funds inferior to poll minimum cost');
 

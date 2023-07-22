@@ -160,7 +160,7 @@ contract("TEST_05/DPollDAO", (accounts) => {
       const mockedProposalsPluginAddress = USER5;
 
       beforeEach(async () => {
-        [DPollDAOInstance, DPollTokenInstance] = await mockDAOandPlugins(ADMIN);
+        [DPollDAOInstance, DPollTokenInstance] = await mockDAOandPlugins(ADMIN); //=> CHANGE TO mockDAO !!!!
         //set USER1, USER2, USER3 as members
         DPollDAOInstance = await mockAddMember(
           DPollDAOInstance,
@@ -219,7 +219,6 @@ contract("TEST_05/DPollDAO", (accounts) => {
 
         const struct1 = await DPollDAOInstance.getMember(mockedValidators[0]);
         const struct2 = await DPollDAOInstance.getMember(mockedValidators[1]);
-        console.log(struct1, struct2);
         expect(struct1.rewardsBalance.toString()).to.equal(perValidatorInWei);
         expect(struct2.rewardsBalance.toString()).to.equal(perValidatorInWei);
 
@@ -325,7 +324,7 @@ contract("TEST_05/DPollDAO", (accounts) => {
     });
     describe("DPollToken rewards functions", () => {
       const userList = [USER1, USER2, USER3];
-      const mockedValidators = [USER1, USER2];
+      //   const mockedValidators = [USER1, USER2];
       const mockedValidatorPluginAddress = USER4;
       const mockedProposalsPluginAddress = USER5;
       beforeEach(async () => {

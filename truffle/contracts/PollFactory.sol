@@ -6,6 +6,7 @@ import "../node_modules/@openzeppelin/contracts/proxy/Clones.sol";
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 import "./IPollInitiator.sol"; 
 import "./PollMaster.sol";
+import "./IDAOmembership.sol"; //create interface (isMember..)
 
 /*
  * In the purpose of this exam factory is minimalist : pollMasterAddress is set by the owner of the factory once only (no upgrade of the master poll contract)
@@ -30,8 +31,12 @@ contract PollFactory is Ownable, IPollInitiator {
   address[] pollCloneAddresses;
 
   event PollCreated(address newPollContract, address pollMasterAddress, address creator);
-
-
+  //get isMember from DAO for msg.sender
+  modifier onlyDAOmember() {
+    require(DAOaddress != address(0), 'DAO address is required');
+    require(IDAOmembership(DAOaddress).isMemberExtCall(msg.sender), "You are not a member");
+   _;
+  }
 //utilise constructor pour set le DAO address c plus cohérent
   constructor(address _DAOaddress, address _certifierAddress) {
     require(_DAOaddress != address(0), 'DAO address is required');
@@ -66,7 +71,8 @@ contract PollFactory is Ownable, IPollInitiator {
         string calldata _eligibilityCriteria
   ) 
         external 
-        payable  
+        payable 
+        onlyDAOmember() 
         returns(address) 
   {
     address pollClone = Clones.clone(pollMasterAddress);
