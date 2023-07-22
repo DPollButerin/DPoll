@@ -222,6 +222,38 @@ contract("TEST_06/PollFactory", (accounts) => {
         const newPollAddress = pollAddresessFromFactory[0];
         expect(newPollAddress.length).to.equal(42);
       });
+      //member1 create 2 polls member2 is added to DAO and create 1 poll
+      //it should returns a array of 3 addresses + 1 (the previous one created)
+      it("should return an array of 3 addresses (1 previous poll, 2 new from member1, one new from member2", async () => {
+        await mockAddMember(DPollDAOInstance, [MEMBER2], DAOentryFees);
+        // await pollFactoryInstance.setPollMasterAddress(pollMasterAddress, {
+        //     from: ADMIN,
+        // });
+        await pollFactoryInstance.createPollContract(
+          pollCreationArgs1.responsesCount,
+          pollCreationArgs1.name,
+          pollCreationArgs1.description,
+          pollCreationArgs1.criteria,
+          { from: MEMBER1, value: pollCost1 }
+        );
+        await pollFactoryInstance.createPollContract(
+          pollCreationArgs1.responsesCount,
+          pollCreationArgs1.name,
+          pollCreationArgs1.description,
+          pollCreationArgs1.criteria,
+          { from: MEMBER1, value: pollCost1 }
+        );
+        await pollFactoryInstance.createPollContract(
+          pollCreationArgs1.responsesCount,
+          pollCreationArgs1.name,
+          pollCreationArgs1.description,
+          pollCreationArgs1.criteria,
+          { from: MEMBER2, value: pollCost1 }
+        );
+        const pollAddresessFromFactory =
+          await pollFactoryInstance.getPollClonesAddresses();
+        expect(pollAddresessFromFactory.length).to.equal(4);
+      });
       it("should revert when STRANGER try to create a poll contract", async () => {
         //skip as 'before' hook not beforeEach
         // await pollFactoryInstance.setPollMasterAddress(pollMasterAddress, {
