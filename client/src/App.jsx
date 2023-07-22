@@ -12,6 +12,7 @@ import RespondentLayout from "./pages/RespondentPages/RespondentLayout";
 import CreatorLayout from "./pages/CreatorPages/CreatorLayout";
 import DAOLayout from "./pages/DAOPages/DAOLayout";
 import { ConnectionProvider } from "./contexts/ConnectionContext";
+import { ContractsProvider } from "./contexts/ContractsContext";
 
 function App() {
   const p = useParams();
@@ -28,19 +29,21 @@ function App() {
     <>
       <ChakraProvider>
         <ConnectionProvider>
-          <Routes>
-            <Route
-              path="/"
-              element={<Home style={{ backgroundColor: "yellow" }} />}
-            />
-            <Route element={<MainLayout />}>
-              <Route path="/Respondent/*" element={<RespondentLayout />} />
-              <Route path="/Creator/*" element={<CreatorLayout />} />
-              <Route path="/DAO/*" element={<DAOLayout />} />
-            </Route>
-            <Route path="/About" element={<About />} />
-            <Route path="*" element={<div>Not FOund</div>} />
-          </Routes>
+          <ContractsProvider>
+            <Routes>
+              <Route
+                path="/"
+                element={<Home style={{ backgroundColor: "yellow" }} />}
+              />
+              <Route element={<MainLayout />}>
+                <Route path="/Respondent/*" element={<RespondentLayout />} />
+                <Route path="/Creator/*" element={<CreatorLayout />} />
+                <Route path="/DAO/*" element={<DAOLayout />} />
+              </Route>
+              <Route path="/About" element={<About />} />
+              <Route path="*" element={<div>Not FOund</div>} />
+            </Routes>
+          </ContractsProvider>
         </ConnectionProvider>
       </ChakraProvider>
     </>
