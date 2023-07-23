@@ -330,7 +330,7 @@ function ContractsProvider({ children }) {
       "(ContractsProvier)/ useEffect watching contractsState changes : ",
       contractsState.web3
     );
-  }, [contractsState.web3]);
+  }, [contractsState]);
 
   return (
     <ContractsContext.Provider

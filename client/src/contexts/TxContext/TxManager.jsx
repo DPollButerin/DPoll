@@ -282,7 +282,8 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
       // setIsVisible(true);
       // doToast("Transaction initialized", msg, "info");
     }
-    //[] //[data, setAlertInvalidTx]
+
+    //[data, setAlertInvalidTx]
   );
 
   /**
@@ -325,6 +326,7 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
     } else {
       if (callbackObject) {
         if (callbackObject.callbackParam !== null) {
+          console.log("HANDLE TX CALL UPDATE CALLBACKE WITH PARAM CALLED");
           callbackObject.callbackFunc(callbackObject.callbackParam);
         } else {
           callbackObject.callbackFunc();
@@ -373,14 +375,14 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
   useEffect(() => {
     console.log("useEffect TX MANAGER FIRST TIME");
   }, []);
-
+  //useLayoutEffect
   useLayoutEffect(() => {
     console.log("useLayoutEffect initTransaction");
     if (!status.sent) {
       setStatus((old) => ({ ...old, sent: true }));
       initTransaction();
     }
-  }, [status.sent, initTransaction]);
+  }, [status.sent, initTransaction]); //[(status.sent, initTransaction)]);
 
   // useEffect(() => {
   //   console.log("useEffect initTransaction");
