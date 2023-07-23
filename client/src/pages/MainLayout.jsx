@@ -27,18 +27,33 @@ const MainLayout = () => {
   const currentPath = useCurrentPath(); // `/members/5566` -> `/members/:id`
 
   return (
-    <Box h="98vh" my="0" p="0" style={{ backgroundColor: "green" }}>
-      <Flex my="0" p="0" style={{ backgroundColor: "marron" }}>
-        <header style={{ backgroundColor: "green", fontSize: "1.1rem" }}>
+    <Box h="96vh" my="0" p="0" style={{ backgroundColor: "#E8E8E8" }}>
+      <Flex my="0" pl="0" py="0" style={{ backgroundColor: "marron" }}>
+        {/* <header style={{ backgroundColor: "green", fontSize: "1.1rem" }}>
           <h1>RoomLayout Header Pat pour action : {currentPath}</h1>
+        </header> */}
+        <header
+          style={{
+            backgroundColor: "#036681",
+            color: "#E8E8E8",
+            fontSize: "2.7rem",
+            width: "20vw",
+            textAlign: "center",
+          }}
+        >
+          <h1>D-Poll</h1>
         </header>
         <Spacer />
 
         <ConnectButton />
       </Flex>
-      <Flex my="0" pt="0" style={{ backgroundColor: "yellow", height: "100%" }}>
-        <Box m="0" p="0" style={{ border: "0px solid black", width: "30vw" }}>
-          <VStack h="100%" style={{ backgroundColor: "red" }}>
+      <Flex
+        my="0"
+        pt="0"
+        style={{ backgroundColor: "#E8E8E8", height: "100%" }}
+      >
+        <Box m="0" p="0" style={{ border: "0px solid black", width: "20vw" }}>
+          <VStack py="20" h="100%" style={{ backgroundColor: "#036681" }}>
             <NavButton mt={5} detail={single.home} />
             <NavButton detail={single.respondent} />
             <NavButton detail={single.creator} />
@@ -64,10 +79,10 @@ const MainLayout = () => {
           </VStack>
         </Box>
 
-        <Box my="0" p="0" style={{ backgroundColor: "lime", width: "75vw" }}>
-          <header style={{ backgroundColor: "cyan" }}>
+        <Box my="0" p="0" style={{ backgroundColor: "#E8E8E8", width: "75vw" }}>
+          {/* <header style={{ backgroundColor: "cyan" }}>
             <h1>MAINLAYOUT pager</h1>
-          </header>
+          </header> */}
           <Outlet context={{ hello: "From OutletMAinLayout" }} />
         </Box>
       </Flex>

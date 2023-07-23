@@ -1,5 +1,5 @@
 import React, { useState, createContext } from "react";
-
+import { Box } from "@chakra-ui/react";
 import TxManager from "./TxManager";
 import EventManager from "./EventManager";
 import InvalidTx from "./InvalidTx";
@@ -137,39 +137,44 @@ export function TxProvider(props) {
         }}
       >
         <InvalidTx></InvalidTx>
-
         {props.children}
-
-        <div className="row">
-          <div className="col-6">
-            {txArray
-              ? txArray.map((tx) => {
-                  if (tx.processing) {
-                    return (
-                      <TxManager
-                        key={tx.id}
-                        data={tx}
-                        setAlertInvalidTx={setAlertInvalidTx}
-                        closeTx={closeTx}
-                        style={{ fontSize: "0.2em" }}
-                      ></TxManager>
-                    );
-                  } else {
-                    return null;
-                  }
-                })
-              : null}
-          </div>
-          <div className="col-6">
-            {event.processing ? (
-              <EventManager
-                data={event}
-                forwardEventResult={forwardEventResult}
-                style={{ fontSize: "0.2em" }}
-              ></EventManager>
-            ) : null}
-          </div>
+        <div>
+          {/* <Box className="row">
+          {" "}
+          LIGNE DE TOAST!!!!!!!!!!!!!!!!!!!!!!!!! */}
+          {/*    LIGNE DE TOAST!!!
+          <div className="col-6"> */}
+          {txArray
+            ? txArray.map((tx) => {
+                if (tx.processing) {
+                  return (
+                    <TxManager
+                      key={tx.id}
+                      data={tx}
+                      setAlertInvalidTx={setAlertInvalidTx}
+                      closeTx={closeTx}
+                      style={{ fontSize: "0.2em" }}
+                    ></TxManager>
+                  );
+                } else {
+                  return null;
+                }
+              })
+            : null}
+          {/* </div>
+          <div className="col-6"> */}
+          {event.processing ? (
+            <EventManager
+              data={event}
+              forwardEventResult={forwardEventResult}
+              style={{ fontSize: "0.2em" }}
+            ></EventManager>
+          ) : null}
+          {/* </div>*/}
+          {/* </Box> */}
         </div>
+        {/* <InvalidTx></InvalidTx>
+        {props.children} */}
       </TxContext.Provider>
     </>
   );

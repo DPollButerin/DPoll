@@ -74,8 +74,22 @@ const ConnectButton = () => {
 
   return (
     <Button
+      mt="2"
+      mr="2"
       onClick={handleOnClick}
-      rightIcon={<MetamaskIcon style={{ height: "30px", width: "30px" }} />}
+      rightIcon={<MetamaskIcon style={{ height: "2rem", width: "2rem" }} />}
+      bg="#E8E8E8"
+      style={{
+        // backgroundColor: "#E8E8E8",
+        color: "#43b9C1",
+        border: "2px solid #036681",
+        borderRadius: "1.5rem",
+      }}
+      _hover={{ bg: "#faf9df" }}
+      _focus={{
+        boxShadow:
+          "0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)",
+      }}
     >
       {account ? account : "Connect Wallet"}
     </Button>

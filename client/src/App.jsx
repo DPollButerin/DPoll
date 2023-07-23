@@ -39,7 +39,7 @@ function App() {
             <Routes>
               <Route
                 path="/"
-                element={<Home style={{ backgroundColor: "yellow" }} />}
+                element={<Home style={{ backgroundColor: "#E8E8E8" }} />}
               />
               <Route element={<MainLayout />}>
                 <Route path="/Respondent/*" element={<RespondentLayout />} />

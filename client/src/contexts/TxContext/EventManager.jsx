@@ -9,6 +9,8 @@ import {
   CloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
+
+import { Box, useToast, Show } from "@chakra-ui/react";
 /**
  * Manages events binded to a transaction
  *
@@ -25,10 +27,20 @@ export default function EventManager(props) {
     type: "",
     data: "",
   });
-  const [duration, setDuration] = useState(null);
+  // const [duration, setDuration] = useState(null);
 
-  const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: true });
-
+  // const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: true });
+  const toast = useToast();
+  const doToast = (title, description, status) => {
+    console.log("TX TOAST DECLENCHE");
+    toast({
+      title: title,
+      description: description,
+      status: status,
+      duration: 9000,
+      isClosable: true,
+    });
+  };
   /**
    * handles result of the event
    *
@@ -47,7 +59,7 @@ export default function EventManager(props) {
         } else {
           type = "success";
           data = event.returnValues;
-          setDuration(5000);
+          // setDuration(5000);
 
           props.forwardEventResult(data);
         }
@@ -184,7 +196,8 @@ export default function EventManager(props) {
         </>
       );
     }
-    return content;
+    // return content;
+    doToast("Event received :", content, show.type);
   };
 
   useLayoutEffect(() => {
@@ -193,45 +206,56 @@ export default function EventManager(props) {
     }
   }, [props.data, data, initSubscription]);
 
-  useLayoutEffect(() => {
-    let timer;
-    if (show.status) {
-      timer = setTimeout(() => {
-        handleOnClose();
-      }, duration);
-    }
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [show.status, handleOnClose, duration]);
+  // useLayoutEffect(() => {
+  //   let timer;
+  //   if (show.status) {
+  //     timer = setTimeout(() => {
+  //       handleOnClose();
+  //     }, duration);
+  //   }
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, [show.status, handleOnClose, duration]);
 
   return (
     <>
-      {show.status && show.type === "success" ? (
-        // <Alert
-        //   variant={show.type}
-        //   onClose={handleOnClose}
-        //   dismissible
-        //   style={{ fontSize: "0.8em" }}
-        // >
-        //   {getContent()}
-        // </Alert>
-
-        <Alert status="success" style={{ fontSize: "0.8em" }}>
-          <AlertIcon />
-
-          <AlertDescription>{getContent()}</AlertDescription>
-
-          <CloseButton
-            alignSelf="flex-start"
-            position="relative"
-            right={-1}
-            top={-1}
-            onClick={onClose}
-          />
-        </Alert>
+      {/* <Box>BIDOUILLAGE A RATTRAPER</Box> */}
+      {show.status ? (
+        <>
+          <Show below="sm">
+            <Box>SCREEN TO SMALL</Box>
+          </Show>
+          {getContent}
+        </>
       ) : null}
     </>
+    // <>
+    //   {show.status && show.type === "success" ? (
+    //     // <Alert
+    //     //   variant={show.type}
+    //     //   onClose={handleOnClose}
+    //     //   dismissible
+    //     //   style={{ fontSize: "0.8em" }}
+    //     // >
+    //     //   {getContent()}
+    //     // </Alert>
+
+    //     <Alert status="success" style={{ fontSize: "0.8em" }}>
+    //       <AlertIcon />
+
+    //       <AlertDescription>{getContent()}</AlertDescription>
+
+    //       <CloseButton
+    //         alignSelf="flex-start"
+    //         position="relative"
+    //         right={-1}
+    //         top={-1}
+    //         onClick={onClose}
+    //       />
+    //     </Alert>
+    //   ) : null}
+    // </>
   );
 }
 

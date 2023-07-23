@@ -32,10 +32,8 @@ const NavBarOption = ({ details }) => {
   }, [wallet, account]);
 
   return (
-    <VStack w="100%" style={{ backgroundColor: "orange" }}>
-      <header style={{ color: "red" }}>
-        <h1>NAVABR </h1>
-      </header>
+    <VStack w="100%" style={{ backgroundColor: "#036681" }}>
+      <header style={{ color: "red" }}>{/* <h1>NAVABR </h1> */}</header>
       {account
         ? details.map((detail) => {
             console.log("detail LOOP", detail);

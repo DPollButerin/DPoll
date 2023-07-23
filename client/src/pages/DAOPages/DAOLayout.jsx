@@ -21,14 +21,15 @@ const DAOLayout = () => {
       const web3 = contractsState.web3;
       const DAOaddress = contractsState.DPollDAOAddress;
       if (web3 && DAOaddress) {
-        const IDAOInstance = contractsState.web3.eth.Contract(
+        const IDAOInstance = new contractsState.web3.eth.Contract(
           contractsState.IDAOmembershipAbi,
           DAOaddress
         );
         const isDAOMember = await IDAOInstance.methods
-          .isMember(wallet.accounts[0])
+          .isMemberExtCall(wallet.accounts[0])
           .call({ from: wallet.accounts[0] });
         console.log("(DAO.jsx)/isMember IN IF", isMember);
+        console.log("(DAO.jsx)/isMember IN IF", isDAOMember);
         setIsMember(isDAOMember);
       }
     } catch (e) {
@@ -58,7 +59,7 @@ const DAOLayout = () => {
         <Route path="/Proposals" element={<DAOProposals />} />
         <Route
           path="/Signin"
-          element={<DAOSignIn isMemeber={isMember} setIsMember={setIsMember} />}
+          element={<DAOSignIn isMember={isMember} setIsMember={setIsMember} />}
         />
       </Routes>
       <Outlet context={{ hello: "From Respondent navbar" }} />
