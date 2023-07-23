@@ -18,10 +18,20 @@ const NewPoll = () => {
   const { contractsState } = useContracts();
 
   const [getNewPoll, setGetNewPoll] = useState(false);
+  const [newPollAddress, setNewPollAddress] = useState(null);
 
-  const updateNewPoll = (getNewPoll) => {
+  //pas propre devrais prendre l'add au retour de function mais:
+  //get de factory pour recuperer tableau de clone et set la derniere add push comme nexpool courant
+  const updateNewPoll = async (getNewPoll) => {
     setGetNewPoll(getNewPoll);
     console.log("updateNewPoll via callback", getNewPoll);
+
+    const clones = await contractsState.PollFactoryInstance.methods
+      .getPollClonesAddresses()
+      .call({ from: wallet.accounts[0] });
+    const lastClone = clones[clones.length - 1];
+    console.log("lastClone", lastClone);
+    setNewPollAddress(lastClone);
   };
 
   const handleOnCreation = () => {
@@ -68,11 +78,36 @@ const NewPoll = () => {
   //   };
 
   const handleAddTopic = (topic) => {
-    console.log("pollContent AJOUT DE TOPIC PARENT", pollContent);
+    console.log("pollContent AJOUT DE TOPIC PARENT", topic);
 
     setPollContent((old) => [...old, topic]);
     console.log("pollContent AJOUT DE TOPIC PARENT", pollContent);
     setStep(2); //step + 1);
+
+    const amount = 0;
+    const amountTowei = contractsState.web3.utils.toWei(
+      amount.toString(),
+      "ether"
+    );
+    let pollInstance = new contractsState.web3.eth.Contract(
+      contractsState.IPollAdminAbi,
+      newPollAddress
+    );
+    initTx(
+      pollInstance,
+      "addTopicsBatch",
+      [topic.questions, topic.choices],
+      wallet.accounts[0],
+      amountTowei,
+      {}
+    );
+
+    //METTRE LES EVENT DS INTERFACES!!!
+    pollInstance = new contractsState.web3.eth.Contract(
+      contractsState.PollMasterAbi,
+      newPollAddress
+    );
+    subscribeEvent(pollInstance, "TopicsAdded", true);
   };
 
   useEffect(() => {
@@ -86,6 +121,11 @@ const NewPoll = () => {
   useEffect(() => {
     console.log("WATCH STEP CHANGES step", step);
   }, [step]);
+
+  useEffect(() => {
+    console.log("WATCH NEWPOLL CHANGES getNewPoll", newPollAddress);
+  }, [newPollAddress]);
+
   //return 1 inpu question + 5 input answer + 1 bouton next question + 1 bouton valider
   return (
     <>

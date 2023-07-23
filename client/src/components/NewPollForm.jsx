@@ -39,7 +39,7 @@ const NewPollForm = ({ handleAddTopic }) => {
     // const quorum = document.getElementById("quorum").value;
 
     const poll = {
-      question: [
+      questions: [
         document.getElementById("question").value,
         document.getElementById("question2").value,
       ],

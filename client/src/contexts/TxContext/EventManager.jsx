@@ -1,4 +1,9 @@
-import React, { useState, useLayoutEffect, useCallback } from "react";
+import React, {
+  useState,
+  useLayoutEffect,
+  useCallback,
+  useEffect,
+} from "react";
 import PropTypes from "prop-types";
 
 import {
@@ -69,6 +74,12 @@ export default function EventManager(props) {
         type: type,
         data: data,
       });
+
+      console.log(
+        "EVENTMANAGER/ handleEventResult DATA A AFFICHER DS EVENTS!!!!!!",
+        show
+      );
+      getContent();
     },
     [show.type, show.data, props]
   );
@@ -142,7 +153,7 @@ export default function EventManager(props) {
    *
    * - error disabled cause already processed by txmanager (without info)
    */
-  const getContent = () => {
+  const getContent = useCallback(() => {
     let content = "";
 
     if (show.type === "success") {
@@ -198,7 +209,7 @@ export default function EventManager(props) {
     }
     // return content;
     doToast("Event received :", content, show.type);
-  };
+  });
 
   useLayoutEffect(() => {
     if (data !== props.data) {
@@ -206,6 +217,11 @@ export default function EventManager(props) {
     }
   }, [props.data, data, initSubscription]);
 
+  // useEffect(() => {
+  //   if (show.status) {
+  //     getContent();
+  //   }
+  // }, [show.status, getContent]);
   // useLayoutEffect(() => {
   //   let timer;
   //   if (show.status) {
@@ -225,8 +241,8 @@ export default function EventManager(props) {
         <>
           <Show below="sm">
             <Box>SCREEN TO SMALL</Box>
+            {/* {getContent} */}
           </Show>
-          {getContent}
         </>
       ) : null}
     </>

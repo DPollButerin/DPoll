@@ -224,6 +224,9 @@ function ContractsProvider({ children }) {
         IDAOmembershipAbi: contracts.IDAOmembership.abi,
         IDAOmembershipInstance: contracts.IDAOmembership.instance,
         IDAOmembershipAddress: contracts.IDAOmembership.address,
+        IPollAdminAbi: contracts.IPollAdmin.abi,
+        IPollAdminInstance: contracts.IPollAdmin.instance,
+        IPollAdminAddress: contracts.IPollAdmin.address,
         // contracts: {
         //   Certifier: {
         //     abi: contracts.Certifier.abi,
@@ -279,6 +282,7 @@ function ContractsProvider({ children }) {
         const PollMaster = require("../../contracts/PollMaster.json");
         const DPollToken = require("../../contracts/DPollToken.json");
         const IDAOmembership = require("../../contracts/IDAOmembership.json");
+        const IPollAdmin = require("../../contracts/IPollAdmin.json");
         const artifacts = [
           { contractName: "Certifier", artifact: Certifier },
           { contractName: "DPollDAO", artifact: DPollDAO },
@@ -286,6 +290,7 @@ function ContractsProvider({ children }) {
           { contractName: "PollMaster", artifact: PollMaster },
           { contractName: "DPollToken", artifact: DPollToken },
           { contractName: "IDAOmembership", artifact: IDAOmembership },
+          { contractName: "IPollAdmin", artifact: IPollAdmin },
         ];
         init(artifacts);
       } catch (err) {

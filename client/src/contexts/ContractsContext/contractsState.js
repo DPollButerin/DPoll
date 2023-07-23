@@ -46,6 +46,9 @@ const initialState = {
   IDAOmembershipAbi: null,
   IDAOmembershipInstance: null,
   IDAOmembershipAddress: null,
+  IPollAdminAbi: null,
+  IPollAdminInstance: null,
+  IPollAdminAddress: null,
 
   // contracts: {
   //   Certifier: {
