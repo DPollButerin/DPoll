@@ -32,6 +32,7 @@ import {
  * @todo : change the way the tx is initialized
  * uncomment React.StrictMode => error with txmanager rerendering initTx
  * @todo : instead of show status, directly remove the tx from the TxContext array
+ * @todo : MANAGE send and call !!!!!!!! to be really utile
  */
 export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
   /* the tx has/not been sent, corresponding function, tx description */
@@ -42,38 +43,40 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
     msg: "",
   });
   const [duration, setDuration] = useState(null);
-  const { updateContractInfos } = useContracts();
+  // const { updateContractInfos } = useContracts();
 
   const {
-    isOpen, //isVisible,
+    isOpen: isVisble,
     onClose,
     onOpen,
   } = useDisclosure({ defaultIsOpen: true });
 
-  const isNeedingUpdate = (funcName) => {
-    let needUpdate = false;
-    switch (funcName) {
-      case "AddVoter":
-        needUpdate = true;
-        break;
-      case "startProposalsRegistering":
-        needUpdate = true;
-        break;
-      case "endProposalsRegistering":
-        needUpdate = true;
-        break;
-      case "startVotingSession":
-        needUpdate = true;
-        break;
-      case "endVotingSession":
-        needUpdate = true;
-        break;
+  const { contractsState } = useContracts();
 
-      default:
-        break;
-    }
-    return needUpdate;
-  };
+  // const isNeedingUpdate = (funcName) => {
+  //   let needUpdate = false;
+  //   switch (funcName) {
+  //     case "AddVoter":
+  //       needUpdate = true;
+  //       break;
+  //     case "startProposalsRegistering":
+  //       needUpdate = true;
+  //       break;
+  //     case "endProposalsRegistering":
+  //       needUpdate = true;
+  //       break;
+  //     case "startVotingSession":
+  //       needUpdate = true;
+  //       break;
+  //     case "endVotingSession":
+  //       needUpdate = true;
+  //       break;
+
+  //     default:
+  //       break;
+  //   }
+  //   return needUpdate;
+  // };
   /**
    * initializes a tx following the desired function call
    * @dev : be sure to set the correct function name and event // WRITE functions
@@ -87,28 +90,65 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
         data;
 
       const show = true;
-      const type = "secondary";
+      const type = "success";
       // let msg;
-
+      console.log(
+        "initTransaction/ data",
+        contractInstance,
+        functionName,
+        params,
+        fromAccount,
+        value
+      );
       let msg = `Transaction initialized : ${functionName}\nparams: ${params}`;
-      contractInstance.methods[functionName](params)
-        .send({ from: fromAccount, value: value }, handleTx)
-        .on("error", function (e) {
-          console.log("initTransaction/ error", e);
-          setAlertInvalidTx(`Invalid Tx: ${functionName} rejected`);
-        });
-
-      // switch (functionName) {
-      //   case "addVoter":
-      //     msg = "Transaction initialized : adding voter";
-      //     contractInstance.methods
-      //       .addVoter(params)
+      // try {
+      //   if (params.lenght > 0) {
+      //     contractInstance.methods[functionName](...params)
       //       .send({ from: fromAccount, value: value }, handleTx)
       //       .on("error", function (e) {
       //         console.log("initTransaction/ error", e);
-      //         setAlertInvalidTx("Invalid Tx: adding voter rejected");
+      //         setAlertInvalidTx(`Invalid Tx: ${functionName} rejected`);
       //       });
-      //     break;
+      //   } else {
+      //     contractInstance.methods[functionName]()
+      //       .send({ from: fromAccount, value: value }, handleTx)
+      //       .on("error", function (e) {
+      //         console.log("initTransaction/ error", e);
+      //         setAlertInvalidTx(`Invalid Tx: ${functionName} rejected`);
+      //       });
+      //   }
+      // } catch (e) {
+      //   console.log("initTransaction/ error", e);
+      //   setAlertInvalidTx(`Invalid Tx: ${functionName} rejected`);
+      // }
+      try {
+        switch (functionName) {
+          case "addMember":
+            msg = "Transaction initialized : adding voter";
+
+            const checkSumAddress =
+              contractsState.web3.utils.toChecksumAddress(fromAccount);
+            contractInstance.methods
+              .addMember(...params)
+              .send(
+                {
+                  from: checkSumAddress,
+                  value: value,
+                },
+                handleTx
+              )
+              .on("error", function (e) {
+                console.log("initTransaction/ error", e);
+                setAlertInvalidTx("Invalid Tx: adding voter rejected");
+              });
+            break;
+          default:
+            break;
+        }
+      } catch (e) {
+        console.log("initTransaction/ error", e);
+        setAlertInvalidTx(`Invalid Tx: ${functionName} rejected`);
+      }
       //   case "startProposalsRegistering":
       //     msg = "Transaction initialized : starting proposal registering";
       //     contractInstance.methods
@@ -184,8 +224,8 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
         type: type,
         msg: msg,
       });
-    },
-    [data, setAlertInvalidTx]
+    }
+    //[] //[data, setAlertInvalidTx]
   );
 
   /**
@@ -234,10 +274,10 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
         }
       }
 
-      if (isNeedingUpdate(functionName)) {
-        console.log("HANDLE TX CALL UPDATE");
-        updateContractInfos(contractInstance);
-      }
+      // if (isNeedingUpdate(functionName)) {
+      //   console.log("HANDLE TX CALL UPDATE");
+      //   // updateContractInfos(contractInstance);
+      // }
       type = "success";
       msg = "Transaction processed / txHash : " + txHash;
     }
@@ -253,29 +293,37 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
   /**
    * @dev handles the closure of the alert
    */
-  // const handleOnClose = useCallback(() => {
-  //   const currentMsg = status.msg;
-  //   setStatus({
-  //     sent: true,
-  //     show: false,
-  //     type: "",
-  //     msg: null,
-  //   });
-  //   if (!currentMsg.includes("initialized")) {
-  //     closeTx(data.id);
-  //   }
-  // }, [closeTx, data.id, status.msg]);
+  const handleOnClose = useCallback(() => {
+    const currentMsg = status.msg;
+    setStatus({
+      sent: true,
+      show: false,
+      type: "",
+      msg: null,
+    });
+    if (!currentMsg.includes("initialized")) {
+      closeTx(data.id);
+    }
+    onClose();
+  }, [closeTx, data.id, status.msg]);
 
   /**
    * @todo : change the way the tx is initialized (rendering issue when strict mode)
    */
+  useEffect(() => {
+    console.log("useEffect TX MANAGER FIRST TIME");
+  }, []);
+
   useLayoutEffect(() => {
+    console.log("useLayoutEffect initTransaction");
     if (!status.sent) {
+      setStatus((old) => ({ ...old, sent: true }));
       initTransaction();
     }
   }, [status.sent, initTransaction]);
 
   useEffect(() => {
+    console.log("useEffect initTransaction");
     let timer;
     if (status.show) {
       timer = setTimeout(() => {
@@ -286,29 +334,30 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
     return () => {
       clearTimeout(timer);
     };
-  }, [status.show, onClose()]); // handleOnClose]);
+  }, [status.show, handleOnClose]); //, onClose()]); // handleOnClose]);
 
   return (
     <>
       {status.show ? (
-        <Alert
-          status={status.type}
-          // variant={status.type}
-          // onClose={handleOnClose}
-          // dismissible
-          style={{ fontSize: "0.8em", lineHeight: "2em", overflow: "auto" }}
-        >
-          <AlertIcon />
-          <AlertDescription>{status.msg}</AlertDescription>
-          <CloseButton
-            alignSelf="flex-start"
-            position="relative"
-            right={-1}
-            top={-1}
-            onClick={onClose}
-          />
-        </Alert>
-      ) : null}
+        <div>TX MANAGER</div>
+      ) : // <Alert
+      //   status={status.type}
+      //   // variant={status.type}
+      //   // onClose={handleOnClose}
+      //   // dismissible
+      //   style={{ fontSize: "0.8em", lineHeight: "2em", overflow: "auto" }}
+      // >
+      //   <AlertIcon />
+      //   <AlertDescription>{status.msg}</AlertDescription>
+      //   <CloseButton
+      //     alignSelf="flex-start"
+      //     position="relative"
+      //     right={-1}
+      //     top={-1}
+      //     // onClick={handleOnClose}
+      //   />
+      // </Alert>
+      null}
     </>
   );
 }

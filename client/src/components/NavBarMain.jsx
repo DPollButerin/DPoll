@@ -21,15 +21,15 @@ const NavBarMain = () => {
       <h1>HOME</h1>
 
       <Button as={Link} to="/">
-        Home
+        Acceuil
       </Button>
 
       <Button as={Link} to="/Respondent">
-        Respondent
+        Répondant
       </Button>
 
       <Button as={Link} to="/Creator">
-        Creator
+        Créateur
       </Button>
 
       <Button as={Link} to="/DAO">
@@ -37,7 +37,7 @@ const NavBarMain = () => {
       </Button>
 
       <Button as={Link} to="/About">
-        About
+        Aide
       </Button>
       {/* </Flex> */}
       <Outlet context={{ hello: "From Outlet" }} />

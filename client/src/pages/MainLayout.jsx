@@ -39,7 +39,7 @@ const MainLayout = () => {
       <Flex my="0" pt="0" style={{ backgroundColor: "yellow", height: "100%" }}>
         <Box m="0" p="0" style={{ border: "0px solid black", width: "30vw" }}>
           <VStack h="100%" style={{ backgroundColor: "red" }}>
-            <NavButton detail={single.home} />
+            <NavButton mt={5} detail={single.home} />
             <NavButton detail={single.respondent} />
             <NavButton detail={single.creator} />
             <NavButton detail={single.dao} />

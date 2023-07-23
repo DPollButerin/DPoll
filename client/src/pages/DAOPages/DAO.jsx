@@ -1,11 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { VStack, Heading, Text, Flex, Spacer } from "@chakra-ui/react";
 import PresentationCard from "../../components/PresentationCard";
+import { useContracts } from "../../contexts/ContractsContext";
+import { useConnection } from "../../contexts/ConnectionContext";
 
+//TOUT VIRER ICI QUE TEXTE DE PRESENTATION
 const DAO = () => {
   const obj = "UNEMSG DE DAO MAIN"; //useOutletContext();
   const bal = <span>message : {obj}</span>;
+  const { wallet } = useConnection();
+  console.log("wallet", wallet);
+  const account = wallet ? wallet.accounts[0] : null;
+  console.log("account", account);
+  const { contractsState } = useContracts();
+  const [isMember, setIsMember] = useState(false);
+
+  // const getIsMember = async () => {
+  //   try{
+  //     const web3 = contractsState.web3;
+  //     const DAOaddress = contractsState.DPollDAOAddress;
+  //     if (web3 && DAOaddress) {
+  //       const IDAOInstance = contractsState.web3.eth.Contract(contractsState.IDAOmembershipAbi, DAOaddress);
+  //       const isDAOMember = await IDAOInstance.methods.isMember(account).call({from: wallet.accounts[0]});
+  //       console.log("(DAO.jsx)/isMember IN IF", isMember);
+  //       setIsMember(isDAOMember);
+  //     }
+  //   }
+  //   catch (e) {
+  //     console.log("(DAO.jsx)/isMember ERROR", e);
+  //   }
+  // };
+
+  useEffect(() => {
+    console.log(
+      "DAO useEffect WATCHING contractsState CHANGES",
+      contractsState
+    );
+  }, [contractsState]);
+
+  useEffect(() => {
+    console.log("DAO useEffect WATCHING account CHANGES", account);
+  }, [account]);
 
   return (
     <VStack

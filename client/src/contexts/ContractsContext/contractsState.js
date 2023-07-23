@@ -21,44 +21,65 @@ const actions = {
 //interfaces IDAOPollmembarship
 //need to make avaible their abi and instance
 //ABI => BE SURE OF THE NEED TO KEEP IT when we get the instance cause its heavy (normally only PollMaster and interfaces are needed for clones)
+//REFACTOR pb with ABI in reducer causing update to fail (? nested object update pb ?) for : Contracts:{Certifier:{abi: null, instance: null, address: null}...}
 /*
 @notice : initial state of the vote context 
 */
 const initialState = {
   web3: null,
-  contracts: {
-    Certifier: {
-      abi: null,
-      instance: null,
-      address: null, //deployedAddress
-    },
-    DPollDAO: {
-      abi: null,
-      instance: null,
-      address: null,
-    },
-    PollFactory: {
-      abi: null,
-      instance: null,
-      address: null,
-    },
-    PollMaster: {
-      abi: null,
-      instance: null,
-      address: null,
-    },
-    DPollToken: {
-      abi: null,
-      instance: null,
-      address: null,
-    },
-    IDAOPollmembership: {
-      abi: null,
-      instance: null,
-      address: null,
-    },
-  },
-  //other infos ?
+  networkID: null,
+  CertifierAbi: null,
+  CertifierInstance: null,
+  CertifierAddress: null,
+  DPollDAOAbi: null,
+  DPollDAOInstance: null,
+  DPollDAOAddress: null,
+  PollFactoryAbi: null,
+  PollFactoryInstance: null,
+  PollFactoryAddress: null,
+  PollMasterAbi: null,
+  PollMasterInstance: null,
+  PollMasterAddress: null,
+  DPollTokenAbi: null,
+  DPollTokenInstance: null,
+  DPollTokenAddress: null,
+  IDAOmembershipAbi: null,
+  IDAOmembershipInstance: null,
+  IDAOmembershipAddress: null,
+
+  // contracts: {
+  //   Certifier: {
+  //     abi: null,
+  //     instance: null,
+  //     address: null, //deployedAddress
+  //   },
+  //   DPollDAO: {
+  //     abi: null,
+  //     instance: null,
+  //     address: null,
+  //   },
+  //   PollFactory: {
+  //     abi: null,
+  //     instance: null,
+  //     address: null,
+  //   },
+  //   PollMaster: {
+  //     abi: null,
+  //     instance: null,
+  //     address: null,
+  //   },
+  //   DPollToken: {
+  //     abi: null,
+  //     instance: null,
+  //     address: null,
+  //   },
+  //   IDAOmembership: {
+  //     abi: null,
+  //     instance: null,
+  //     address: null,
+  //   },
+  // },
+  // //other infos ?
   account: {
     isAdmin: false,
     isMember: false,
@@ -99,6 +120,7 @@ const reducer = (contractsState, action) => {
   switch (type) {
     case actions.init:
       return { ...contractsState, ...data };
+
     // case actions.reset:
     //   return { ...voteState, ...resetSate };
     // case actions.addNewVote: {

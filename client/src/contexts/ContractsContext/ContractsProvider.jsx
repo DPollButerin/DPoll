@@ -12,10 +12,15 @@ import useConnection from "../ConnectionContext/useConnection";
  * @return : children wrapped by ContractsContext.Provider
  * @todo : ADD ERR CHECKS AND MANAGEMENT (needed for all providers)
  * @todo : MAKE IT MORE GENERIC and detach infos
+ * @todo : IF DISCONNECTED => RESET contracts (interfaces part)=> as states (membership and caller... could change) / OnLY KEEP mains (dao, factory, master)
  */
 function ContractsProvider({ children }) {
   const { wallet } = useConnection();
+
   const [contractsState, dispatch] = useReducer(reducer, initialState);
+
+  const account = wallet.accounts[0];
+  const [initiated, setInitiated] = useState(false);
 
   // /**
   //  * @dev : create a new vote contract add it to the voteState, and set the current contract to the new one
@@ -157,6 +162,8 @@ function ContractsProvider({ children }) {
 
     let contracts = {};
 
+    //DPollToken add undefined as deployed by DAO => if needed get it via DAO getDPTtokenAddress
+    //Interfaces : no add as not deployed
     for (let i = 0; i < artifacts.length; i++) {
       let artifact = artifacts[i].artifact;
       let contractName = artifacts[i].contractName;
@@ -193,42 +200,62 @@ function ContractsProvider({ children }) {
     //   } catch (err) {
     //     console.error(err);
     //   }
+    console.log("(ContractsProvider)/ GOING TO LOAD contracts : ", contracts);
     dispatch({
       type: actions.init,
       data: {
-        web3: null,
-        contracts: {
-          Certifier: {
-            abi: contracts.Certifier.abi,
-            instance: contracts.Certifier.instance,
-            address: contracts.Certifier.address, //deployedAddress
-          },
-          DPollDAO: {
-            abi: contracts.DPollDAO.abi,
-            instance: contracts.DPollDAO.instance,
-            address: contracts.DPollDAO.address,
-          },
-          PollFactory: {
-            abi: contracts.PollFactory.abi,
-            instance: contracts.PollFactory.instance,
-            address: contracts.PollFactory.address,
-          },
-          PollMaster: {
-            abi: contracts.PollMaster.abi,
-            instance: contracts.PollMaster.instance,
-            address: contracts.PollMaster.address,
-          },
-          DPollToken: {
-            abi: contracts.DPollToken.abi,
-            instance: contracts.DPollToken.instance,
-            address: contracts.DPollToken.address,
-          },
-          IDAOPollmembership: {
-            abi: contracts.IDAOPollmembership.abi,
-            instance: contracts.IDAOPollmembership.instance,
-            address: contracts.IDAOPollmembership.address,
-          },
-        },
+        web3: web3,
+        networkID: networkID,
+        CertifierAbi: contracts.Certifier.abi,
+        CertifierInstance: contracts.Certifier.instance,
+        CertifierAddress: contracts.Certifier.address,
+        DPollDAOAbi: contracts.DPollDAO.abi,
+        DPollDAOInstance: contracts.DPollDAO.instance,
+        DPollDAOAddress: contracts.DPollDAO.address,
+        PollFactoryAbi: contracts.PollFactory.abi,
+        PollFactoryInstance: contracts.PollFactory.instance,
+        PollFactoryAddress: contracts.PollFactory.address,
+        PollMasterAbi: contracts.PollMaster.abi,
+        PollMasterInstance: contracts.PollMaster.instance,
+        PollMasterAddress: contracts.PollMaster.address,
+        DPollTokenAbi: contracts.DPollToken.abi,
+        DPollTokenInstance: contracts.DPollToken.instance,
+        DPollTokenAddress: contracts.DPollToken.address,
+        IDAOmembershipAbi: contracts.IDAOmembership.abi,
+        IDAOmembershipInstance: contracts.IDAOmembership.instance,
+        IDAOmembershipAddress: contracts.IDAOmembership.address,
+        // contracts: {
+        //   Certifier: {
+        //     abi: contracts.Certifier.abi,
+        //     instance: contracts.Certifier.instance,
+        //     address: contracts.Certifier.address, //deployedAddress
+        //   },
+        //   DPollDAO: {
+        //     abi: contracts.DPollDAO.abi,
+        //     instance: contracts.DPollDAO.instance,
+        //     address: contracts.DPollDAO.address,
+        //   },
+        //   PollFactory: {
+        //     abi: contracts.PollFactory.abi,
+        //     instance: contracts.PollFactory.instance,
+        //     address: contracts.PollFactory.address,
+        //   },
+        //   PollMaster: {
+        //     abi: contracts.PollMaster.abi,
+        //     instance: contracts.PollMaster.instance,
+        //     address: contracts.PollMaster.address,
+        //   },
+        //   DPollToken: {
+        //     abi: contracts.DPollToken.abi,
+        //     instance: contracts.DPollToken.instance,
+        //     address: contracts.DPollToken.address,
+        //   },
+        //   IDAOPollmembership: {
+        //     abi: contracts.IDAOPollmembership.abi,
+        //     instance: contracts.IDAOPollmembership.instance,
+        //     address: contracts.IDAOPollmembership.address,
+        //   },
+        // },
         //other infos ?
         account: {
           isAdmin: false,
@@ -251,25 +278,49 @@ function ContractsProvider({ children }) {
         const PollFactory = require("../../contracts/PollFactory.json");
         const PollMaster = require("../../contracts/PollMaster.json");
         const DPollToken = require("../../contracts/DPollToken.json");
-        const IDAOPollmembership = require("../../contracts/IDAOPollmembership.json");
+        const IDAOmembership = require("../../contracts/IDAOmembership.json");
         const artifacts = [
           { contractName: "Certifier", artifact: Certifier },
           { contractName: "DPollDAO", artifact: DPollDAO },
           { contractName: "PollFactory", artifact: PollFactory },
           { contractName: "PollMaster", artifact: PollMaster },
           { contractName: "DPollToken", artifact: DPollToken },
-          { contractName: "IDAOPollmembership", artifact: IDAOPollmembership },
+          { contractName: "IDAOmembership", artifact: IDAOmembership },
         ];
         init(artifacts);
       } catch (err) {
         console.error(err);
       }
     };
+    if (!initiated) {
+      // && account) {
+      tryInit();
+      setInitiated(true);
+      console.log("(ContractsProvider)/useEffect LOADING ABIs", contractsState);
+    }
+    console.log("(ContractsProvider)/useEffect  watching refresh of context ");
+  }); //[init]);
 
-    tryInit();
-    // console.log("(VoteProvider)/useEffect", voteState);
-  }, []); //[init]);
+  // useEffect(() => {
+  //   console.log(
+  //     "(ContractsProvider)/ useEffect watching refresh of context : ",
+  //     initiated
+  //   );
+  // });
+  useEffect(() => {
+    console.log(
+      "(ContractsProvider)/ useEffect watching FIRST LOADING changes : ",
+      initiated,
+      contractsState
+    );
+  }, [initiated]);
 
+  useEffect(() => {
+    console.log(
+      "(ContractsProvider)/ useEffect watching ACCOUNT 0 changes : ",
+      account
+    );
+  }, [account]);
   /**
    * @dev : watcher on voteState changes
    * @todo : TO REMOVE AT THE END
@@ -277,9 +328,9 @@ function ContractsProvider({ children }) {
   useEffect(() => {
     console.log(
       "(ContractsProvier)/ useEffect watching contractsState changes : ",
-      contractsState
+      contractsState.web3
     );
-  }, [contractsState]);
+  }, [contractsState.web3]);
 
   return (
     <ContractsContext.Provider

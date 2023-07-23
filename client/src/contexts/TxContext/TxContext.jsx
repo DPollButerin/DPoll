@@ -25,17 +25,18 @@ const TxContext = createContext();
  */
 export function TxProvider(props) {
   /*array of transactions*/
-  const [txArray, setTxArray] = useState([
-    {
-      id: 0,
-      processing: false,
-      contractInstance: null,
-      functionName: "",
-      params: null,
-      fromAccount: null,
-      callbackObject: null,
-    },
-  ]);
+  const [txArray, setTxArray] = useState([]);
+  //   {
+  //     id: 0,
+  //     processing: false,
+  //     contractInstance: null,
+  //     functionName: "",
+  //     params: [],
+  //     fromAccount: null,
+  //     value: null,
+  //     callbackObject: null,
+  //   },
+  // ]);
   /*tx validation state*/
   const [alertInvalidTx, setAlertInvalidTx] = useState("");
   /*events*/
@@ -61,8 +62,10 @@ export function TxProvider(props) {
     functionName,
     params,
     fromAccount,
+    value,
     callbackObject = null
   ) => {
+    console.log("initTx", contractInstance, functionName, params);
     setTxArray((oldArray) => {
       const newArray = [...oldArray];
       newArray.push({
@@ -70,8 +73,9 @@ export function TxProvider(props) {
         processing: true,
         contractInstance: contractInstance,
         functionName: functionName,
-        params: params,
+        params: [...params],
         fromAccount: fromAccount,
+        value: value,
         callbackObject: callbackObject,
       });
       return newArray;
@@ -100,6 +104,7 @@ export function TxProvider(props) {
    * @param {string} name
    */
   const subscribeEvent = (instance, name, callback = null) => {
+    console.log("subscribeEvent", instance, name);
     setEvent({
       processing: true,
       instance: instance,
