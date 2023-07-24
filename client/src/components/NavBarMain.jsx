@@ -7,7 +7,7 @@ import { Button, VStack } from "@chakra-ui/react";
  * @description NavBarMain component is a vertical stack of buttons to navigate in the dapp main pages
  * @dev the buttons are always displayed as it's the presentation pages of each subpage
  * @param {Object}
- * @returns  {JSX.Element}
+ * @returns {JSX.Element}
  */
 const NavBarMain = () => {
   return (
@@ -21,15 +21,15 @@ const NavBarMain = () => {
       <h1>HOME</h1>
 
       <Button as={Link} to="/">
-        Home
+        Acceuil
       </Button>
 
       <Button as={Link} to="/Respondent">
-        Respondent
+        Répondant
       </Button>
 
       <Button as={Link} to="/Creator">
-        Creator
+        Créateur
       </Button>
 
       <Button as={Link} to="/DAO">
@@ -37,7 +37,7 @@ const NavBarMain = () => {
       </Button>
 
       <Button as={Link} to="/About">
-        About
+        Aide
       </Button>
       {/* </Flex> */}
       <Outlet context={{ hello: "From Outlet" }} />

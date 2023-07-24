@@ -1,0 +1,218 @@
+{
+  "contractName": "IDAOPollSubmission",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_pollAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_toValidators",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_toDAO",
+          "type": "uint256"
+        }
+      ],
+      "name": "submitPoll",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_pollAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_toValidators\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_toDAO\",\"type\":\"uint256\"}],\"name\":\"submitPoll\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"ibourn\",\"kind\":\"dev\",\"methods\":{},\"title\":\"IDAOPollSubmission\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"this interface is used to interact with the DAO from the poll contract (DAO should implement this interface)\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/IDAOPollSubmission.sol\":\"IDAOPollSubmission\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/IDAOPollSubmission.sol\":{\"keccak256\":\"0x975b57ff10d15a855e4f3c8e9ed308b14b575f75d95fb242804c18831398357f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://924ac5fb6d71e1dac33796715941241cb5a342b53eaaf48303cc4a660563b8ee\",\"dweb:/ipfs/QmYSfkF4V3n4TZygdnwpt8VayxeuUH9bJQiLhsjQ9vdYgh\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.8.19;\n\n/**\n@title IDAOPollSubmission\n@author ibourn\n@notice this interface is used to interact with the DAO from the poll contract (DAO should implement this interface)\n*/\n\ninterface IDAOPollSubmission {\n    function submitPoll(address _pollAddress, uint _toValidators, uint _toDAO) external payable;\n}",
+  "sourcePath": "/home/ibournubuntu/ALYRA/PROJET_FINAL/DPoll/truffle/contracts/IDAOPollSubmission.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/IDAOPollSubmission.sol",
+    "exportedSymbols": {
+      "IDAOPollSubmission": [
+        2692
+      ]
+    },
+    "id": 2693,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2681,
+        "literals": [
+          "solidity",
+          "0.8",
+          ".19"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:11"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IDAOPollSubmission",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 2682,
+          "nodeType": "StructuredDocumentation",
+          "src": "58:164:11",
+          "text": "@title IDAOPollSubmission\n@author ibourn\n@notice this interface is used to interact with the DAO from the poll contract (DAO should implement this interface)"
+        },
+        "fullyImplemented": false,
+        "id": 2692,
+        "linearizedBaseContracts": [
+          2692
+        ],
+        "name": "IDAOPollSubmission",
+        "nameLocation": "234:18:11",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "functionSelector": "b46411c3",
+            "id": 2691,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "submitPoll",
+            "nameLocation": "268:10:11",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2689,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2684,
+                  "mutability": "mutable",
+                  "name": "_pollAddress",
+                  "nameLocation": "287:12:11",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2691,
+                  "src": "279:20:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2683,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "279:7:11",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2686,
+                  "mutability": "mutable",
+                  "name": "_toValidators",
+                  "nameLocation": "306:13:11",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2691,
+                  "src": "301:18:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2685,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "301:4:11",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2688,
+                  "mutability": "mutable",
+                  "name": "_toDAO",
+                  "nameLocation": "326:6:11",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2691,
+                  "src": "321:11:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2687,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "321:4:11",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "278:55:11"
+            },
+            "returnParameters": {
+              "id": 2690,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "350:0:11"
+            },
+            "scope": 2692,
+            "src": "259:92:11",
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2693,
+        "src": "224:129:11",
+        "usedErrors": []
+      }
+    ],
+    "src": "33:320:11"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.19+commit.7dd6d404.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.14",
+  "updatedAt": "2023-07-20T22:18:38.079Z",
+  "devdoc": {
+    "author": "ibourn",
+    "kind": "dev",
+    "methods": {},
+    "title": "IDAOPollSubmission",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "notice": "this interface is used to interact with the DAO from the poll contract (DAO should implement this interface)",
+    "version": 1
+  }
+}

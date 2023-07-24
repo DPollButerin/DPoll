@@ -76,7 +76,7 @@ const single = {
   home: {
     icon: <FaHouseChimney />,
     to: "/",
-    text: "Home",
+    text: "Acceuil",
   },
   about: {
     icon: <FaRegCircleQuestion />,
