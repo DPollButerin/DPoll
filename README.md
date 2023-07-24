@@ -7,8 +7,17 @@
 ## LINKS
 
 - Goerli addresses :
-- dapp link :
-- demo video :
+  - DPollDAO address : 0x098cb2C4672C34D690e00A60B00288436f401b90
+  - DPTtoken address : 0x5e1Ef06F88749D00824f61137e1d693b709D86c5
+  - (DAODPTbalance : 1000000000000000000000000)
+  - Validator plugin Address : 0x8E40d9cf91A843070b47E84C8B25e08bE20aaE71
+  - Proposals plugin Address : 0x04eBdeA10940278F7553757362745Cc7ED758484
+  - Certifier address : 0xbc65Ae7890f292abEd401d37d13FE29fbe5d635e
+  - PollFactory address : 0x0568cf59B4E986ad301D003eDA2E2CdC0F1A52d9
+  - PollMaster address : 0xbd10E5a877fa2d8101ae54602f9948de59456BE9
+  - (owner address : 0xCAfDB1c46c5036A83e2778CCc85e0F12Ce21Eb06)
+- dapp link : **https://d-poll.vercel.app/**
+- demo video : https://www.loom.com/share/4bf2872c4c394a7aae9c421beadd278d
 - team projects :
   - dev : _https://github.com/orgs/DPollButerin/projects/1/views/1_
   - consultants : _https://github.com/orgs/DPollButerin/projects/5/views/1_
