@@ -1,0 +1,228 @@
+{
+  "contractName": "IPollUser",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "_chosenChoices",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_eligibilityProof",
+          "type": "bytes32"
+        }
+      ],
+      "name": "addAnswer",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "claimReward",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"_chosenChoices\",\"type\":\"uint256[]\"},{\"internalType\":\"bytes32\",\"name\":\"_eligibilityProof\",\"type\":\"bytes32\"}],\"name\":\"addAnswer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"claimReward\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"ibourn\",\"kind\":\"dev\",\"methods\":{},\"title\":\"IPollUser\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"This contract allow to interact with the poll as a respondent\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/IPollUser.sol\":\"IPollUser\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/IPollUser.sol\":{\"keccak256\":\"0x998479a50cd945def514efec8d73d8db812b7ac45faad8cc931cb0ab78654e5d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1d8783deecc58b39494281975135985d956a5b9e1c6143fe0a9ec10904e557ec\",\"dweb:/ipfs/QmVq6iN3K6RftmWybQ9uCEGGdCQ8k5hJZq9PGxpMHRyPFG\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.8.19;\n\n/**\n@title IPollUser\n@author ibourn\n@notice This contract allow to interact with the poll as a respondent\n */\n\ninterface IPollUser {\n    function addAnswer(uint[] calldata _chosenChoices, bytes32 _eligibilityProof) external;\n    function claimReward() external;\n}",
+  "sourcePath": "/home/ibournubuntu/ALYRA/PROJET_FINAL/DPoll/truffle/contracts/IPollUser.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/IPollUser.sol",
+    "exportedSymbols": {
+      "IPollUser": [
+        2776
+      ]
+    },
+    "id": 2777,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2763,
+        "literals": [
+          "solidity",
+          "0.8",
+          ".19"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:14"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IPollUser",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 2764,
+          "nodeType": "StructuredDocumentation",
+          "src": "58:109:14",
+          "text": "@title IPollUser\n@author ibourn\n@notice This contract allow to interact with the poll as a respondent"
+        },
+        "fullyImplemented": false,
+        "id": 2776,
+        "linearizedBaseContracts": [
+          2776
+        ],
+        "name": "IPollUser",
+        "nameLocation": "179:9:14",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "functionSelector": "f73649f6",
+            "id": 2772,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "addAnswer",
+            "nameLocation": "204:9:14",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2770,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2767,
+                  "mutability": "mutable",
+                  "name": "_chosenChoices",
+                  "nameLocation": "230:14:14",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2772,
+                  "src": "214:30:14",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 2765,
+                      "name": "uint",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "214:4:14",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 2766,
+                    "nodeType": "ArrayTypeName",
+                    "src": "214:6:14",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2769,
+                  "mutability": "mutable",
+                  "name": "_eligibilityProof",
+                  "nameLocation": "254:17:14",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2772,
+                  "src": "246:25:14",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2768,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "246:7:14",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "213:59:14"
+            },
+            "returnParameters": {
+              "id": 2771,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "281:0:14"
+            },
+            "scope": 2776,
+            "src": "195:87:14",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "b88a802f",
+            "id": 2775,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "claimReward",
+            "nameLocation": "296:11:14",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2773,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "307:2:14"
+            },
+            "returnParameters": {
+              "id": 2774,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "318:0:14"
+            },
+            "scope": 2776,
+            "src": "287:32:14",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2777,
+        "src": "169:152:14",
+        "usedErrors": []
+      }
+    ],
+    "src": "33:288:14"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.19+commit.7dd6d404.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.14",
+  "updatedAt": "2023-07-20T22:18:38.080Z",
+  "devdoc": {
+    "author": "ibourn",
+    "kind": "dev",
+    "methods": {},
+    "title": "IPollUser",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "notice": "This contract allow to interact with the poll as a respondent",
+    "version": 1
+  }
+}

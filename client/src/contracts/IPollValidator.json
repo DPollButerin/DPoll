@@ -1,0 +1,186 @@
+{
+  "contractName": "IPollValidator",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "pollAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "isValid",
+          "type": "bool"
+        }
+      ],
+      "name": "setPollValidation",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"pollAddress\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"isValid\",\"type\":\"bool\"}],\"name\":\"setPollValidation\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"ibourn\",\"kind\":\"dev\",\"methods\":{},\"title\":\"IPollValidator\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"This interface is used to interact with the poll as a validator from the DAO with the address of the poll\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/IPollValidator.sol\":\"IPollValidator\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/IPollValidator.sol\":{\"keccak256\":\"0xda70b2fcc0b9abd2887ea834839d005f8afe2801c4adf6a9795f15b8924ba989\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://969049c796b492f5bd15957e70c9a7fde72ac4db840455488c16620ae4cfd94d\",\"dweb:/ipfs/QmeqyuSrmPuZ3sD5P77CEz8Xi82faoVudSpDroDH4Ay6mt\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.8.19;\n\n/**\n@title IPollValidator\n@author ibourn\n@notice This interface is used to interact with the poll as a validator from the DAO with the address of the poll\n */\n\ninterface IPollValidator {\n    function setPollValidation(address pollAddress, bool isValid) external payable;\n}",
+  "sourcePath": "/home/ibournubuntu/ALYRA/PROJET_FINAL/DPoll/truffle/contracts/IPollValidator.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/IPollValidator.sol",
+    "exportedSymbols": {
+      "IPollValidator": [
+        2787
+      ]
+    },
+    "id": 2788,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2778,
+        "literals": [
+          "solidity",
+          "0.8",
+          ".19"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:15"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IPollValidator",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 2779,
+          "nodeType": "StructuredDocumentation",
+          "src": "58:158:15",
+          "text": "@title IPollValidator\n@author ibourn\n@notice This interface is used to interact with the poll as a validator from the DAO with the address of the poll"
+        },
+        "fullyImplemented": false,
+        "id": 2787,
+        "linearizedBaseContracts": [
+          2787
+        ],
+        "name": "IPollValidator",
+        "nameLocation": "228:14:15",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "functionSelector": "e1b9742a",
+            "id": 2786,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setPollValidation",
+            "nameLocation": "258:17:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2784,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2781,
+                  "mutability": "mutable",
+                  "name": "pollAddress",
+                  "nameLocation": "284:11:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2786,
+                  "src": "276:19:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2780,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "276:7:15",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2783,
+                  "mutability": "mutable",
+                  "name": "isValid",
+                  "nameLocation": "302:7:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2786,
+                  "src": "297:12:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2782,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "297:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "275:35:15"
+            },
+            "returnParameters": {
+              "id": 2785,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "327:0:15"
+            },
+            "scope": 2787,
+            "src": "249:79:15",
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2788,
+        "src": "218:112:15",
+        "usedErrors": []
+      }
+    ],
+    "src": "33:297:15"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.19+commit.7dd6d404.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.14",
+  "updatedAt": "2023-07-20T22:18:38.081Z",
+  "devdoc": {
+    "author": "ibourn",
+    "kind": "dev",
+    "methods": {},
+    "title": "IPollValidator",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "notice": "This interface is used to interact with the poll as a validator from the DAO with the address of the poll",
+    "version": 1
+  }
+}

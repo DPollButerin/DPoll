@@ -1,0 +1,179 @@
+{
+  "contractName": "IDAOmembership",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_memberAddress",
+          "type": "address"
+        }
+      ],
+      "name": "isMemberExtCall",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_memberAddress\",\"type\":\"address\"}],\"name\":\"isMemberExtCall\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/IDAOmembership.sol\":\"IDAOmembership\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/IDAOmembership.sol\":{\"keccak256\":\"0x72b357e3f50fde7da2030c7b18080e51a6ffa5163fa9658948503fb87dd26d44\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d55b212ebdce3378d259657b5cadeddb8df29364266438ba1b49a561ef5b0319\",\"dweb:/ipfs/QmWXHz3nr8hGaxHTJBL1b8DrzeDRGQjex3Mwsr4RjpcrWT\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.8.19;\n\n\n//@todo add events to membership actions\ninterface IDAOmembership  {\n \n\n    function isMemberExtCall(address _memberAddress) external view returns (bool);\n}",
+  "sourcePath": "/home/ibournubuntu/ALYRA/PROJET_FINAL/DPoll/truffle/contracts/IDAOmembership.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/IDAOmembership.sol",
+    "exportedSymbols": {
+      "IDAOmembership": [
+        3040
+      ]
+    },
+    "id": 3041,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3032,
+        "literals": [
+          "solidity",
+          "0.8",
+          ".19"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:13"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IDAOmembership",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "id": 3040,
+        "linearizedBaseContracts": [
+          3040
+        ],
+        "name": "IDAOmembership",
+        "nameLocation": "110:14:13",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "functionSelector": "076af049",
+            "id": 3039,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isMemberExtCall",
+            "nameLocation": "144:15:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3035,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3034,
+                  "mutability": "mutable",
+                  "name": "_memberAddress",
+                  "nameLocation": "168:14:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3039,
+                  "src": "160:22:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3033,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "160:7:13",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "159:24:13"
+            },
+            "returnParameters": {
+              "id": 3038,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3037,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3039,
+                  "src": "207:4:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 3036,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "207:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "206:6:13"
+            },
+            "scope": 3040,
+            "src": "135:78:13",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 3041,
+        "src": "100:115:13",
+        "usedErrors": []
+      }
+    ],
+    "src": "33:182:13"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.19+commit.7dd6d404.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.14",
+  "updatedAt": "2023-07-22T22:06:56.091Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

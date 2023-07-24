@@ -17,102 +17,53 @@ module.exports = async function (deployer, network, accounts) {
   const deployHeaderMsg = "======> DEPLOYING : ";
   const headerMsg = "--->";
 
-  if (network === "development") {
-    console.log(
-      beforeMsg + "%s" + afterMsg,
-      "CHECK PREVIOUS ADDRESSES DEPLOYMENT"
-    );
-    const DPollDAOInstance = await DPollDAO.deployed();
-    const DPollDAOAddress = DPollDAOInstance.address;
-    console.log(
-      headerMsg + "%s" + "%s",
-      "DPollDAO address : ",
-      DPollDAOAddress
-    );
-    console.log(headerMsg + "%s" + "%s", "DPollDAO owner address : ", ADMIN);
+  // if (network === "development") {
+  console.log(
+    beforeMsg + "%s" + afterMsg,
+    "CHECK PREVIOUS ADDRESSES DEPLOYMENT"
+  );
+  const DPollDAOInstance = await DPollDAO.deployed();
+  const DPollDAOAddress = DPollDAOInstance.address;
+  console.log(headerMsg + "%s" + "%s", "DPollDAO address : ", DPollDAOAddress);
+  console.log(headerMsg + "%s" + "%s", "DPollDAO owner address : ", ADMIN);
 
-    console.log(
-      beforeMsg + "%s" + afterMsg,
-      "CHECK PREVIOUS ADDRESSES DEPLOYMENT"
-    );
-    const certifierInstance = await Certifier.deployed();
-    const certifierAddress = certifierInstance.address;
-    console.log(
-      headerMsg + "%s" + "%s",
-      "Certifier address : ",
-      certifierAddress
-    );
-    console.log(headerMsg + "%s" + "%s", "Certifier owner address : ", ADMIN);
+  console.log(
+    beforeMsg + "%s" + afterMsg,
+    "CHECK PREVIOUS ADDRESSES DEPLOYMENT"
+  );
+  const certifierInstance = await Certifier.deployed();
+  const certifierAddress = certifierInstance.address;
+  console.log(
+    headerMsg + "%s" + "%s",
+    "Certifier address : ",
+    certifierAddress
+  );
+  console.log(headerMsg + "%s" + "%s", "Certifier owner address : ", ADMIN);
 
-    console.log(beforeMsg + deployHeaderMsg + "%s" + afterMsg, "POLL FACTORY");
-    await deployer.deploy(PollFactory, DPollDAOAddress, certifierAddress, {
-      from: ADMIN,
-    });
+  console.log(beforeMsg + deployHeaderMsg + "%s" + afterMsg, "POLL FACTORY");
+  await deployer.deploy(PollFactory, DPollDAOAddress, certifierAddress, {
+    from: ADMIN,
+  });
 
-    pollFactoryInstance = await PollFactory.deployed();
-    pollFactoryAddress = pollFactoryInstance.address;
+  pollFactoryInstance = await PollFactory.deployed();
+  pollFactoryAddress = pollFactoryInstance.address;
 
-    console.log(
-      headerMsg + "%s" + "%s",
-      "PollFactory address : ",
-      pollFactoryAddress
-    );
+  console.log(
+    headerMsg + "%s" + "%s",
+    "PollFactory address : ",
+    pollFactoryAddress
+  );
 
-    console.log(beforeMsg + deployHeaderMsg + "%s" + afterMsg, "POLL MASTER");
-    await deployer.deploy(PollMaster, pollFactoryAddress, { from: ADMIN });
+  console.log(beforeMsg + deployHeaderMsg + "%s" + afterMsg, "POLL MASTER");
+  await deployer.deploy(PollMaster, pollFactoryAddress, { from: ADMIN });
 
-    pollMasterInstance = await PollMaster.deployed();
-    polMasterAddress = pollMasterInstance.address;
+  pollMasterInstance = await PollMaster.deployed();
+  polMasterAddress = pollMasterInstance.address;
 
-    console.log(
-      headerMsg + "%s" + "%s",
-      "PollMaster address : ",
-      polMasterAddress
-    );
-  }
+  console.log(
+    headerMsg + "%s" + "%s",
+    "PollMaster address : ",
+    polMasterAddress
+  );
+  // }
 };
-
-// const Storage = artifacts.require("Storage");
-// // import web3 from "web3";
-
-// module.exports = async function (deployer, network, accounts) {
-//   const valToSend = web3.utils.toWei("1", "ether");
-//   const valToSendGoerli = web3.utils.toWei("0.001", "ether");
-//   const account1 = accounts[0];
-
-//   if (network === "development") {
-//     await deployer.deploy(Storage, 5, {
-//       //   overwrite: false,
-//       from: `${account1}`,
-//       value: `${valToSend}`,
-//     });
-//   } else if (network === "goerli") {
-//     await deployer.deploy(Storage, 5, {
-//       //   overwrite: false,
-//       from: `${account1}`,
-//       value: `${valToSendGoerli}`,
-//     });
-//   }
-// };
-
-// module.exports = async function (deployer, network, accounts) {
-//   if (network === "development") {
-//     const instance = await Storage.deployed();
-//     let value = await instance.get();
-//     console.log("initial value : ", value.toString());
-
-//     await instance.set(10);
-//     value = await instance.get();
-//     console.log("new value : ", value.toString());
-
-//     web3.eth.getAccounts().then(console.log);
-
-//     let balance = await web3.eth.getBalance(instance.address);
-
-//     console.log(
-//       "instance.address balance: " +
-//         web3.utils.fromWei(balance, "ether") +
-//         " ETH"
-//     );
-//   }
-// };

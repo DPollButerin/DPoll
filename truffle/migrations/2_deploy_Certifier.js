@@ -11,18 +11,18 @@ module.exports = async function (deployer, network, accounts) {
   const deployHeaderMsg = "======> DEPLOYING : ";
   const headerMsg = "--->";
 
-  if (network === "development") {
-    console.log(beforeMsg + deployHeaderMsg + "%s" + afterMsg, "Certifier");
-    await deployer.deploy(Certifier, { from: ADMIN });
+  // if (network === "development") {
+  console.log(beforeMsg + deployHeaderMsg + "%s" + afterMsg, "Certifier");
+  await deployer.deploy(Certifier, { from: ADMIN });
 
-    CertifierInstance = await Certifier.deployed();
-    CertifierAddress = CertifierInstance.address;
+  CertifierInstance = await Certifier.deployed();
+  CertifierAddress = CertifierInstance.address;
 
-    console.log(
-      headerMsg + "%s" + "%s",
-      "Certifier address : ",
-      CertifierAddress
-    );
-    console.log(headerMsg + "%s" + "%s", "Certifier owner address : ", ADMIN);
-  }
+  console.log(
+    headerMsg + "%s" + "%s",
+    "Certifier address : ",
+    CertifierAddress
+  );
+  console.log(headerMsg + "%s" + "%s", "Certifier owner address : ", ADMIN);
+  // }
 };

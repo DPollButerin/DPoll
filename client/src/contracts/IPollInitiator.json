@@ -1,0 +1,284 @@
+{
+  "contractName": "IPollInitiator",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_requiredResponseCount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_pollName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_pollDescription",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_eligibilityCriteria",
+          "type": "string"
+        }
+      ],
+      "name": "createPollContract",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_requiredResponseCount\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_pollName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_pollDescription\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_eligibilityCriteria\",\"type\":\"string\"}],\"name\":\"createPollContract\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"ibourn\",\"kind\":\"dev\",\"methods\":{},\"title\":\"IPollInitiator\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"Interface to interact with the factory and create a new poll\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/IPollInitiator.sol\":\"IPollInitiator\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/IPollInitiator.sol\":{\"keccak256\":\"0xd28514a5337110f084cd5390d52fb5635dad527798d30d6e74b6174c373b834d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a1def8ae282470a530e8e267ec973b6f7c417c4959be12ee0fc9e2392ff37ace\",\"dweb:/ipfs/QmUcVmdiSqPPjit415REDGfbjygXePnvMCzSU7GivLogj6\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.8.19;\n\n/**\n@title IPollInitiator\n@author ibourn\n@notice Interface to interact with the factory and create a new poll\n */\ninterface IPollInitiator {\n    function createPollContract(\n        // uint _duration,\n        uint _requiredResponseCount,\n        string calldata _pollName,\n        string calldata _pollDescription,\n        string calldata _eligibilityCriteria\n  ) \n        external \n        payable  \n        returns(address);\n}",
+  "sourcePath": "/home/ibournubuntu/ALYRA/PROJET_FINAL/DPoll/truffle/contracts/IPollInitiator.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/IPollInitiator.sol",
+    "exportedSymbols": {
+      "IPollInitiator": [
+        2761
+      ]
+    },
+    "id": 2762,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2746,
+        "literals": [
+          "solidity",
+          "0.8",
+          ".19"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:13"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IPollInitiator",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 2747,
+          "nodeType": "StructuredDocumentation",
+          "src": "58:113:13",
+          "text": "@title IPollInitiator\n@author ibourn\n@notice Interface to interact with the factory and create a new poll"
+        },
+        "fullyImplemented": false,
+        "id": 2761,
+        "linearizedBaseContracts": [
+          2761
+        ],
+        "name": "IPollInitiator",
+        "nameLocation": "182:14:13",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "functionSelector": "235a2a36",
+            "id": 2760,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "createPollContract",
+            "nameLocation": "212:18:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2756,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2749,
+                  "mutability": "mutable",
+                  "name": "_requiredResponseCount",
+                  "nameLocation": "272:22:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2760,
+                  "src": "267:27:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2748,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "267:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2751,
+                  "mutability": "mutable",
+                  "name": "_pollName",
+                  "nameLocation": "320:9:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2760,
+                  "src": "304:25:13",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 2750,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "304:6:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2753,
+                  "mutability": "mutable",
+                  "name": "_pollDescription",
+                  "nameLocation": "355:16:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2760,
+                  "src": "339:32:13",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 2752,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "339:6:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2755,
+                  "mutability": "mutable",
+                  "name": "_eligibilityCriteria",
+                  "nameLocation": "397:20:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2760,
+                  "src": "381:36:13",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 2754,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "381:6:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "230:191:13"
+            },
+            "returnParameters": {
+              "id": 2759,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2758,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2760,
+                  "src": "475:7:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2757,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "475:7:13",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "474:9:13"
+            },
+            "scope": 2761,
+            "src": "203:281:13",
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2762,
+        "src": "172:314:13",
+        "usedErrors": []
+      }
+    ],
+    "src": "33:453:13"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.19+commit.7dd6d404.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.14",
+  "updatedAt": "2023-07-20T22:18:38.080Z",
+  "devdoc": {
+    "author": "ibourn",
+    "kind": "dev",
+    "methods": {},
+    "title": "IPollInitiator",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "notice": "Interface to interact with the factory and create a new poll",
+    "version": 1
+  }
+}
