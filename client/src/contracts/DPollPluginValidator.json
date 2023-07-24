@@ -19095,10 +19095,16 @@
       "links": {},
       "address": "0xE1cF774633d2c025300eE57f5014BC539d548A1d",
       "transactionHash": "0xc48eabd0c03ff4dffcee2da51277c930cca9d7a897944271bb1735e6ae51624c"
+    },
+    "1690176269459": {
+      "events": {},
+      "links": {},
+      "address": "0xE3BeDc1bBB543ca3D65424878F4caE1b3B1F1103",
+      "transactionHash": "0x40b71220dbcd1c59921694fdf1d9c96c5efdfb4000cf30d84974a5f3c23bbeb9"
     }
   },
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-07-24T04:28:31.024Z",
+  "updatedAt": "2023-07-24T05:24:59.470Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "ibourn",
