@@ -58,12 +58,26 @@ module.exports = async function (deployer, network, accounts) {
   await deployer.deploy(PollMaster, pollFactoryAddress, { from: ADMIN });
 
   pollMasterInstance = await PollMaster.deployed();
-  polMasterAddress = pollMasterInstance.address;
+  pollMasterAddress = pollMasterInstance.address;
 
   console.log(
     headerMsg + "%s" + "%s",
     "PollMaster address : ",
-    polMasterAddress
+    pollMasterAddress
+  );
+  console.log(
+    headerMsg + "%s" + "%s",
+    "Setting PollMaster address in PollFactory "
+  );
+  await pollFactoryInstance.setPollMasterAddress(pollMasterAddress, {
+    from: ADMIN,
+  });
+  const confirm = await pollFactoryInstance.getMasterPollAddress();
+  console.log(
+    "PollMaster address set in PollFactory : ",
+    confirm,
+    "\nshould be : ",
+    pollMasterAddress
   );
   // }
 };

@@ -23,7 +23,11 @@ import {
 
 import { useToast } from "@chakra-ui/react";
 
-const NewPollStart = ({ handlePollCreation }) => {
+const NewPollStart = ({
+  handlePollCreation,
+  isProcessing,
+  setIsProcessing,
+}) => {
   const [pollName, setPollName] = useState("");
   const [description, setDescription] = useState("");
   const [quorum, setQuorum] = useState(0);
@@ -44,6 +48,7 @@ const NewPollStart = ({ handlePollCreation }) => {
       quorum,
     };
     handlePollCreation(poll);
+    setIsProcessing(true);
   };
 
   return (
@@ -74,7 +79,12 @@ const NewPollStart = ({ handlePollCreation }) => {
           Vous pourrez récupérer les fonds destinés aux répondants manquants.
         </FormHelperText>
       </FormControl>
-      <Button h="1.75rem" size="sm" onClick={handleCreate}>
+      <Button
+        h="1.75rem"
+        size="md"
+        isLoading={isProcessing}
+        onClick={handleCreate}
+      >
         Valider et créer le sondage !
       </Button>
       <Text mt="2%" fontSize="sm">

@@ -50,22 +50,22 @@
     "absolutePath": "project:/contracts/IPollInitiator.sol",
     "exportedSymbols": {
       "IPollInitiator": [
-        2761
+        3109
       ]
     },
-    "id": 2762,
+    "id": 3110,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2746,
+        "id": 3094,
         "literals": [
           "solidity",
           "0.8",
           ".19"
         ],
         "nodeType": "PragmaDirective",
-        "src": "33:23:13"
+        "src": "33:23:15"
       },
       {
         "abstract": false,
@@ -74,42 +74,42 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 2747,
+          "id": 3095,
           "nodeType": "StructuredDocumentation",
-          "src": "58:113:13",
+          "src": "58:113:15",
           "text": "@title IPollInitiator\n@author ibourn\n@notice Interface to interact with the factory and create a new poll"
         },
         "fullyImplemented": false,
-        "id": 2761,
+        "id": 3109,
         "linearizedBaseContracts": [
-          2761
+          3109
         ],
         "name": "IPollInitiator",
-        "nameLocation": "182:14:13",
+        "nameLocation": "182:14:15",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "functionSelector": "235a2a36",
-            "id": 2760,
+            "id": 3108,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "createPollContract",
-            "nameLocation": "212:18:13",
+            "nameLocation": "212:18:15",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2756,
+              "id": 3104,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2749,
+                  "id": 3097,
                   "mutability": "mutable",
                   "name": "_requiredResponseCount",
-                  "nameLocation": "272:22:13",
+                  "nameLocation": "272:22:15",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2760,
-                  "src": "267:27:13",
+                  "scope": 3108,
+                  "src": "267:27:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -117,10 +117,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2748,
+                    "id": 3096,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "267:4:13",
+                    "src": "267:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -130,13 +130,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2751,
+                  "id": 3099,
                   "mutability": "mutable",
                   "name": "_pollName",
-                  "nameLocation": "320:9:13",
+                  "nameLocation": "320:9:15",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2760,
-                  "src": "304:25:13",
+                  "scope": 3108,
+                  "src": "304:25:15",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -144,10 +144,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 2750,
+                    "id": 3098,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "304:6:13",
+                    "src": "304:6:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -157,13 +157,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2753,
+                  "id": 3101,
                   "mutability": "mutable",
                   "name": "_pollDescription",
-                  "nameLocation": "355:16:13",
+                  "nameLocation": "355:16:15",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2760,
-                  "src": "339:32:13",
+                  "scope": 3108,
+                  "src": "339:32:15",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -171,10 +171,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 2752,
+                    "id": 3100,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "339:6:13",
+                    "src": "339:6:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -184,13 +184,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2755,
+                  "id": 3103,
                   "mutability": "mutable",
                   "name": "_eligibilityCriteria",
-                  "nameLocation": "397:20:13",
+                  "nameLocation": "397:20:15",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2760,
-                  "src": "381:36:13",
+                  "scope": 3108,
+                  "src": "381:36:15",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -198,10 +198,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 2754,
+                    "id": 3102,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "381:6:13",
+                    "src": "381:6:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -210,21 +210,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "230:191:13"
+              "src": "230:191:15"
             },
             "returnParameters": {
-              "id": 2759,
+              "id": 3107,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2758,
+                  "id": 3106,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2760,
-                  "src": "475:7:13",
+                  "scope": 3108,
+                  "src": "475:7:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -232,10 +232,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2757,
+                    "id": 3105,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "475:7:13",
+                    "src": "475:7:15",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -245,21 +245,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "474:9:13"
+              "src": "474:9:15"
             },
-            "scope": 2761,
-            "src": "203:281:13",
+            "scope": 3109,
+            "src": "203:281:15",
             "stateMutability": "payable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2762,
-        "src": "172:314:13",
+        "scope": 3110,
+        "src": "172:314:15",
         "usedErrors": []
       }
     ],
-    "src": "33:453:13"
+    "src": "33:453:15"
   },
   "compiler": {
     "name": "solc",
@@ -267,7 +267,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-07-20T22:18:38.080Z",
+  "updatedAt": "2023-07-25T13:10:37.158Z",
   "devdoc": {
     "author": "ibourn",
     "kind": "dev",

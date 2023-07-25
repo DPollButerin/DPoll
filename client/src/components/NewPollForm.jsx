@@ -24,7 +24,7 @@ import {
 import { useToast } from "@chakra-ui/react";
 
 //tranfo en page de topic a defiler
-const NewPollForm = ({ handleAddTopic }) => {
+const NewPollForm = ({ handleAddTopic, isProcessing, setIsProcessing }) => {
   const [pollName, setPollName] = useState("");
   const [description, setDescription] = useState("");
   const [quorum, setQuorum] = useState(0);
@@ -54,7 +54,9 @@ const NewPollForm = ({ handleAddTopic }) => {
         ],
       ],
     };
+
     handleAddTopic(poll);
+    setIsProcessing(true);
   };
 
   return (
@@ -101,7 +103,12 @@ const NewPollForm = ({ handleAddTopic }) => {
         </FormLabel>
         <Input id="choice4" placeholder="réponse" />
       </FormControl>
-      <Button h="1.75rem" size="sm" onClick={handleCreate}>
+      <Button
+        isLoading={isProcessing}
+        h="1.75rem"
+        size="md"
+        onClick={handleCreate}
+      >
         Ajouter le topic {}
       </Button>
       <Text mt="2%" fontSize="sm">

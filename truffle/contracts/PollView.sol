@@ -13,8 +13,9 @@ pragma solidity 0.8.19;
  */
 
 import "./PollStorage.sol";
+import "./IPollView.sol";
 
-contract PollView is PollStorage {
+contract PollView is PollStorage, IPollView {
 
     // :::::::::::::::::::::::::: GETTERS :::::::::::::::::::::::::::::: //
     // function getTimestampLimit() external view returns (uint) {
@@ -56,7 +57,10 @@ contract PollView is PollStorage {
     function getPollStatus() external view returns (PollStatus) {
         return pollStatus;
     }
-
+    //test clone call via int
+    function getPollStatusExt() external view returns (uint8) {
+        return uint8(pollStatus);
+    }
     function getIsCanceled() external view returns (bool) {
         return isCanceled;
     }

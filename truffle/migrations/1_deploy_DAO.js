@@ -18,6 +18,8 @@ module.exports = async function (deployer, network, accounts) {
   const headerMsg = "--->";
 
   // if (network === "development") {
+  console.log(deployHeaderMsg + "on network : ", network);
+
   console.log(beforeMsg + deployHeaderMsg + "%s" + afterMsg, "DPoll DAO");
   await deployer.deploy(DPollDAO, { from: ADMIN });
 

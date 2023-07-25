@@ -49,6 +49,9 @@ const initialState = {
   IPollAdminAbi: null,
   IPollAdminInstance: null,
   IPollAdminAddress: null,
+  IPollVoterAbi: null,
+  IPollVoterInstance: null,
+  IPollVoterAddress: null,
 
   // contracts: {
   //   Certifier: {

@@ -31,7 +31,7 @@ contract PollAdmin is PollView, PollHelpers, IPollAdmin, IPollValidator {
     }
 
     // :::::::::::::::::::::::::: GETTERS :::::::::::::::::::::::::::::: //
-
+//ATTENTION MISSING REQUIRE... (like checking if id exist!!!!!)
     /**
     @notice This function return the selected choices of topics of a respondent
     @dev one answer is a uint256 where each bit represent an available choice : 1 is selected, 0 is not selected

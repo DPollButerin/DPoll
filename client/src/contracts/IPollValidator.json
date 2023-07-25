@@ -34,22 +34,22 @@
     "absolutePath": "project:/contracts/IPollValidator.sol",
     "exportedSymbols": {
       "IPollValidator": [
-        2787
+        3135
       ]
     },
-    "id": 2788,
+    "id": 3136,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2778,
+        "id": 3126,
         "literals": [
           "solidity",
           "0.8",
           ".19"
         ],
         "nodeType": "PragmaDirective",
-        "src": "33:23:15"
+        "src": "33:23:17"
       },
       {
         "abstract": false,
@@ -58,42 +58,42 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 2779,
+          "id": 3127,
           "nodeType": "StructuredDocumentation",
-          "src": "58:158:15",
+          "src": "58:158:17",
           "text": "@title IPollValidator\n@author ibourn\n@notice This interface is used to interact with the poll as a validator from the DAO with the address of the poll"
         },
         "fullyImplemented": false,
-        "id": 2787,
+        "id": 3135,
         "linearizedBaseContracts": [
-          2787
+          3135
         ],
         "name": "IPollValidator",
-        "nameLocation": "228:14:15",
+        "nameLocation": "228:14:17",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "functionSelector": "e1b9742a",
-            "id": 2786,
+            "id": 3134,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "setPollValidation",
-            "nameLocation": "258:17:15",
+            "nameLocation": "258:17:17",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2784,
+              "id": 3132,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2781,
+                  "id": 3129,
                   "mutability": "mutable",
                   "name": "pollAddress",
-                  "nameLocation": "284:11:15",
+                  "nameLocation": "284:11:17",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2786,
-                  "src": "276:19:15",
+                  "scope": 3134,
+                  "src": "276:19:17",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -101,10 +101,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2780,
+                    "id": 3128,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "276:7:15",
+                    "src": "276:7:17",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -115,13 +115,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2783,
+                  "id": 3131,
                   "mutability": "mutable",
                   "name": "isValid",
-                  "nameLocation": "302:7:15",
+                  "nameLocation": "302:7:17",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2786,
-                  "src": "297:12:15",
+                  "scope": 3134,
+                  "src": "297:12:17",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -129,10 +129,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2782,
+                    "id": 3130,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "297:4:15",
+                    "src": "297:4:17",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -141,27 +141,27 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "275:35:15"
+              "src": "275:35:17"
             },
             "returnParameters": {
-              "id": 2785,
+              "id": 3133,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "327:0:15"
+              "src": "327:0:17"
             },
-            "scope": 2787,
-            "src": "249:79:15",
+            "scope": 3135,
+            "src": "249:79:17",
             "stateMutability": "payable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2788,
-        "src": "218:112:15",
+        "scope": 3136,
+        "src": "218:112:17",
         "usedErrors": []
       }
     ],
-    "src": "33:297:15"
+    "src": "33:297:17"
   },
   "compiler": {
     "name": "solc",
@@ -169,7 +169,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-07-20T22:18:38.081Z",
+  "updatedAt": "2023-07-25T13:10:37.158Z",
   "devdoc": {
     "author": "ibourn",
     "kind": "dev",

@@ -39,22 +39,22 @@
     "absolutePath": "project:/contracts/IDAOPollSubmission.sol",
     "exportedSymbols": {
       "IDAOPollSubmission": [
-        2692
+        3030
       ]
     },
-    "id": 2693,
+    "id": 3031,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2681,
+        "id": 3019,
         "literals": [
           "solidity",
           "0.8",
           ".19"
         ],
         "nodeType": "PragmaDirective",
-        "src": "33:23:11"
+        "src": "33:23:12"
       },
       {
         "abstract": false,
@@ -63,42 +63,42 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 2682,
+          "id": 3020,
           "nodeType": "StructuredDocumentation",
-          "src": "58:164:11",
+          "src": "58:164:12",
           "text": "@title IDAOPollSubmission\n@author ibourn\n@notice this interface is used to interact with the DAO from the poll contract (DAO should implement this interface)"
         },
         "fullyImplemented": false,
-        "id": 2692,
+        "id": 3030,
         "linearizedBaseContracts": [
-          2692
+          3030
         ],
         "name": "IDAOPollSubmission",
-        "nameLocation": "234:18:11",
+        "nameLocation": "234:18:12",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "functionSelector": "b46411c3",
-            "id": 2691,
+            "id": 3029,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "submitPoll",
-            "nameLocation": "268:10:11",
+            "nameLocation": "268:10:12",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2689,
+              "id": 3027,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2684,
+                  "id": 3022,
                   "mutability": "mutable",
                   "name": "_pollAddress",
-                  "nameLocation": "287:12:11",
+                  "nameLocation": "287:12:12",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2691,
-                  "src": "279:20:11",
+                  "scope": 3029,
+                  "src": "279:20:12",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -106,10 +106,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2683,
+                    "id": 3021,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "279:7:11",
+                    "src": "279:7:12",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -120,13 +120,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2686,
+                  "id": 3024,
                   "mutability": "mutable",
                   "name": "_toValidators",
-                  "nameLocation": "306:13:11",
+                  "nameLocation": "306:13:12",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2691,
-                  "src": "301:18:11",
+                  "scope": 3029,
+                  "src": "301:18:12",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -134,10 +134,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2685,
+                    "id": 3023,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "301:4:11",
+                    "src": "301:4:12",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -147,13 +147,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2688,
+                  "id": 3026,
                   "mutability": "mutable",
                   "name": "_toDAO",
-                  "nameLocation": "326:6:11",
+                  "nameLocation": "326:6:12",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2691,
-                  "src": "321:11:11",
+                  "scope": 3029,
+                  "src": "321:11:12",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -161,10 +161,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2687,
+                    "id": 3025,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "321:4:11",
+                    "src": "321:4:12",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -173,27 +173,27 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "278:55:11"
+              "src": "278:55:12"
             },
             "returnParameters": {
-              "id": 2690,
+              "id": 3028,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "350:0:11"
+              "src": "350:0:12"
             },
-            "scope": 2692,
-            "src": "259:92:11",
+            "scope": 3030,
+            "src": "259:92:12",
             "stateMutability": "payable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2693,
-        "src": "224:129:11",
+        "scope": 3031,
+        "src": "224:129:12",
         "usedErrors": []
       }
     ],
-    "src": "33:320:11"
+    "src": "33:320:12"
   },
   "compiler": {
     "name": "solc",
@@ -201,7 +201,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-07-20T22:18:38.079Z",
+  "updatedAt": "2023-07-25T13:10:37.156Z",
   "devdoc": {
     "author": "ibourn",
     "kind": "dev",

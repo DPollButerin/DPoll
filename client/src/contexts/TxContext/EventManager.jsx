@@ -208,7 +208,8 @@ export default function EventManager(props) {
       );
     }
     // return content;
-    doToast("Event received :", content, show.type);
+    // RETABLIR LES EVENTS PB CHAKRA ALERT2 ds Toast!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // doToast("Event received :", content, show.type);
   });
 
   useLayoutEffect(() => {
