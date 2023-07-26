@@ -35,7 +35,7 @@ const PollsState = () => {
     if (id === 0 && pollInfos.status == 0) {
       return false;
     }
-    if (id === 1 && pollInfos.status == 1) {
+    if (id === 1 && pollInfos.status == 2) {
       return false;
     }
     return true;
@@ -226,7 +226,7 @@ const PollsState = () => {
     const status = await instance.methods.getPollStatus().call();
     console.log("infos", infos, "\n status", status);
     setPollInfos({ infos: infos[0], status: status });
-    updateIsDisabled(status);
+    // updateIsDisabled(status);
   };
 
   //get the selected poll
@@ -276,6 +276,41 @@ const PollsState = () => {
     getPolls();
   }, [wallet.accounts]);
 
+  //refactor => to have poll instance easily
+  const updateSubmission = async (res) => {
+    console.log(
+      "updateSubmission via callback ",
+      res,
+      "caling\n",
+      selectedPoll
+    );
+    const instance = await new contractsState.web3.eth.Contract(
+      contractsState.PollMasterAbi, //IPollAdminAbi,
+      selectedPoll
+    );
+    // const infos = await instance.methods.getPollInformations().call();
+    const status = await instance.methods.getPollStatus().call();
+    console.log(
+      "Update status AFTER SUBMIT status",
+      status,
+      "\nselectedPoll",
+      selectedPoll
+    );
+    setPollInfos((old) => ({ ...old, status: status }));
+  };
+
+  const handleSubmit = async () => {
+    console.log("handleSubmit");
+    const pollInstance = await new contractsState.web3.eth.Contract(
+      contractsState.PollMasterAbi,
+      selectedPoll
+    );
+    initTx(pollInstance, "submitPoll", [], wallet.accounts[0], 0, {
+      callbackFunc: updateSubmission,
+      callbackParam: true,
+    });
+  };
+
   // useEffect(() => {
   //   const getInfos = async () => {
   //     const poll = await contractsState.PollMasterInstance.methods
@@ -324,7 +359,11 @@ const PollsState = () => {
         )}
         <Container my="5">
           <ButtonGroup>
-            <Button size="lg" isDisabled={getIsDisabled(0)}>
+            <Button
+              size="lg"
+              isDisabled={getIsDisabled(0)}
+              onClick={handleSubmit}
+            >
               Submit to validation
             </Button>
             <Button size="lg" isDisabled={getIsDisabled(1)}>

@@ -139,8 +139,8 @@ contract PollAdmin is PollView, PollHelpers, IPollAdmin, IPollValidator {
     
         uint amount = amountToValidators + amountToDAO;
 
-        IDAOPollSubmission(DAOaddress).submitPoll{value: amount  }(address(this), amountToValidators, amountToDAO);
-//  DPollPluginValidator(DAOaddress).submitPoll{value: amount  }(address(this), amountToValidators, amountToDAO);
+        IDAOPollSubmission(validatorAddress).submitPoll{value: amount  }(address(this), amountToValidators, amountToDAO);
+//  DPollPluginValidator(ValidatorAddress).submitPoll{value: amount  }(address(this), amountToValidators, amountToDAO);
 
         pollStatus = PollStatus.PollSubmitted;  
 

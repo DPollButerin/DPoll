@@ -87,6 +87,7 @@ contract PollStorage is Ownable {
     */
     address public DAOaddress;
     address public certifierAddress;
+    address public validatorAddress;
 
     // :::::::::::::::::::::::::: params defined by the owner :::::::::::: //
     /*time limitation and delay are remove for the exam to facilitate tests and live demo*/

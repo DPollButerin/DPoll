@@ -77,7 +77,16 @@ module.exports = async function (deployer, network, accounts) {
     "Validator plugin Address : ",
     DPollValidatorAddress
   );
-
+  await DPollDAOInstance.setValidatorPluginAddress(DPollValidatorAddress, {
+    from: ADMIN,
+  });
+  const validatorAddressSet =
+    await DPollDAOInstance.getValidatorPluginAddress();
+  console.log(
+    headerMsg + "%s" + "%s",
+    "Validator set in DAO : ",
+    validatorAddressSet
+  );
   console.log(
     beforeMsg + deployHeaderMsg + "%s" + afterMsg,
     "DAO, PROPOSALS PLUGIN"
@@ -98,5 +107,17 @@ module.exports = async function (deployer, network, accounts) {
     "Proposals plugin Address : ",
     DPollProposalsAddress
   );
+  await DPollDAOInstance.setProposalsPluginAddress(DPollProposalsAddress, {
+    from: ADMIN,
+  });
+  const proposalsAddressSet =
+    await DPollDAOInstance.getProposalsPluginAddress();
+  console.log(
+    headerMsg + "%s" + "%s",
+    "Proposals set in DAO : ",
+    proposalsAddressSet
+  );
+  // console.log(
+
   // }
 };

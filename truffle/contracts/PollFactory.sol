@@ -27,6 +27,7 @@ contract PollFactory is Ownable, IPollInitiator {
 
   address public DAOaddress;
   address public certifierAddress;
+  address public DPollPluginValidatorAddress;
   address public pollMasterAddress;
   address[] pollCloneAddresses;
 
@@ -38,11 +39,12 @@ contract PollFactory is Ownable, IPollInitiator {
    _;
   }
 //utilise constructor pour set le DAO address c plus cohérent
-  constructor(address _DAOaddress, address _certifierAddress) {
+  constructor(address _DAOaddress, address _certifierAddress, address _dPollPluginValidatorAddress) {
     require(_DAOaddress != address(0), 'DAO address is required');
     require(_certifierAddress != address(0), 'Certifier address is required');
     DAOaddress = _DAOaddress;
     certifierAddress = _certifierAddress;
+    DPollPluginValidatorAddress = _dPollPluginValidatorAddress;
   }
   /**
   @notice allows to set the master voting addres from which votes will be cloned
@@ -81,6 +83,7 @@ contract PollFactory is Ownable, IPollInitiator {
         msg.sender, 
         DAOaddress,
         certifierAddress,
+        DPollPluginValidatorAddress,
         // _duration,
         _requiredResponseCount,
         _pollName,

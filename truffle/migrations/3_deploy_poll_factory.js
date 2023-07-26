@@ -2,6 +2,8 @@ const PollMaster = artifacts.require("PollMaster");
 const PollFactory = artifacts.require("PollFactory");
 const Certifier = artifacts.require("Certifier");
 const DPollDAO = artifacts.require("DPollDAO");
+const DPollPluginValidator = artifacts.require("DPollPluginValidator");
+const DPollPluginProposals = artifacts.require("DPollPluginProposals");
 
 module.exports = async function (deployer, network, accounts) {
   const [ADMIN, USER1, USER2, USER3] = accounts;
@@ -33,17 +35,31 @@ module.exports = async function (deployer, network, accounts) {
   );
   const certifierInstance = await Certifier.deployed();
   const certifierAddress = certifierInstance.address;
+  const validatorInstance = await DPollPluginValidator.deployed();
+  const validatorAddress = validatorInstance.address;
+  const proposalsInstance = await DPollPluginProposals.deployed();
+  const proposalsAddress = proposalsInstance.address;
   console.log(
-    headerMsg + "%s" + "%s",
+    headerMsg + "%s" + "%s" + "\n%s" + "%s" + "\n%s" + "%s",
     "Certifier address : ",
-    certifierAddress
+    certifierAddress,
+    "Validator address : ",
+    validatorAddress,
+    "Proposals address : ",
+    proposalsAddress
   );
   console.log(headerMsg + "%s" + "%s", "Certifier owner address : ", ADMIN);
 
   console.log(beforeMsg + deployHeaderMsg + "%s" + afterMsg, "POLL FACTORY");
-  await deployer.deploy(PollFactory, DPollDAOAddress, certifierAddress, {
-    from: ADMIN,
-  });
+  await deployer.deploy(
+    PollFactory,
+    DPollDAOAddress,
+    certifierAddress,
+    validatorAddress,
+    {
+      from: ADMIN,
+    }
+  );
 
   pollFactoryInstance = await PollFactory.deployed();
   pollFactoryAddress = pollFactoryInstance.address;
@@ -52,6 +68,20 @@ module.exports = async function (deployer, network, accounts) {
     headerMsg + "%s" + "%s",
     "PollFactory address : ",
     pollFactoryAddress
+  );
+  const daoAddressSet = await pollFactoryInstance.DAOaddress();
+  const certifierSet = await pollFactoryInstance.certifierAddress();
+  const validatorSet = await pollFactoryInstance.DPollPluginValidatorAddress();
+  console.log(
+    headerMsg + "%s" + "%s" + "\n%s" + "%s" + "\n%s" + "%s" + "\n%s" + "%s",
+    "PollFactory address : ",
+    pollFactoryAddress,
+    "DAOAddress set : ",
+    daoAddressSet,
+    "certifierAddress set : ",
+    certifierSet,
+    "DPollPluginValidatorAddress set : ",
+    validatorSet
   );
 
   console.log(beforeMsg + deployHeaderMsg + "%s" + afterMsg, "POLL MASTER");
