@@ -38833,14 +38833,78 @@
       "transactionHash": "0x1a8402442c3582f7f642951b636d1172e1da2756735d0278d4b3ecdcb9f903c4"
     },
     "1690379075871": {
-      "events": {},
+      "events": {
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0x3fe20b4d25e23e4d454068ff9d21c6d8612d6202f03023dec36faf57e07dc260": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "enum DPollPluginProposals.ProposalStatus",
+              "name": "status",
+              "type": "uint8"
+            }
+          ],
+          "name": "ProposalChange",
+          "type": "event"
+        },
+        "0x8d6c56abc8ddf56344ae6a50a40cc91df8e5bdc739b7794e03d839d4d1cfa1ff": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "enum DPollPluginProposals.ProposalType",
+              "name": "proposalType",
+              "type": "uint8"
+            }
+          ],
+          "name": "ProposalExecution",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0xA8DBf6c99142541d063eC1292081C30807B090eD",
-      "transactionHash": "0xb39722f6bdc99189f849f7244f297e5a6df805ec622c6f90764d3eab32170b2d"
+      "address": "0xeB788b02Bf865F0287D6362cCBef7f3093753685",
+      "transactionHash": "0x64df26f06de3bb7b87febf9ca182ecf25c7f122b7f558fd4dae176ebb628372c"
     }
   },
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-07-26T13:49:18.313Z",
+  "updatedAt": "2023-07-26T20:33:08.024Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

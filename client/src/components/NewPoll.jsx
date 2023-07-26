@@ -99,6 +99,7 @@ const NewPoll = () => {
       "ether"
     );
     console.log("ADD CALL TO  ADD TOPIC newPollAddress", newPollAddress);
+    console.log("ADD CALL TO  ADD TOPIC topic", topic);
     let pollInstance = new contractsState.web3.eth.Contract(
       contractsState.PollMasterAbi, //IPollAdminAbi,
       newPollAddress

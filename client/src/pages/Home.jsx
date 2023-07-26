@@ -7,9 +7,15 @@ import NavBarMain from "../components/NavBarMain";
 import Accueil1 from "../assets/Accueil1.svg";
 import Accueil2 from "../assets/Accueil2.svg";
 import Accueil3 from "../assets/Accueil3.svg";
+import { motion } from "framer-motion";
 
 const Home = () => {
   return (
+    // <motion.div
+    //   initial={{ opacity: "0" }}
+    //   animate={{ opacity: "1" }}
+    //   transition={{ duration: 2 }}
+    // >
     <Box h="100vh" bg="#E8E8E8">
       <MainHeader />
       <Flex>
@@ -19,6 +25,7 @@ const Home = () => {
         </Container>
       </Flex>
     </Box>
+    // {/* </motion.div> */}
   );
 };
 

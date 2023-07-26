@@ -14,7 +14,7 @@ import Creator from "./Creator";
 const CreatorLayout = () => {
   return (
     <div>
-      CREATOR LAYOUT
+      {/* CREATOR LAYOUT */}
       <Routes>
         <Route path="/" element={<Creator />} />
         <Route path="/PollCreation" element={<PollCreation />} />

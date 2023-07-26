@@ -16,17 +16,19 @@ import DAOLayout from "./pages/DAOPages/DAOLayout";
 import { ConnectionProvider } from "./contexts/ConnectionContext";
 import { ContractsProvider } from "./contexts/ContractsContext";
 import { TxProvider } from "./contexts/TxContext/TxContext";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
-  const p = useParams();
-  console.log(p);
-  const n = useNavigate();
-  console.log(n);
+  // const p = useParams();
+  // console.log(p);
+  // const n = useNavigate();
+  // console.log(n);
+  // // const location = useLocation();
 
-  useEffect(() => {
-    console.log("App.jsx useEffect");
-    console.log(p, n);
-  }, [p, n]);
+  // useEffect(() => {
+  //   console.log("App.jsx useEffect");
+  //   console.log(p, n);
+  // }, [p, n]);
 
   return (
     // <>
@@ -36,6 +38,8 @@ function App() {
       <ConnectionProvider>
         <ContractsProvider>
           <TxProvider>
+            {/* <AnimatePresence mode="wait"> */}
+            {/* <Routes key={location.pathname} location={location}> */}
             <Routes>
               <Route
                 path="/"
@@ -49,6 +53,7 @@ function App() {
               <Route path="/About" element={<About />} />
               <Route path="*" element={<div>Not FOund</div>} />
             </Routes>
+            {/* </AnimatePresence> */}
           </TxProvider>
         </ContractsProvider>
       </ConnectionProvider>

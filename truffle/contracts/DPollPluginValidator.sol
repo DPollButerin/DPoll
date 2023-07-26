@@ -39,6 +39,7 @@ contract DPollPluginValidator is Ownable {
         uint256 voteCount;
         uint256 amountToDAO;
         uint256 amountToValidators;
+        uint256 validatorsCount;
         SubmissionStatus status;
         address[] validators;
     }
@@ -75,6 +76,10 @@ contract DPollPluginValidator is Ownable {
     constructor(address _DAOaddress) {
         DAOAddress = _DAOaddress;
         dpollDAO = DPollDAO(DAOAddress);
+    }
+
+    function getPolls() external view returns (PollSubmission[] memory) {
+        return pollSubmissions;
     }
 
     /**
@@ -125,7 +130,7 @@ contract DPollPluginValidator is Ownable {
         PollSubmission storage pollSubmission = pollSubmissions[_pollSubmissionId];
         require(pollSubmission.status == SubmissionStatus.SUBMITTED, "The poll is not submitted");
         // require(pollSubmission.submissionDate + pollSubmissionDuration < block.timestamp, "The poll submission is closed");
-        require(pollSubmission.validators.length < requiredValidators, "Already enough votes");
+        require(pollSubmission.validatorsCount <= requiredValidators, "Already enough votes");
         require(!validatorsVotes[msg.sender][_pollSubmissionId], "Already voted");
         
         pollSubmission.validators.push(msg.sender);
@@ -134,12 +139,13 @@ contract DPollPluginValidator is Ownable {
         if (_vote) {
             pollSubmission.voteCount++;
         }
+        pollSubmission.validatorsCount++;
 
         dpollDAO.rewardValidator(msg.sender);
 
 
         //added for the exam (see comment above)
-        if (pollSubmission.validators.length == requiredValidators) {
+        if (pollSubmission.validatorsCount == requiredValidators || pollSubmission.voteCount == requiredValidations) {
             setValidation(_pollSubmissionId);
         }
     }

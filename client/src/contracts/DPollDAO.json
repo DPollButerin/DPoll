@@ -20449,14 +20449,90 @@
       "transactionHash": "0x7b925d4ddbe047a1c7807e53eeebde39696c7fdca1fcd6d7decbd2e452d5d8a8"
     },
     "1690379075871": {
-      "events": {},
+      "events": {
+        "0xe52c4cefe1ae4b31e6e478a3e34c8b2d0b3ad75d8d03663240fc2927353c2a14": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "action",
+              "type": "string"
+            }
+          ],
+          "name": "DAOBalanceTansfer",
+          "type": "event"
+        },
+        "0x4a6c6915fec850b4436575e437c9042ba03d784d64b7c08d7de29ea249b49fe1": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "action",
+              "type": "string"
+            }
+          ],
+          "name": "DAOTokenTransfer",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0x0D0A822e7914574fC2af229ca5837b2dEC841ba4",
-      "transactionHash": "0x908952da39d3c4141df5a278b618a534209de3e97536971025139097fb75b0b7"
+      "address": "0x5480BF3FE9b05fb799e5896a1898Cf1a58067812",
+      "transactionHash": "0xffd49be053baf31838bd37967956bbac8ad2495316d42de8c9f3df28e62dac45"
     }
   },
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-07-26T13:49:18.274Z",
+  "updatedAt": "2023-07-26T20:33:07.968Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

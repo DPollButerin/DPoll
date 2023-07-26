@@ -52,7 +52,7 @@ const DAOLayout = () => {
 
   return (
     <div>
-      DAO LAYOUT
+      {/* DAO LAYOUT */}
       <Routes>
         <Route path="/" element={<DAO />} />
         <Route path="/PollValidation" element={<DAOPollValidation />} />

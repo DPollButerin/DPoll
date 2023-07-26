@@ -119,160 +119,39 @@ export default function TxManager({ data, closeTx, setAlertInvalidTx }) {
       let msg = `Transaction initialized : ${functionName}\nparams: ${params}`;
       // try {
       //   if (params.lenght > 0) {
-      contractInstance.methods[functionName](...params)
-        .send({ from: fromAccount, value: value }, handleTx)
-        .on("error", function (e) {
-          console.log("initTransaction/ error", e);
-          setAlertInvalidTx(`Invalid Tx: ${functionName} rejected`);
-          setStatus({
-            sent: true,
-            show: show,
-            type: type,
-            msg: msg,
+      if (functionName != "voteForPoll") {
+        contractInstance.methods[functionName](...params)
+          .send({ from: fromAccount, value: value }, handleTx)
+          .on("error", function (e) {
+            console.log("initTransaction/ error", e);
+            setAlertInvalidTx(`Invalid Tx: ${functionName} rejected`);
+            setStatus({
+              sent: true,
+              show: show,
+              type: type,
+              msg: msg,
+            });
+            //           // setIsVisible(true);
+            doToast("FROM TX ERROR/ Transaction rejected", msg, "error");
           });
-          //           // setIsVisible(true);
-          doToast("FROM TX ERROR/ Transaction rejected", msg, "error");
-        });
-      //   } else {
-      //     contractInstance.methods[functionName]()
-      //       .send({ from: fromAccount, value: value }, handleTx)
-      //       .on("error", function (e) {
-      //         console.log("initTransaction/ error", e);
-      //         setAlertInvalidTx(`Invalid Tx: ${functionName} rejected`);
-      //       });
-      //   }
+      } else {
+        console.log("initTransaction/ voteForPoll");
+        contractInstance.methods[functionName](...params)
+          .send({ from: fromAccount, value: value, gasLimit: 300000 }, handleTx)
+          .on("error", function (e) {
+            console.log("initTransaction/ error", e);
+            setAlertInvalidTx(`Invalid Tx: ${functionName} rejected`);
+            setStatus({
+              sent: true,
+              show: show,
+              type: type,
+              msg: msg,
+            });
+            //           // setIsVisible(true);
+            doToast("FROM TX ERROR/ Transaction rejected", msg, "error");
+          });
+      }
 
-      //ICICICICI
-      // } catch (e) {
-      //   console.log("initTransaction/ error", e);
-      //   setAlertInvalidTx(`Invalid Tx: ${functionName} rejected`);
-      //    setStatus({
-      //             sent: true,
-      //             show: show,
-      //             type: type,
-      //             msg: msg,
-      //           });
-      // //           // setIsVisible(true);
-      //           doToast("FROM TRYCATCH/ Transaction rejected", msg, "error");
-      // }
-      //ICICICICI
-
-      // try {
-      //   switch (functionName) {
-      //     case "addMember":
-      //       msg = "Transaction initialized : adding voter";
-
-      //       const checkSumAddress =
-      //         contractsState.web3.utils.toChecksumAddress(fromAccount);
-      //       contractInstance.methods
-      //         .addMember(...params)
-      //         .send(
-      //           {
-      //             from: checkSumAddress,
-      //             value: value,
-      //           },
-      //           handleTx
-      //         )
-      //         .on("error", function (e) {
-      //           console.log("initTransaction/ error", e);
-      //           setAlertInvalidTx("Invalid Tx: adding voter rejected");
-
-      //           // setDuration(3000)
-      //           setStatus({
-      //             sent: true,
-      //             show: show,
-      //             type: type,
-      //             msg: msg,
-      //           });
-      //           // setIsVisible(true);
-      //           doToast("Transaction rejected", msg, "error");
-      //         });
-      // setDuration(3000);
-      // setStatus({
-      //   sent: true,
-      //   show: show,
-      //   type: type,
-      //   msg: msg,
-      // });
-      // // setIsVisible(true);
-      // doToast("Transaction initialized", msg, "info");
-      //       break;
-      //     default:
-      //       break;
-      //   }
-      // } catch (e) {
-      //   console.log("initTransaction/ error", e);
-      //   setAlertInvalidTx(`Invalid Tx: ${functionName} rejected`);
-      // }
-      //   case "startProposalsRegistering":
-      //     msg = "Transaction initialized : starting proposal registering";
-      //     contractInstance.methods
-      //       .startProposalsRegistering()
-      //       .send({ from: fromAccount }, handleTx)
-      //       .on("error", function (e) {
-      //         console.log("initTransaction/ error", e);
-      //         setAlertInvalidTx(
-      //           "Invalid Tx: starting proposal registering rejected"
-      //         );
-      //       });
-      //     break;
-      //   case "endProposalsRegistering":
-      //     msg = "Transaction initialized : ending proposal registering";
-      //     contractInstance.methods
-      //       .endProposalsRegistering()
-      //       .send({ from: fromAccount }, handleTx)
-      //       .on("error", function (e) {
-      //         console.log("initTransaction/ error", e);
-      //         setAlertInvalidTx(
-      //           "Invalid Tx: ending proposal registering rejected"
-      //         );
-      //       });
-      //     break;
-      //   case "startVotingSession":
-      //     msg = "Transaction initialized : starting voting session";
-      //     contractInstance.methods
-      //       .startVotingSession()
-      //       .send({ from: fromAccount }, handleTx)
-      //       .on("error", function (e) {
-      //         console.log("initTransaction/ error", e);
-      //         setAlertInvalidTx("Invalid Tx: starting voting session rejected");
-      //       });
-      //     break;
-      //   case "endVotingSession":
-      //     msg = "Transaction initialized : ending voting session";
-      //     contractInstance.methods
-      //       .endVotingSession()
-      //       .send({ from: fromAccount }, handleTx)
-      //       .on("error", function (e) {
-      //         console.log("initTransaction/ error", e);
-      //         setAlertInvalidTx("Invalid Tx: ending voting session rejected");
-      //       });
-      //     break;
-      //   case "addProposal":
-      //     msg = "Transaction initialized : adding proposal";
-      //     contractInstance.methods
-      //       .addProposal(params)
-      //       .send({ from: fromAccount }, handleTx)
-      //       .on("error", function (e) {
-      //         console.log("initTransaction/ error", e);
-      //         setAlertInvalidTx("Invalid Tx: adding proposal rejected");
-      //       });
-      //     break;
-      //   case "setVote":
-      //     msg = "Transaction initialized : voting";
-      //     contractInstance.methods
-      //       .setVote(params)
-      //       .send({ from: fromAccount }, handleTx)
-      //       .on("error", function (e) {
-      //         console.log("initTransaction/ error", e);
-      //         setAlertInvalidTx("Invalid Tx: voting rejected");
-      //       });
-      //     break;
-
-      //   default:
-      //     break;
-      // }
-      // setDuration(3000);
       setStatus({
         sent: true,
         show: show,

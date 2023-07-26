@@ -54,7 +54,7 @@ const NewPollForm = ({ handleAddTopic, isProcessing, setIsProcessing }) => {
         ],
       ],
     };
-
+    console.log("ADDING TOPICS HERE!!!!!!!!!!!! poll", poll);
     handleAddTopic(poll);
     setIsProcessing(true);
   };

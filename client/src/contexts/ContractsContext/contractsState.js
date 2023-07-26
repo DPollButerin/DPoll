@@ -52,6 +52,9 @@ const initialState = {
   IPollVoterAbi: null,
   IPollVoterInstance: null,
   IPollVoterAddress: null,
+  DPollPluginValidatorAbi: null,
+  DPollPluginValidatorInstance: null,
+  DPollPluginValidatorAddress: null,
 
   // contracts: {
   //   Certifier: {

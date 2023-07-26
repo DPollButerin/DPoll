@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Button, ButtonGroup, Select } from "@chakra-ui/react";
+import { Button, ButtonGroup, Select, VStack } from "@chakra-ui/react";
 import TxContext from "../../contexts/TxContext/TxContext";
 import { useConnection } from "../../contexts/ConnectionContext";
 import { useContracts } from "../../contexts/ContractsContext";
-import { Box, Heading, Flex, Container } from "@chakra-ui/react";
+import { Box, Heading, Flex, Container, Text } from "@chakra-ui/react";
 import PollDetails from "../../components/PollDetails";
 import Web3 from "web3";
 import { statusToString } from "../../utils/helpers";
@@ -18,6 +18,9 @@ const PollsState = () => {
   const { initTx, subscribeEvent } = useContext(TxContext);
   const { wallet } = useConnection();
   const { contractsState } = useContracts();
+
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [fetchedAnswers, setFetchedAnswers] = useState([]);
   // const [isDisabled, setIsDisabled] = useState([true, true]);
 
   // const updateIsDisabled = (status) => {
@@ -35,189 +38,57 @@ const PollsState = () => {
     if (id === 0 && pollInfos.status == 0) {
       return false;
     }
-    if (id === 1 && pollInfos.status == 2) {
+    if (id === 1 && pollInfos.status == 4) {
       return false;
     }
     return true;
   };
 
   // Fonction pour récupérer les derniers événements émis par le contrat
-  async function getLatestPollStatusChange(add) {
-    try {
-      let contract = new contractsState.web3.eth.Contract(
-        contractsState.PollMasterAbi, //IPollAdminAbi,
-        add
-      );
+  // async function getLatestPollStatusChange(add) {
+  //   try {
+  //     let contract = new contractsState.web3.eth.Contract(
+  //       contractsState.PollMasterAbi, //IPollAdminAbi,
+  //       add
+  //     );
 
-      contract
-        .getPastEvents(
-          "PollStatusChange",
-          {
-            fromBlock: 0,
-            toBlock: "latest",
-          },
-          function (error, events) {
-            console.log("POLLSTATUS CHANGE", events);
-            console.log("POLLSTATUS CHANGE error", error);
-          }
-        )
-        .then(function (events) {
-          console.log(events);
-        });
+  //     contract
+  //       .getPastEvents(
+  //         "PollStatusChange",
+  //         {
+  //           fromBlock: 0,
+  //           toBlock: "latest",
+  //         },
+  //         function (error, events) {
+  //           console.log("POLLSTATUS CHANGE", events);
+  //           console.log("POLLSTATUS CHANGE error", error);
+  //         }
+  //       )
+  //       .then(function (events) {
+  //         console.log(events);
+  //       });
 
-      contract
-        .getPastEvents(
-          "TopicsAdded",
-          {
-            fromBlock: 0,
-            toBlock: "latest",
-          },
-          function (error, events) {
-            console.log("TopicsAdded CHANGE", events);
-            console.log("TopicsAdded CHANGE error", error);
-          }
-        )
-        .then(function (events) {
-          console.log(events);
-        });
-      // // Obtenez le dernier numéro de bloc
-      // const latestBlockNumber = await contractsState.web3.eth.getBlockNumber();
-
-      // // Définissez le filtre pour les événements que vous souhaitez récupérer
-      // const eventFilter = contract.events.PollStatusChange({
-      //   fromBlock: latestBlockNumber - 100, // Définissez une plage de blocs dans laquelle rechercher les événements (par exemple, les 100 derniers blocs)
-      //   toBlock: latestBlockNumber,
-      // });
-
-      // // Obtenez les événements correspondant au filtre
-      // const events = await eventFilter.getPastEvents("allEvents");
-
-      // // Parcourez les événements pour obtenir le dernier événement PollStatusChange
-      // let latestEvent = null;
-      // for (let i = events.length - 1; i >= 0; i--) {
-      //   if (events[i].event === "PollStatusChange") {
-      //     latestEvent = events[i];
-      //     break;
-      //   }
-      // }
-
-      // // Vérifiez si un événement a été trouvé et obtenez la valeur de 'newStatus'
-      // if (latestEvent) {
-      //   const newStatusValue = latestEvent.returnValues.newStatus;
-      //   console.log("Dernière valeur de 'newStatus': ", newStatusValue);
-      // } else {
-      //   console.log(
-      //     "Aucun événement PollStatusChange trouvé dans les 100 derniers blocs."
-      //   );
-      // }
-    } catch (error) {
-      console.error("Erreur lors de la récupération des événements : ", error);
-    }
-  }
+  //     contract
+  //       .getPastEvents(
+  //         "TopicsAdded",
+  //         {
+  //           fromBlock: 0,
+  //           toBlock: "latest",
+  //         },
+  //         function (error, events) {
+  //           console.log("TopicsAdded CHANGE", events);
+  //           console.log("TopicsAdded CHANGE error", error);
+  //         }
+  //       )
+  //       .then(function (events) {
+  //         console.log(events);
+  //       });
+  //   } catch (error) {
+  //     console.error("Erreur lors de la récupération des événements : ", error);
+  //   }
+  // }
 
   const getInfos = async (add) => {
-    // console.log("getInfos called add", add);
-    // // const pollInstance = await new contractsState.web3.eth.Contract(
-    // //   contractsState.IPollViewAbi,
-    // //   add
-    // // );
-    // // console.log("getInfos called pollInstance", pollInstance);
-    // // const poll = pollInstance.methods
-    // //   .getPollInformations()
-    // //   .call({ from: wallet.accounts[0] })
-    // //   .on("receipt", (receipt) => {
-    // //     console.log("receipt in GETINFOS", receipt);
-    // //   });
-    // // console.log("polls ADD CLONES", poll);
-    // // const status = await pollInstance.methods
-    // //   .getPollStatus()
-    // //   .call({ from: wallet.accounts[0] })
-    // //   .on("receipt", (receipt) => {
-    // //     console.log("receipt in GETINFOS", receipt);
-    // //   });
-    // // console.log("polls ADD CLONES", status);
-    // // setPollInfos({ infos: poll, status: status });
-    // // const testWeb3 = new Web3(Web3.givenProvider || "http://localhost:8545");
-    // // const pollInstance = await new testWeb3.eth.Contract(
-    // //   // contractsState.IPollViewAbi,
-    // //   contractsState.PollMasterAbi,
-
-    // //   add
-    // // );
-    // // let pollInstance = new contractsState.web3.eth.Contract(
-    // //   contractsState.PollMasterAbi, //IPollAdminAbi,
-    // //   add
-    // // );
-    // // let pollContract = await new contractsState.web3.eth.Contract(
-    // //   contractsState.PollMasterAbi
-    // // );
-    // // let pollInstance = await pollContract.at(add);
-    // // console.log("getInfos called pollInstance", pollInstance);
-    // // // const poll = pollInstance.methods
-    // // //   .getPollInformations()
-    // // //   .send({ from: wallet.accounts[0] })
-    // // //   .on("receipt", (receipt) => {
-    // // //     console.log("receipt in GETINFOS", receipt);
-    // // //   });
-    // // // console.log("polls ADD CLONES", poll);
-    // // console.log("polls ADD CLONES", pollInstance);
-    // // console.log("polls ADD CLONES", pollInstance.options);
-    // getLatestPollStatusChange(add);
-    // try {
-    //   let pollInstance = new contractsState.web3.eth.Contract(
-    //     contractsState.PollMasterAbi, //IPollAdminAbi,
-    //     add
-    //   );
-    //   // let pollContract = await new contractsState.web3.eth.Contract(
-    //   //   contractsState.PollMasterAbi
-    //   // );
-    //   // let pollInstance = await pollContract.at(add);
-    //   // console.log("getInfos called pollInstance", pollInstance);
-    //   // const poll = pollInstance.methods
-    //   //   .getPollInformations()
-    //   //   .send({ from: wallet.accounts[0] })
-    //   //   .on("receipt", (receipt) => {
-    //   //     console.log("receipt in GETINFOS", receipt);
-    //   //   });
-    //   // console.log("polls ADD CLONES", poll);
-    //   console.log("polls ADD CLONES", pollInstance);
-    //   console.log("polls ADD CLONES", pollInstance.options);
-    //   console.log(
-    //     "bytecodedployed",
-    //     await contractsState.web3.eth.getCode(add)
-    //   );
-    //   const status = await pollInstance.methods
-    //     .getPollStatusExt()
-    //     .call({ from: wallet.accounts[0] })
-    //     .then(function (res) {
-    //       console.log("AFFICHE MOI CA", res);
-    //     })
-    //     .catch((error) => console.log("error", error));
-
-    //   // {
-    //   //   from: wallet.accounts[0],
-    //   //   gasPrice: "30000000000",
-    //   //   gas: "1000000",
-    //   // });
-    //   // .then((res) => console.log("ICICICICIC", res));
-    //   //   "receipt", (receipt) => {
-    //   //   console.log("receipt in GETINFOS", receipt);
-    //   // });
-    //   console.log("polls ADD CLONES satatu!!!!!!!!!", status);
-
-    //   ///TEST
-    //   const topics = await pollInstance.methods
-    //     .getTopics()
-    //     .call({ from: wallet.accounts[0] })
-    //     .then(function (res) {
-    //       console.log("AFFICHE MOI CA topics dans thennnnnnnnnnnnnnnn", res);
-    //     });
-    //   console.log("LES TOPICCSSSSS polls ADD CLONES topics", topics);
-
-    //   setPollInfos({ infos: "infos", status: status });
-    // } catch (err) {
-    //   console.log("polls ADD CLONES", err);
-    // }
     const instance = await new contractsState.web3.eth.Contract(
       contractsState.PollMasterAbi, //IPollAdminAbi,
       add
@@ -311,21 +182,42 @@ const PollsState = () => {
     });
   };
 
-  // useEffect(() => {
-  //   const getInfos = async () => {
-  //     const poll = await contractsState.PollMasterInstance.methods
-  //       .getPollInformations(selectedPoll)
-  //       .call({ from: wallet.accounts[0] });
-  //     console.log("polls ADD CLONES", poll);
-  //     const status = await contractsState.PollMasterInstance.methods
-  //       .getPollStatus(selectedPoll)
-  //       .call({ from: wallet.accounts[0] });
-  //     console.log("polls ADD CLONES", status);
-  //     setPollInfos({ infos: poll, status: status });
-  //   };
-  //   getInfos();
-  // }, [selectedPoll]);
-  // <option value="sondage1">Sondage 1</option>;
+  const updateEndPoll = async (res) => {
+    console.log("updateEndPoll via callback ", res);
+    // const instance = await new contractsState.web3.eth.Contract(
+    //   contractsState.PollMasterAbi, //IPollAdminAbi,
+    //   selectedPoll
+    // );
+    // const getAnswers = async () => {
+    //   try {
+    //     const answers = await instance.methods
+    //       .getPackedAnswers()
+    //       .call({ from: wallet.accounts[0] });
+    //     console.log("answers", answers);
+    //     return answers;
+    //   } catch (error) {
+    //     console.error("ANSWERS FETCHING error : ", error);
+    //   }
+    // };
+    // const answers = await getAnswers();
+    // setFetchedAnswers(answers);
+    setIsProcessing(false);
+  };
+
+  const hanldeStop = async () => {
+    console.log("hanldeStop");
+    const pollInstance = await new contractsState.web3.eth.Contract(
+      contractsState.PollMasterAbi,
+      selectedPoll
+    );
+
+    initTx(pollInstance, "endPoll", [], wallet.accounts[0], 0, {
+      callbackFunc: updateEndPoll,
+      callbackParam: true,
+    });
+    setIsProcessing(true);
+  };
+
   return (
     <>
       <Box>
@@ -366,10 +258,30 @@ const PollsState = () => {
             >
               Submit to validation
             </Button>
-            <Button size="lg" isDisabled={getIsDisabled(1)}>
+            <Button
+              size="lg"
+              isDisabled={getIsDisabled(1)}
+              isLoading={isProcessing}
+              onClick={hanldeStop}
+            >
               end the poll
             </Button>
           </ButtonGroup>
+        </Container>
+        <Container my="5">
+          <VStack>
+            {fetchedAnswers.length > 0 && (
+              <>
+                <Heading mt="5" as={"h3"} size={"md"}>
+                  Resultats: {fetchedAnswers}
+                </Heading>
+                <Text style={{ fontStyle: "italic" }}>
+                  les réponses nes ont pas décomprées, les bits à 1 sont
+                  l'indice des réponses choisies
+                </Text>
+              </>
+            )}
+          </VStack>
         </Container>
       </Box>
     </>
