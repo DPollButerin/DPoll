@@ -74,8 +74,8 @@ contract("TEST_05/DPollDAO", (accounts) => {
       });
       const member = await DPollDAOInstance.getMember(USER1);
       const txTime = await time.latest();
-      console.log(member);
-      console.log(txTime);
+      // console.log(member);
+      // console.log(txTime);
       expect(member.memberAddress).to.equal(USER1);
       expect(member.memberSince.toString()).to.equal(txTime.toString());
       expect(member.lastProposalCreation.toString()).to.equal("0");

@@ -29,7 +29,7 @@ const { web3 } = require("@openzeppelin/test-helpers/src/setup.js");
 These tests will test internals functions of Poll contract (in PollView, PollHelpers)
 TestPollHelper is a contract that inherit from PollUser and so from PollView and PollHelpers. It's only used for testing purpose and is not deployed on the blockchain
 */
-contract("TEST_07/PollMaster => clones", (accounts) => {
+contract("TEST_08/WORKFLOW => DAOvalidation", (accounts) => {
   //mock DAO and plugins deployment to get their instances
   //test factory deployment (with DAO and certifier addresses in constructor)
   //test access of PollFactory functions
@@ -46,6 +46,7 @@ contract("TEST_07/PollMaster => clones", (accounts) => {
   let certifierInstance;
   let certifierAddress;
   let DPollPluginValidatorInstance;
+  let DPollPluginValidatorAddress;
   let DPollPluginProposalsInstance;
   let DPollTokenInstance;
   let pollInstance; //clone
@@ -76,6 +77,12 @@ contract("TEST_07/PollMaster => clones", (accounts) => {
     description: "TEST DESCRIPTION 2",
     criteria: "FAKE CRITERIA",
   };
+
+  const questions = ["TEST QUESTION BATCH 1", "TEST QUESTION BATCH 2"];
+  const answers = [
+    ["TEST ANSWER BATCH 1", "TEST ANSWER BATCH 2"],
+    ["TEST ANSWER BATCH 1", "TEST ANSWER BATCH 2"],
+  ];
   const entryFees = web3.utils.toWei("0.02", "ether");
   const DAOentryFees = web3.utils.toWei("0.02", "ether");
   const minPollCost = web3.utils.toWei("0.05", "ether");
@@ -86,9 +93,9 @@ contract("TEST_07/PollMaster => clones", (accounts) => {
 
   const userList = [MEMBER1, MEMBER2, MEMBER3];
 
-  describe("Poll clone creation", () => {
+  describe("Validators vote to validate the poll", () => {
     const userList = [MEMBER1, MEMBER2, MEMBER3];
-    before(async () => {
+    beforeEach(async () => {
       [
         DPollDAOInstance,
         DPollPluginValidatorInstance,
@@ -100,9 +107,12 @@ contract("TEST_07/PollMaster => clones", (accounts) => {
       certifierInstance = await Certifier.new({ from: ADMIN });
       certifierAddress = certifierInstance.address;
 
+      DPollPluginValidatorAddress = DPollPluginValidatorInstance.address;
+
       pollFactoryInstance = await PollFactory.new(
         DPollDAOAddress,
         certifierAddress,
+        DPollPluginValidatorAddress,
         { from: ADMIN }
       );
       pollFactoryAddress = pollFactoryInstance.address;
@@ -133,23 +143,31 @@ contract("TEST_07/PollMaster => clones", (accounts) => {
       pollAddress = tx.logs[1].args.newPollContract;
       pollInstance = await PollMaster.at(pollAddress);
       //fill the poll
-      let questions = ["TEST QUESTION BATCH 1", "TEST QUESTION BATCH 2"];
-      let answers = [
-        ["TEST ANSWER BATCH 1", "TEST ANSWER BATCH 2"],
-        ["TEST ANSWER BATCH 1", "TEST ANSWER BATCH 2"],
-      ];
+
       tx = await pollInstance.addTopicsBatch(questions, answers, {
         from: MEMBER1,
       });
+
+      tx = await pollInstance.submitPoll({ from: MEMBER1 });
     });
 
-    it("should submit poll for dao validation and emit event ", async () => {
-      //PAS LES BONNES ADD DE PLUGINS => CORRIGER => ADD setter et getter à creation de clone => set les add
-      //   let tx = await pollInstance.submitPoll({ from: MEMBER1 });
-      //   expectEvent(tx, "PollStatusChange", {
-      //     previousStatus: new BN("0"),
-      //     newStatus: new BN("1"),
-      //   });
+    it("should have set the number of required validators to 3 ", async () => {
+      const requiredValidators =
+        await DPollPluginValidatorInstance.requiredValidators();
+      expect(requiredValidators.toString()).to.equal("3");
+    });
+    it("should have set the number of required validations to 2", async () => {
+      const requiredValidations =
+        await DPollPluginValidatorInstance.requiredValidations();
+      expect(requiredValidations.toString()).to.equal("2");
+    });
+    it("should get the number of polls submitted to the DAO", async () => {
+      const polls = await DPollPluginValidatorInstance.getPolls();
+      expect(polls.length).to.equal(1);
+    });
+    it("should get the addresses of the polls submitted to the DAO", async () => {
+      const polls = await DPollPluginValidatorInstance.getPolls();
+      expect(polls[0].pollAddress).to.equal(pollAddress);
     });
   });
 });

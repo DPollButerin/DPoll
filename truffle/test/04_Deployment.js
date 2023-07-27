@@ -47,7 +47,7 @@ contract("DPollDAO", (accounts) => {
 
     it("should deploy DPollDAO", async () => {
       DPollDAOInstance = await DPollDAO.new({ from: ADMIN });
-      console.log(DPollDAOInstance.address);
+      // console.log(DPollDAOInstance.address);
       assert(DPollDAOInstance.address);
     });
 
@@ -69,8 +69,8 @@ contract("DPollDAO", (accounts) => {
         const DAODPTbalance = await DPollTokenInstance.balanceOf(
           DPollDAOInstance.address
         );
-        console.log(DAODPTbalance.toString());
-        console.log(DPollDAOInstance.address);
+        // console.log(DAODPTbalance.toString());
+        // console.log(DPollDAOInstance.address);
         expect(DAODPTbalance.toString()).to.equal("1000000000000000000000000");
       });
     });

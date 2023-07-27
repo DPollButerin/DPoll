@@ -44,50 +44,6 @@ const PollsState = () => {
     return true;
   };
 
-  // Fonction pour récupérer les derniers événements émis par le contrat
-  // async function getLatestPollStatusChange(add) {
-  //   try {
-  //     let contract = new contractsState.web3.eth.Contract(
-  //       contractsState.PollMasterAbi, //IPollAdminAbi,
-  //       add
-  //     );
-
-  //     contract
-  //       .getPastEvents(
-  //         "PollStatusChange",
-  //         {
-  //           fromBlock: 0,
-  //           toBlock: "latest",
-  //         },
-  //         function (error, events) {
-  //           console.log("POLLSTATUS CHANGE", events);
-  //           console.log("POLLSTATUS CHANGE error", error);
-  //         }
-  //       )
-  //       .then(function (events) {
-  //         console.log(events);
-  //       });
-
-  //     contract
-  //       .getPastEvents(
-  //         "TopicsAdded",
-  //         {
-  //           fromBlock: 0,
-  //           toBlock: "latest",
-  //         },
-  //         function (error, events) {
-  //           console.log("TopicsAdded CHANGE", events);
-  //           console.log("TopicsAdded CHANGE error", error);
-  //         }
-  //       )
-  //       .then(function (events) {
-  //         console.log(events);
-  //       });
-  //   } catch (error) {
-  //     console.error("Erreur lors de la récupération des événements : ", error);
-  //   }
-  // }
-
   const getInfos = async (add) => {
     const instance = await new contractsState.web3.eth.Contract(
       contractsState.PollMasterAbi, //IPollAdminAbi,

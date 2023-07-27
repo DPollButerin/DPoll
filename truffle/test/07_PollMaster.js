@@ -46,6 +46,7 @@ contract("TEST_07/PollMaster => clones", (accounts) => {
   let certifierInstance;
   let certifierAddress;
   let DPollPluginValidatorInstance;
+  let DPollPluginValidatorAddress;
   let DPollPluginProposalsInstance;
   let DPollTokenInstance;
   let pollInstance; //clone
@@ -98,9 +99,12 @@ contract("TEST_07/PollMaster => clones", (accounts) => {
       certifierInstance = await Certifier.new({ from: ADMIN });
       certifierAddress = certifierInstance.address;
 
+      DPollPluginValidatorAddress = DPollPluginValidatorInstance.address;
+
       pollFactoryInstance = await PollFactory.new(
         DPollDAOAddress,
         certifierAddress,
+        DPollPluginValidatorAddress,
         { from: ADMIN }
       );
       pollFactoryAddress = pollFactoryInstance.address;
@@ -152,6 +156,33 @@ contract("TEST_07/PollMaster => clones", (accounts) => {
       //check that poll is owned by member 1
       assert.equal(await pollInstance.owner(), MEMBER1);
     });
+    it("should have set the PluginValidator address in the clone", async () => {
+      const tx = await pollFactoryInstance.createPollContract(
+        pollCreationArgs1.responsesCount,
+        pollCreationArgs1.name,
+        pollCreationArgs1.description,
+        pollCreationArgs1.criteria,
+        { from: MEMBER1, value: pollCost1 }
+      );
+      const pollAdd = tx.logs[1].args.newPollContract;
+      const pollInstance = await PollMaster.at(pollAdd);
+      const pluginValidatorAddress =
+        await pollInstance.DPollPluginValidatorAddress();
+      expect(pluginValidatorAddress).to.equal(DPollPluginValidatorAddress);
+    });
+    it("should have set the certifier address in the clone", async () => {
+      const tx = await pollFactoryInstance.createPollContract(
+        pollCreationArgs1.responsesCount,
+        pollCreationArgs1.name,
+        pollCreationArgs1.description,
+        pollCreationArgs1.criteria,
+        { from: MEMBER1, value: pollCost1 }
+      );
+      const pollAdd = tx.logs[1].args.newPollContract;
+      const pollInstance = await PollMaster.at(pollAdd);
+      const certifierAddress = await pollInstance.certifierAddress();
+      expect(certifierAddress).to.equal(certifierAddress);
+    });
   });
 
   describe("Poll clone : add and get topic (infos, questions & answers)", () => {
@@ -169,9 +200,12 @@ contract("TEST_07/PollMaster => clones", (accounts) => {
       certifierInstance = await Certifier.new({ from: ADMIN });
       certifierAddress = certifierInstance.address;
 
+      DPollPluginValidatorAddress = DPollPluginValidatorInstance.address;
+
       pollFactoryInstance = await PollFactory.new(
         DPollDAOAddress,
         certifierAddress,
+        DPollPluginValidatorAddress,
         { from: ADMIN }
       );
       pollFactoryAddress = pollFactoryInstance.address;
@@ -223,7 +257,7 @@ contract("TEST_07/PollMaster => clones", (accounts) => {
       });
       //check that topic has been added
       const topic = await pollInstance.getTopic(0);
-      console.log("topic", topic);
+      // console.log("topic", topic);
       expect(topic.question).to.equal(question);
       expect(topic.choices[0]).to.equal(answers[0]);
       expect(topic.choices[1]).to.equal(answers[1]);
@@ -318,12 +352,12 @@ contract("TEST_07/PollMaster => clones", (accounts) => {
           "Ownable: caller is not the owner"
         );
       });
-      it("should revert if non DAO address try to call setPollValidation  ", async () => {
+      it("should revert if non Validator address try to call setPollValidation  ", async () => {
         await expectRevert(
           pollInstance.setPollValidation(pollAdd, true, {
             from: STRANGER,
           }),
-          "Only DAO can call this function"
+          "Only Validator can call this function"
         );
       });
       it("should revert if a non member try to call endPoll  ", async () => {
