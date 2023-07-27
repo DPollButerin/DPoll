@@ -37458,7 +37458,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-07-26T20:33:02.765Z",
+  "updatedAt": "2023-07-27T02:36:29.939Z",
   "devdoc": {
     "author": "ibourn",
     "details": "The contract inherits from PollUser (and so from PollAdmin, PollView, PollHelpers, PollStorage)each internal function of PollMaster will be called in external functions named as 'test' + the name of the function to testsetters are added to test the storage and getters before the use by other calinng function in the regular process of the poll",
