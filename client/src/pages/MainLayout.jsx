@@ -9,6 +9,7 @@ import NavButton from "../components/NavButton";
 import { group, single } from "../utils/navLinks";
 // import InlineSVG from "svg-inline-react";
 import ConnectButton from "../components/ConnectButton";
+import { motion } from "framer-motion";
 
 const useCurrentPath = () => {
   const routes = [{ path: "/" }];
@@ -27,6 +28,11 @@ const MainLayout = () => {
   const currentPath = useCurrentPath(); // `/members/5566` -> `/members/:id`
 
   return (
+    // <motion.div
+    //   initial={{ opacity: "0" }}
+    //   animate={{ opacity: "1" }}
+    //   transition={{ duration: 2 }}
+    // >
     <Box h="96vh" my="0" p="0" style={{ backgroundColor: "#E8E8E8" }}>
       <Flex my="0" pl="0" py="0" style={{ backgroundColor: "marron" }}>
         {/* <header style={{ backgroundColor: "green", fontSize: "1.1rem" }}>
@@ -87,6 +93,7 @@ const MainLayout = () => {
         </Box>
       </Flex>
     </Box>
+    // </motion.div>
   );
 };
 

@@ -9,7 +9,7 @@ import RespondentClaim from "./RespondentClaim";
 const RespondentLayout = () => {
   return (
     <div>
-      RESPONDENT LAYOUT
+      {/* RESPONDENT LAYOUT */}
       <Routes>
         <Route path="/" element={<Respondent />} />
         <Route path="/Historic" element={<RespondentHistoric />} />

@@ -41,22 +41,22 @@
     "absolutePath": "project:/contracts/IPollUser.sol",
     "exportedSymbols": {
       "IPollUser": [
-        2776
+        3124
       ]
     },
-    "id": 2777,
+    "id": 3125,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2763,
+        "id": 3111,
         "literals": [
           "solidity",
           "0.8",
           ".19"
         ],
         "nodeType": "PragmaDirective",
-        "src": "33:23:14"
+        "src": "33:23:16"
       },
       {
         "abstract": false,
@@ -65,42 +65,42 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 2764,
+          "id": 3112,
           "nodeType": "StructuredDocumentation",
-          "src": "58:109:14",
+          "src": "58:109:16",
           "text": "@title IPollUser\n@author ibourn\n@notice This contract allow to interact with the poll as a respondent"
         },
         "fullyImplemented": false,
-        "id": 2776,
+        "id": 3124,
         "linearizedBaseContracts": [
-          2776
+          3124
         ],
         "name": "IPollUser",
-        "nameLocation": "179:9:14",
+        "nameLocation": "179:9:16",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "functionSelector": "f73649f6",
-            "id": 2772,
+            "id": 3120,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "addAnswer",
-            "nameLocation": "204:9:14",
+            "nameLocation": "204:9:16",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2770,
+              "id": 3118,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2767,
+                  "id": 3115,
                   "mutability": "mutable",
                   "name": "_chosenChoices",
-                  "nameLocation": "230:14:14",
+                  "nameLocation": "230:14:16",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2772,
-                  "src": "214:30:14",
+                  "scope": 3120,
+                  "src": "214:30:16",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -109,18 +109,18 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2765,
+                      "id": 3113,
                       "name": "uint",
                       "nodeType": "ElementaryTypeName",
-                      "src": "214:4:14",
+                      "src": "214:4:16",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "id": 2766,
+                    "id": 3114,
                     "nodeType": "ArrayTypeName",
-                    "src": "214:6:14",
+                    "src": "214:6:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -130,13 +130,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2769,
+                  "id": 3117,
                   "mutability": "mutable",
                   "name": "_eligibilityProof",
-                  "nameLocation": "254:17:14",
+                  "nameLocation": "254:17:16",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2772,
-                  "src": "246:25:14",
+                  "scope": 3120,
+                  "src": "246:25:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -144,10 +144,10 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 2768,
+                    "id": 3116,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
-                    "src": "246:7:14",
+                    "src": "246:7:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
@@ -156,54 +156,54 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "213:59:14"
+              "src": "213:59:16"
             },
             "returnParameters": {
-              "id": 2771,
+              "id": 3119,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "281:0:14"
+              "src": "281:0:16"
             },
-            "scope": 2776,
-            "src": "195:87:14",
+            "scope": 3124,
+            "src": "195:87:16",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "b88a802f",
-            "id": 2775,
+            "id": 3123,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "claimReward",
-            "nameLocation": "296:11:14",
+            "nameLocation": "296:11:16",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2773,
+              "id": 3121,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "307:2:14"
+              "src": "307:2:16"
             },
             "returnParameters": {
-              "id": 2774,
+              "id": 3122,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "318:0:14"
+              "src": "318:0:16"
             },
-            "scope": 2776,
-            "src": "287:32:14",
+            "scope": 3124,
+            "src": "287:32:16",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2777,
-        "src": "169:152:14",
+        "scope": 3125,
+        "src": "169:152:16",
         "usedErrors": []
       }
     ],
-    "src": "33:288:14"
+    "src": "33:288:16"
   },
   "compiler": {
     "name": "solc",
@@ -211,7 +211,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-07-20T22:18:38.080Z",
+  "updatedAt": "2023-07-25T23:44:32.799Z",
   "devdoc": {
     "author": "ibourn",
     "kind": "dev",

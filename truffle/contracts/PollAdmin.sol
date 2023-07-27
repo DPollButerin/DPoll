@@ -29,9 +29,12 @@ contract PollAdmin is PollView, PollHelpers, IPollAdmin, IPollValidator {
         require(msg.sender == DAOaddress, 'Only DAO can call this function');
         _;
     }
-
+    modifier onlyValidator() {
+        require(msg.sender == validatorAddress, 'Only Validator can call this function');
+        _;
+    }
     // :::::::::::::::::::::::::: GETTERS :::::::::::::::::::::::::::::: //
-
+//ATTENTION MISSING REQUIRE... (like checking if id exist!!!!!)
     /**
     @notice This function return the selected choices of topics of a respondent
     @dev one answer is a uint256 where each bit represent an available choice : 1 is selected, 0 is not selected
@@ -139,8 +142,8 @@ contract PollAdmin is PollView, PollHelpers, IPollAdmin, IPollValidator {
     
         uint amount = amountToValidators + amountToDAO;
 
-        IDAOPollSubmission(DAOaddress).submitPoll{value: amount  }(address(this), amountToValidators, amountToDAO);
-//  DPollPluginValidator(DAOaddress).submitPoll{value: amount  }(address(this), amountToValidators, amountToDAO);
+        IDAOPollSubmission(validatorAddress).submitPoll{value: amount  }(address(this), amountToValidators, amountToDAO);
+//  DPollPluginValidator(ValidatorAddress).submitPoll{value: amount  }(address(this), amountToValidators, amountToDAO);
 
         pollStatus = PollStatus.PollSubmitted;  
 
@@ -156,7 +159,7 @@ contract PollAdmin is PollView, PollHelpers, IPollAdmin, IPollValidator {
     @param pollAddress is the address of the poll to validate (this contract)
     @param isValid is a boolean to validate or reject the poll
      */
-    function setPollValidation(address pollAddress, bool isValid) external payable onlyDao {
+    function setPollValidation(address pollAddress, bool isValid) external payable onlyValidator {
         require(pollStatus == PollStatus.PollSubmitted, 'Poll not submitted');
         // require(topics.length > 0, 'No topic');
         require(pollAddress == address(this), 'Wrong poll address'); 

@@ -29,7 +29,7 @@ pragma solidity 0.8.19;
  * set a very big required number of respondents to avoid paying them as it will not be reached, but he could read the memory of the contract to get the answers before the end
  * to have a competitive advantage as only the validators will be paid)
  *
- * - a minimum amount is set to avoid a poll with a very low amount with : 0.2 ether + 0.001 ether * number of respondents
+ * - a minimum amount is set to avoid a poll with a very low amount with : 0.05 ether + 0.0001 ether * number of respondents
  *
  *--------------------------------------------------------------------------------------------------------
  * @todo :
@@ -96,6 +96,7 @@ contract PollMaster is PollUser {
         address _newOwner, 
         address _DAOaddress,
         address _certifierAddress,
+        address _validatorAddress,
         // uint _duration,
         uint _requiredResponseCount,
         string calldata _pollName,
@@ -111,7 +112,7 @@ contract PollMaster is PollUser {
         require(_requiredResponseCount <= MAX_RESPONDENTS_LENGTH, 'Too many respondents');
 
         _initializeOwnership(_newOwner);
-        _initializeSettings(_DAOaddress, _certifierAddress, _requiredResponseCount, _pollName, _pollDescription, _eligibilityCriteria);
+        _initializeSettings(_DAOaddress, _certifierAddress, _validatorAddress, _requiredResponseCount, _pollName, _pollDescription, _eligibilityCriteria);
         _initializeAmounts(msg.value);
     }
 
@@ -134,6 +135,7 @@ contract PollMaster is PollUser {
     function _initializeSettings(
         address _DAOaddress,
         address _certifierAddress,
+        address _validatorAddress,
         // uint _duration,
         uint _requiredResponseCount,
         string calldata _pollName,
@@ -155,6 +157,7 @@ contract PollMaster is PollUser {
 
         DAOaddress = _DAOaddress;
         certifierAddress = _certifierAddress;
+        validatorAddress = _validatorAddress;
     }  
 
     /*

@@ -46,7 +46,9 @@ contract("TEST_06/PollFactory", (accounts) => {
   let certifierInstance;
   let certifierAddress;
   let DPollPluginValidatorInstance;
+  let DPollPluginValidatorAddress;
   let DPollPluginProposalsInstance;
+  let DPollPluginProposalsAddress;
   let DPollTokenInstance;
   let pollInstance; //clone
   let pollAddress;
@@ -84,6 +86,7 @@ contract("TEST_06/PollFactory", (accounts) => {
   const insufficientPollFund = web3.utils.toWei("0.05", "ether");
 
   describe("PollFactory deployment", () => {
+    //change to beforeEach to be cleaner => test ok but not as it should be
     before(async () => {
       [
         DPollDAOInstance,
@@ -96,9 +99,12 @@ contract("TEST_06/PollFactory", (accounts) => {
       certifierInstance = await Certifier.new({ from: ADMIN });
       certifierAddress = certifierInstance.address;
 
+      DPollPluginValidatorAddress = DPollPluginValidatorInstance.address;
+
       pollFactoryInstance = await PollFactory.new(
         DPollDAOAddress,
         certifierAddress,
+        DPollPluginValidatorAddress,
         { from: ADMIN }
       );
       pollFactoryAddress = pollFactoryInstance.address;
@@ -121,6 +127,7 @@ contract("TEST_06/PollFactory", (accounts) => {
       pollFactoryInstance = await PollFactory.new(
         DPollDAOAddress,
         certifierAddress,
+        DPollPluginValidatorAddress,
         { from: ADMIN }
       );
       pollFactoryAddress = pollFactoryInstance.address;
@@ -133,6 +140,7 @@ contract("TEST_06/PollFactory", (accounts) => {
       pollFactoryInstance = await PollFactory.new(
         DPollDAOAddress,
         certifierAddress,
+        DPollPluginValidatorAddress,
         { from: ADMIN }
       );
       pollFactoryAddress = pollFactoryInstance.address;
@@ -149,6 +157,7 @@ contract("TEST_06/PollFactory", (accounts) => {
       pollFactoryInstance = await PollFactory.new(
         DPollDAOAddress,
         certifierAddress,
+        DPollPluginValidatorAddress,
         { from: ADMIN }
       );
       pollFactoryAddress = pollFactoryInstance.address;
@@ -163,6 +172,35 @@ contract("TEST_06/PollFactory", (accounts) => {
         await pollFactoryInstance.getMasterPollAddress();
       expect(pollMasterAddressFromPollFactory).to.equal(pollMasterAddress);
     });
+    it("should set PluginValidator address in PollFactory", async () => {
+      certifierInstance = await Certifier.new({ from: ADMIN });
+      certifierAddress = certifierInstance.address;
+
+      DPollPluginValidatorAddress = DPollPluginValidatorInstance.address;
+
+      pollFactoryInstance = await PollFactory.new(
+        DPollDAOAddress,
+        certifierAddress,
+        DPollPluginValidatorAddress,
+        { from: ADMIN }
+      );
+      pollFactoryAddress = pollFactoryInstance.address;
+      pollMasterInstance = await PollMaster.new(pollFactoryAddress, {
+        from: ADMIN,
+      });
+      pollMasterAddress = pollMasterInstance.address;
+      await pollFactoryInstance.setPollMasterAddress(pollMasterAddress, {
+        from: ADMIN,
+      });
+      const pollMasterAddressFromPollFactory =
+        await pollFactoryInstance.getMasterPollAddress();
+      // expect(pollMasterAddressFromPollFactory).to.equal(pollMasterAddress);
+      const validatorSet =
+        await pollFactoryInstance.DPollPluginValidatorAddress();
+      expect(validatorSet).to.equal(DPollPluginValidatorAddress);
+    });
+
+    //test it add du plugin validator!!!!!!!!!!!
     describe("accessibility of PollFactory functions", () => {
       before(async () => {
         [
@@ -179,6 +217,7 @@ contract("TEST_06/PollFactory", (accounts) => {
         pollFactoryInstance = await PollFactory.new(
           DPollDAOAddress,
           certifierAddress,
+          DPollPluginValidatorAddress,
           { from: ADMIN }
         );
         pollFactoryAddress = pollFactoryInstance.address;

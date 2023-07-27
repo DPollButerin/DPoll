@@ -12,6 +12,7 @@ const NewPoll = () => {
   const [poll, setPoll] = useState({});
   const [pollContent, setPollContent] = useState([]);
   const [step, setStep] = useState(0); //1 creation 2 3 add contenu 4 validation
+  const [isProcessing, setIsProcessing] = useState(false); //1 creation 2 3 add contenu 4 validation
 
   const { initTx, subscribeEvent } = useContext(TxContext);
   const { wallet } = useConnection();
@@ -31,7 +32,9 @@ const NewPoll = () => {
       .call({ from: wallet.accounts[0] });
     const lastClone = clones[clones.length - 1];
     console.log("lastClone", lastClone);
+    setIsProcessing(false);
     setNewPollAddress(lastClone);
+    incrementStep();
   };
 
   const handleOnCreation = () => {
@@ -48,15 +51,16 @@ const NewPoll = () => {
   const handlePollCreation = (poll) => {
     setPoll(poll);
     console.log("poll", poll);
-    incrementStep();
+    // incrementStep();//!!!!!!!!!!!!!!!!
 
     //appel web3 => DPollFactory pour creer poll
 
-    const amount = 0.07;
+    const amount = 0.07; //mini 0.05 + 0.001 * desired answers count
     const amountTowei = contractsState.web3.utils.toWei(
       amount.toString(),
       "ether"
     );
+    // setIsProcessing(true);//§!!!!!!!!!!
     initTx(
       contractsState.PollFactoryInstance,
       "createPollContract",
@@ -68,6 +72,11 @@ const NewPoll = () => {
         callbackParam: true,
       }
     );
+  };
+
+  const updateTopicAdded = (newIsProcessing) => {
+    setIsProcessing(newIsProcessing);
+    setStep(2);
   };
   // const amount = 0.05 + 0.001 * poll.quorum;
 
@@ -82,15 +91,17 @@ const NewPoll = () => {
 
     setPollContent((old) => [...old, topic]);
     console.log("pollContent AJOUT DE TOPIC PARENT", pollContent);
-    setStep(2); //step + 1);
+    // setStep(2); //step + 1);
 
     const amount = 0;
     const amountTowei = contractsState.web3.utils.toWei(
       amount.toString(),
       "ether"
     );
+    console.log("ADD CALL TO  ADD TOPIC newPollAddress", newPollAddress);
+    console.log("ADD CALL TO  ADD TOPIC topic", topic);
     let pollInstance = new contractsState.web3.eth.Contract(
-      contractsState.IPollAdminAbi,
+      contractsState.PollMasterAbi, //IPollAdminAbi,
       newPollAddress
     );
     initTx(
@@ -99,7 +110,10 @@ const NewPoll = () => {
       [topic.questions, topic.choices],
       wallet.accounts[0],
       amountTowei,
-      {}
+      {
+        callbackFunc: updateTopicAdded,
+        callbackParam: false,
+      }
     );
 
     //METTRE LES EVENT DS INTERFACES!!!
@@ -130,9 +144,17 @@ const NewPoll = () => {
   return (
     <>
       {step === 0 ? (
-        <NewPollStart handlePollCreation={handlePollCreation} />
+        <NewPollStart
+          handlePollCreation={handlePollCreation}
+          isProcessing={isProcessing}
+          setIsProcessing={setIsProcessing}
+        />
       ) : step === 1 ? (
-        <NewPollForm handleAddTopic={handleAddTopic} />
+        <NewPollForm
+          handleAddTopic={handleAddTopic}
+          isProcessing={isProcessing}
+          setIsProcessing={setIsProcessing}
+        />
       ) : (
         //           : step === 2 ? (
         // <NewPollForm handleAddTopic={handleAddTopic} step={step} />

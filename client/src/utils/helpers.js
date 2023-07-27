@@ -12,4 +12,16 @@ const getUUID = () => {
   });
 };
 
-export { getUUID };
+const statusToString = (status) => {
+  const statusList = [
+    "initialized",
+    "submitted",
+    "validated",
+    "whitelistRegistering",
+    "started",
+    "endend",
+  ];
+  return statusList[status];
+};
+
+export { getUUID, statusToString };

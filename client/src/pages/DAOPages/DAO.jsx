@@ -4,6 +4,7 @@ import { VStack, Heading, Text, Flex, Spacer } from "@chakra-ui/react";
 import PresentationCard from "../../components/PresentationCard";
 import { useContracts } from "../../contexts/ContractsContext";
 import { useConnection } from "../../contexts/ConnectionContext";
+import { motion } from "framer-motion";
 
 //TOUT VIRER ICI QUE TEXTE DE PRESENTATION
 const DAO = () => {
@@ -44,6 +45,11 @@ const DAO = () => {
   }, [account]);
 
   return (
+    // <motion.div
+    //   initial={{ opacity: "0" }}
+    //   animate={{ opacity: "1" }}
+    //   transition={{ duration: 2 }}
+    // >
     <VStack
       maxH={"100%"}
       maxW={"100%"}
@@ -84,6 +90,7 @@ const DAO = () => {
         />
       </Flex>
     </VStack>
+    // </motion.div>
   );
 };
 
