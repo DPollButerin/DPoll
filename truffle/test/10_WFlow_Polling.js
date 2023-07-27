@@ -29,7 +29,7 @@ const { web3 } = require("@openzeppelin/test-helpers/src/setup.js");
 These tests will test internals functions of Poll contract (in PollView, PollHelpers)
 TestPollHelper is a contract that inherit from PollUser and so from PollView and PollHelpers. It's only used for testing purpose and is not deployed on the blockchain
 */
-contract("TEST_08/WORKFLOW => DAOSubmission", (accounts) => {
+contract("TEST_10/WORKFLOW => Answering the poll", (accounts) => {
   //mock DAO and plugins deployment to get their instances
   //test factory deployment (with DAO and certifier addresses in constructor)
   //test access of PollFactory functions
@@ -87,13 +87,13 @@ contract("TEST_08/WORKFLOW => DAOSubmission", (accounts) => {
   const DAOentryFees = web3.utils.toWei("0.02", "ether");
   const minPollCost = web3.utils.toWei("0.05", "ether");
   const minCostPerResponse = web3.utils.toWei("0.0001", "ether");
-  const pollCost1 = web3.utils.toWei("0.051", "ether"); //plus additonal cost per response
+  const pollCost1 = web3.utils.toWei("0.0501", "ether"); //plus additonal cost per response 0.05 + 0.0001 (arg1 = 1 response)
   const pollCost2 = web3.utils.toWei("0.051", "ether");
   const insufficientPollFund = web3.utils.toWei("0.05", "ether");
 
   const userList = [MEMBER1, MEMBER2, MEMBER3];
 
-  describe("Poll clone creation & submission to DAO", () => {
+  describe("Validators vote to validate the poll", () => {
     const userList = [MEMBER1, MEMBER2, MEMBER3];
     beforeEach(async () => {
       [
@@ -147,26 +147,53 @@ contract("TEST_08/WORKFLOW => DAOSubmission", (accounts) => {
       tx = await pollInstance.addTopicsBatch(questions, answers, {
         from: MEMBER1,
       });
-    });
+      //submission
+      tx = await pollInstance.submitPoll({ from: MEMBER1 });
 
-    it("should submit poll for dao validation and emit event ", async () => {
-      //PAS LES BONNES ADD DE PLUGINS => CORRIGER => ADD setter et getter à creation de clone => set les add
-      //   let tx = await pollInstance.submitPoll({ from: MEMBER1 });
-      //   expectEvent(tx, "PollStatusChange", {
-      //     previousStatus: new BN("0"),
-      //     newStatus: new BN("1"),
-      //   });
-      let tx = await pollInstance.submitPoll({ from: MEMBER1 });
-      expectEvent(tx, "PollStatusChange", {
-        previousStatus: new BN("0"),
-        newStatus: new BN("1"),
+      //validation
+      await DPollPluginValidatorInstance.voteForPoll(0, true, {
+        from: MEMBER1,
+      });
+      await DPollPluginValidatorInstance.voteForPoll(0, true, {
+        from: MEMBER2,
       });
     });
-    it("should the status of the poll to be submitted", async () => {
-      await pollInstance.submitPoll({ from: MEMBER1 });
-      const status = await pollInstance.getPollStatus();
-      // const status = polls[0].status;
-      expect(status).to.be.bignumber.equal(new BN("1"));
+    it("should let someone answer to the poll ", async () => {
+      //trnasfo "i'm eligible" in bytes32
+      const eligibility = web3.utils.soliditySha3(
+        web3.utils.encodePacked({ type: "string", value: "i'm eligible" })
+      );
+
+      await pollInstance.addAnswer([0, 2], eligibility, {
+        from: MEMBER1,
+      });
+      const poll = await pollInstance.getRespondentsCount();
+      expect(poll.toString()).to.equal("1");
+    });
+    it("should revert if someone try to answer to the poll twice", async () => {
+      //trnasfo "i'm eligible" in bytes32
+      const eligibility = web3.utils.soliditySha3(
+        web3.utils.encodePacked({ type: "string", value: "i'm eligible" })
+      );
+
+      await pollInstance.addAnswer([0, 2], eligibility, { from: MEMBER1 });
+      await expectRevert(
+        pollInstance.addAnswer([0, 2], eligibility, { from: MEMBER1 }),
+        "Already answered"
+      );
+    });
+    it("should revert if we answer an non existing question", async () => {
+      //trnasfo "i'm eligible" in bytes32
+      const eligibility = web3.utils.soliditySha3(
+        web3.utils.encodePacked({ type: "string", value: "i'm eligible" })
+      );
+
+      await expectRevert(
+        pollInstance.addAnswer([0, 2, 5, 6, 7, 8], eligibility, {
+          from: MEMBER1,
+        }),
+        "Wrong number of answers"
+      );
     });
   });
 });

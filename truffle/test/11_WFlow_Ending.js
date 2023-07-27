@@ -29,7 +29,7 @@ const { web3 } = require("@openzeppelin/test-helpers/src/setup.js");
 These tests will test internals functions of Poll contract (in PollView, PollHelpers)
 TestPollHelper is a contract that inherit from PollUser and so from PollView and PollHelpers. It's only used for testing purpose and is not deployed on the blockchain
 */
-contract("TEST_08/WORKFLOW => DAOSubmission", (accounts) => {
+contract("TEST_11/WORKFLOW => Ending the poll", (accounts) => {
   //mock DAO and plugins deployment to get their instances
   //test factory deployment (with DAO and certifier addresses in constructor)
   //test access of PollFactory functions
@@ -87,13 +87,13 @@ contract("TEST_08/WORKFLOW => DAOSubmission", (accounts) => {
   const DAOentryFees = web3.utils.toWei("0.02", "ether");
   const minPollCost = web3.utils.toWei("0.05", "ether");
   const minCostPerResponse = web3.utils.toWei("0.0001", "ether");
-  const pollCost1 = web3.utils.toWei("0.051", "ether"); //plus additonal cost per response
+  const pollCost1 = web3.utils.toWei("0.0501", "ether"); //plus additonal cost per response 0.05 + 0.0001 (arg1 = 1 response)
   const pollCost2 = web3.utils.toWei("0.051", "ether");
   const insufficientPollFund = web3.utils.toWei("0.05", "ether");
 
   const userList = [MEMBER1, MEMBER2, MEMBER3];
 
-  describe("Poll clone creation & submission to DAO", () => {
+  describe("Owner stop the poll", () => {
     const userList = [MEMBER1, MEMBER2, MEMBER3];
     beforeEach(async () => {
       [
@@ -137,7 +137,7 @@ contract("TEST_08/WORKFLOW => DAOSubmission", (accounts) => {
         pollCreationArgs1.name,
         pollCreationArgs1.description,
         pollCreationArgs1.criteria,
-        { from: MEMBER1, value: pollCost1 }
+        { from: MEMBER1, value: pollCost2 }
       );
 
       pollAddress = tx.logs[1].args.newPollContract;
@@ -147,26 +147,57 @@ contract("TEST_08/WORKFLOW => DAOSubmission", (accounts) => {
       tx = await pollInstance.addTopicsBatch(questions, answers, {
         from: MEMBER1,
       });
-    });
+      //submission
+      tx = await pollInstance.submitPoll({ from: MEMBER1 });
 
-    it("should submit poll for dao validation and emit event ", async () => {
-      //PAS LES BONNES ADD DE PLUGINS => CORRIGER => ADD setter et getter à creation de clone => set les add
-      //   let tx = await pollInstance.submitPoll({ from: MEMBER1 });
-      //   expectEvent(tx, "PollStatusChange", {
-      //     previousStatus: new BN("0"),
-      //     newStatus: new BN("1"),
+      //validation
+      await DPollPluginValidatorInstance.voteForPoll(0, true, {
+        from: MEMBER2,
+      });
+      //cost1 only one response paid (sinon nto enough fund vu que pas payé pour mini de 2 responses)
+      await DPollPluginValidatorInstance.voteForPoll(0, true, {
+        from: MEMBER3,
+      });
+      const eligibility = web3.utils.soliditySha3(
+        web3.utils.encodePacked({ type: "string", value: "i'm eligible" })
+      );
+
+      //answer the poll
+      //   await pollInstance.addAnswer([0, 2], eligibility, {
+      //     from: MEMBER1,
       //   });
-      let tx = await pollInstance.submitPoll({ from: MEMBER1 });
-      expectEvent(tx, "PollStatusChange", {
-        previousStatus: new BN("0"),
-        newStatus: new BN("1"),
+
+      await pollInstance.addAnswer([1, 2], eligibility, {
+        from: MEMBER2,
       });
     });
-    it("should the status of the poll to be submitted", async () => {
-      await pollInstance.submitPoll({ from: MEMBER1 });
-      const status = await pollInstance.getPollStatus();
-      // const status = polls[0].status;
-      expect(status).to.be.bignumber.equal(new BN("1"));
+
+    it("should let owner end the poll", async () => {
+      await pollInstance.endPoll({ from: MEMBER1 });
+      const pollStatus = await pollInstance.getPollStatus();
+      expect(pollStatus.toString()).to.equal("5");
+    });
+    it("sould revert if non owner try to end the poll", async () => {
+      await expectRevert(
+        pollInstance.endPoll({ from: STRANGER }),
+        "Ownable: caller is not the owner"
+      );
+    });
+    it("should le owner get answers after ending the poll", async () => {
+      await pollInstance.endPoll({ from: MEMBER1 });
+      const answers = await pollInstance.getUnpackedAnswers({ from: MEMBER1 });
+      expect(answers[0][0].toString()).to.equal("0");
+      expect(answers[0][1].toString()).to.equal("2");
+    });
+    it("should have the good number of respondents after ending the poll", async () => {
+      await pollInstance.endPoll({ from: MEMBER1 });
+      const answers = await pollInstance.getPackedAnswers({ from: MEMBER1 });
+      expect(answers.length).to.equal("1");
+    });
+    it("should have the good number of answers after ending the poll", async () => {
+      await pollInstance.endPoll({ from: MEMBER1 });
+      const answers = await pollInstance.getUnpackedAnswers({ from: MEMBER1 });
+      expect(answers[0].length).to.equal("2");
     });
   });
 });
